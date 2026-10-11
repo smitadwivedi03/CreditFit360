@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loan Readiness | CreditFit360</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+            overflow-y: auto;
+            padding: 25px 17px;
+            color: white;
+            background: #101827;
+        }
+
+        .logo {
+            margin: 0 10px 30px;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #4385ff;
+        }
+
+        .menu a {
+            display: block;
+            margin-bottom: 5px;
+            padding: 14px 12px;
+            border-radius: 9px;
+            color: #d8deea;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #202c40;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #367cff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .menu .logout {
+            margin-top: 25px;
+            background: #ff572b;
+            color: white;
+            text-align: center;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            padding: 32px;
+            max-width: 1600px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin-bottom: 9px;
+            font-size: 31px;
+        }
+
+        .page-header p {
+            color: #697386;
+            line-height: 1.6;
+        }
+
+        .notice {
+            margin-bottom: 25px;
+            padding: 17px 19px;
+            border-left: 5px solid #367cff;
+            border-radius: 8px;
+            background: #edf4ff;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* FORM CARD */
+
+        .card {
+            margin-bottom: 25px;
+            padding: 26px;
+            border: 1px solid #e9edf3;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .card-description {
+            margin-bottom: 23px;
+            color: #7a8494;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 21px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            min-height: 46px;
+            padding: 12px;
+            border: 1px solid #d9e0e9;
+            border-radius: 8px;
+            background: white;
+            color: #172033;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #367cff;
+            box-shadow: 0 0 0 3px rgba(54, 124, 255, 0.10);
+        }
+
+        .field small {
+            display: block;
+            margin-top: 6px;
+            color: #7a8494;
+            line-height: 1.4;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        /* BUTTONS */
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            min-height: 47px;
+            padding: 13px 20px;
+            border: 0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #367cff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2869df;
+        }
+
+        .btn-secondary {
+            border: 1px solid #d9e0e9;
+            background: white;
+            color: #263449;
+        }
+
+        /* RESULTS */
+
+        #results {
+            display: none;
+            scroll-margin-top: 20px;
+        }
+
+        .results-heading {
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .metric {
+            padding: 22px;
+            border: 1px solid #e7ebf1;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .metric-label {
+            margin-bottom: 12px;
+            color: #697386;
+            font-size: 13px;
+        }
+
+        .metric-value {
+            overflow-wrap: anywhere;
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .metric-subtitle {
+            margin-top: 8px;
+            color: #7a8494;
+            font-size: 12px;
+        }
+
+        .score-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+            gap: 25px;
+            align-items: center;
+        }
+
+        .score-circle {
+            display: flex;
+            width: 190px;
+            height: 190px;
+            margin: 20px auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 12px solid #367cff;
+            border-radius: 50%;
+            background: #f2f6ff;
+        }
+
+        .score-number {
+            font-size: 46px;
+            font-weight: 800;
+            color: #245dcc;
+        }
+
+        .score-out-of {
+            margin-top: 4px;
+            color: #697386;
+            font-size: 13px;
+        }
+
+        .category-pill {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 9px 13px;
+            border-radius: 7px;
+            background: #edf4ff;
+            color: #245dcc;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .score-summary {
+            margin-top: 14px;
+            color: #697386;
+            line-height: 1.7;
+        }
+
+        /* PROGRESS */
+
+        .breakdown-item {
+            margin-top: 22px;
+        }
+
+        .breakdown-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px;
+            font-size: 14px;
+        }
+
+        .progress-track {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #e9edf4;
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            border-radius: 20px;
+            background: #367cff;
+            transition: width 0.5s ease;
+        }
+
+        /* RECOMMENDATIONS */
+
+        .recommendation-list {
+            padding-left: 22px;
+            line-height: 1.8;
+        }
+
+        .recommendation-list li {
+            margin-bottom: 9px;
+        }
+
+        .positive {
+            color: #16834a;
+        }
+
+        .warning {
+            color: #a65a00;
+        }
+
+        .disclaimer {
+            margin-top: 22px;
+            color: #7a8494;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .error-message {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 8px;
+            background: #fff0f0;
+            color: #b42318;
+            line-height: 1.5;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1050px) {
+            .sidebar {
+                width: 215px;
+            }
+
+            .main {
+                margin-left: 215px;
+                padding: 22px;
+            }
+
+            .result-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                max-height: none;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .form-grid,
+            .score-panel,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+        <div class="logo">CreditFit<span>360</span></div>
+
+        <nav class="menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/personal-credit">Personal CreditFit</a>
+            <a href="/sme-credit-score">SME CreditScore</a>
+            <a href="/loan-readiness" class="active">Loan Readiness</a>
+            <a href="/credit-result">Reports</a>
+            <a href="/what-if-simulator">What-if Simulator</a>
+            <a href="#">Settings</a>
+            <a href="#">About Us</a>
+            <a href="#">Disclaimer</a>
+            <a href="/" class="logout">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+        <header class="page-header">
+            <h1>Loan Readiness</h1>
+            <p>Understand affordability and review a possible loan scenario using your financial details.</p>
+        </header>
+
+        <div class="notice">
+            <strong>Educational assessment:</strong>
+            This tool estimates affordability using the figures you enter.
+            It does not determine actual lender eligibility or guarantee loan approval.
+        </div>
+
+        <!-- INPUT FORM -->
+
+        <form id="loanForm" novalidate>
+
+            <section class="card">
+                <h2>1. Financial Information</h2>
+                <p class="card-description">
+                    Enter your monthly income, expenses, existing EMI and savings.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="monthlyIncome">Monthly Income (₹)</label>
+                        <input id="monthlyIncome" type="number" min="0" step="any"
+                               placeholder="Example: 50000" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="monthlyExpenses">Monthly Expenses (₹)</label>
+                        <input id="monthlyExpenses" type="number" min="0" step="any"
+                               placeholder="Example: 20000" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="existingEMI">Existing Monthly EMI (₹)</label>
+                        <input id="existingEMI" type="number" min="0" step="any"
+                               placeholder="Example: 5000" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="currentSavings">Current Savings (₹)</label>
+                        <input id="currentSavings" type="number" min="0" step="any"
+                               placeholder="Example: 100000" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="creditScore">Credit Score (300–900)</label>
+                        <input id="creditScore" type="number" min="300" max="900" step="1"
+                               placeholder="Example: 750" required>
+                        <small>Use a known score, if available. Do not guess sensitive account information.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="essentialExpenses">Essential Monthly Expenses (₹)</label>
+                        <input id="essentialExpenses" type="number" min="0" step="any"
+                               placeholder="Example: 15000" required>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>2. Proposed Loan Scenario</h2>
+                <p class="card-description">
+                    Enter the loan amount and the EMI you are considering. These are scenario inputs, not an offer from a lender.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="loanAmount">Desired Loan Amount (₹)</label>
+                        <input id="loanAmount" type="number" min="0" step="any"
+                               placeholder="Example: 200000" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="proposedEMI">Proposed Monthly EMI (₹)</label>
+                        <input id="proposedEMI" type="number" min="0" step="any"
+                               placeholder="Example: 7000" required>
+                    </div>
+
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-primary" type="submit">
+                        Check Loan Readiness
+                    </button>
+
+                    <button class="btn btn-secondary" type="reset">
+                        Reset Form
+                    </button>
+                </div>
+
+                <div id="errorMessage" class="error-message" role="alert"></div>
+            </section>
+
+        </form>
+
+        <!-- RESULTS -->
+
+        <section id="results" aria-live="polite">
+
+            <h2 class="results-heading">Your Assessment</h2>
+
+            <div class="card">
+                <div class="score-panel">
+
+                    <div>
+                        <div class="score-circle">
+                            <div id="readinessScore" class="score-number">0</div>
+                            <div class="score-out-of">out of 100</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 id="resultTitle">Assessment Result</h2>
+                        <div id="resultCategory" class="category-pill">-</div>
+
+                        <p id="scoreSummary" class="score-summary"></p>
+
+                        <p id="resultDisclaimer" class="disclaimer">
+                            This is an educational estimate, not an actual lender decision.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="result-grid">
+
+                <div class="metric">
+                    <div class="metric-label">Monthly Balance After Proposed EMI</div>
+                    <div id="monthlyBalance" class="metric-value">₹0</div>
+                    <div class="metric-subtitle">Income minus expenses and all listed EMIs</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-label">Total EMI Burden</div>
+                    <div id="emiBurden" class="metric-value">0%</div>
+                    <div class="metric-subtitle">Existing EMI plus proposed EMI as a share of income</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-label">Emergency Savings Coverage</div>
+                    <div id="emergencyCoverage" class="metric-value">0 months</div>
+                    <div class="metric-subtitle">Savings divided by essential monthly expenses</div>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <h2>Score Breakdown</h2>
+                <p class="card-description">
+                    These are illustrative scoring components created for CreditFit360.
+                </p>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-heading">
+                        <span>Credit Profile</span>
+                        <strong id="creditPoints">0/25</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="creditBar" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-heading">
+                        <span>EMI Affordability</span>
+                        <strong id="emiPoints">0/30</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="emiBar" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-heading">
+                        <span>Monthly Cash Flow</span>
+                        <strong id="cashPoints">0/20</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="cashBar" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-heading">
+                        <span>Emergency Savings</span>
+                        <strong id="savingsPoints">0/15</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="savingsBar" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-heading">
+                        <span>Proposed Loan Size</span>
+                        <strong id="loanPoints">0/10</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div id="loanBar" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Suggestions</h2>
+                <p class="card-description">
+                    General ideas to review before making a borrowing decision.
+                </p>
+                <ul id="suggestions" class="recommendation-list"></ul>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        "use strict";
+
+        const loanForm = document.getElementById("loanForm");
+        const results = document.getElementById("results");
+        const errorMessage = document.getElementById("errorMessage");
+
+        function readNumber(id) {
+            const element = document.getElementById(id);
+            return Number(element.value);
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = "block";
+        }
+
+        function hideError() {
+            errorMessage.textContent = "";
+            errorMessage.style.display = "none";
+        }
+
+        function getCategory(score) {
+            if (score >= 80) return "Relatively Strong";
+            if (score >= 65) return "Good";
+            if (score >= 50) return "Moderate";
+            return "Needs Improvement";
+        }
+
+        function setBreakdown(pointsId, barId, points, maximum) {
+            document.getElementById(pointsId).textContent =
+                points + "/" + maximum;
+
+            const percentage = maximum > 0
+                ? (points / maximum) * 100
+                : 0;
+
+            document.getElementById(barId).style.width =
+                clamp(percentage, 0, 100) + "%";
+        }
+
+        function addSuggestion(list, message) {
+            const item = document.createElement("li");
+            item.textContent = message;
+            list.appendChild(item);
+        }
+
+        loanForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            hideError();
+
+            const monthlyIncome = readNumber("monthlyIncome");
+            const monthlyExpenses = readNumber("monthlyExpenses");
+            const existingEMI = readNumber("existingEMI");
+            const currentSavings = readNumber("currentSavings");
+            const creditScore = readNumber("creditScore");
+            const essentialExpenses = readNumber("essentialExpenses");
+            const loanAmount = readNumber("loanAmount");
+            const proposedEMI = readNumber("proposedEMI");
+
+            const inputs = [
+                monthlyIncome,
+                monthlyExpenses,
+                existingEMI,
+                currentSavings,
+                creditScore,
+                essentialExpenses,
+                loanAmount,
+                proposedEMI
+            ];
+
+            if (inputs.some(value => !Number.isFinite(value))) {
+                showError("Please enter valid numbers in every field.");
+                return;
+            }
+
+            if (
+                monthlyIncome <= 0 ||
+                monthlyExpenses < 0 ||
+                existingEMI < 0 ||
+                currentSavings < 0 ||
+                essentialExpenses <= 0 ||
+                loanAmount <= 0 ||
+                proposedEMI < 0
+            ) {
+                showError(
+                    "Income, essential expenses and loan amount must be greater than zero. Other financial values cannot be negative."
+                );
+                return;
+            }
+
+            if (!Number.isInteger(creditScore) ||
+                creditScore < 300 ||
+                creditScore > 900) {
+                showError("Enter a credit score between 300 and 900.");
+                return;
+            }
+
+            if (monthlyExpenses > monthlyIncome * 1000) {
+                showError("Please verify your monthly expenses.");
+                return;
+            }
+
+            /*
+             * This score is an educational model,
+             * not a lender or credit-bureau score.
+             */
+
+            const totalEMI = existingEMI + proposedEMI;
+            const totalEMIBurden = (totalEMI / monthlyIncome) * 100;
+            const balance = monthlyIncome - monthlyExpenses - totalEMI;
+            const emergencyMonths = currentSavings / essentialExpenses;
+            const loanToIncome = loanAmount / (monthlyIncome * 12);
+
+            /* 1. Credit profile: max 25 */
+
+            let creditPoints = 0;
+
+            if (creditScore >= 800) creditPoints = 25;
+            else if (creditScore >= 750) creditPoints = 23;
+            else if (creditScore >= 700) creditPoints = 19;
+            else if (creditScore >= 650) creditPoints = 14;
+            else if (creditScore >= 600) creditPoints = 9;
+            else creditPoints = 4;
+
+            /* 2. EMI affordability: max 30 */
+
+            let emiPoints = 0;
+
+            if (totalEMIBurden <= 15) emiPoints = 30;
+            else if (totalEMIBurden <= 25) emiPoints = 26;
+            else if (totalEMIBurden <= 35) emiPoints = 20;
+            else if (totalEMIBurden <= 45) emiPoints = 12;
+            else emiPoints = 4;
+
+            /* 3. Cash flow: max 20 */
+
+            let cashPoints = 0;
+            const balanceRatio = balance / monthlyIncome;
+
+            if (balanceRatio >= 0.30) cashPoints = 20;
+            else if (balanceRatio >= 0.20) cashPoints = 17;
+            else if (balanceRatio >= 0.10) cashPoints = 13;
+            else if (balanceRatio > 0) cashPoints = 8;
+            else cashPoints = 2;
+
+            /* 4. Emergency savings: max 15 */
+
+            let savingsPoints = 0;
+
+            if (emergencyMonths >= 6) savingsPoints = 15;
+            else if (emergencyMonths >= 3) savingsPoints = 12;
+            else if (emergencyMonths >= 1) savingsPoints = 8;
+            else savingsPoints = 3;
+
+            /* 5. Proposed loan size: max 10 */
+
+            let loanPoints = 0;
+
+            if (loanToIncome <= 0.25) loanPoints = 10;
+            else if (loanToIncome <= 0.50) loanPoints = 8;
+            else if (loanToIncome <= 1.00) loanPoints = 6;
+            else if (loanToIncome <= 2.00) loanPoints = 3;
+            else loanPoints = 1;
+
+            const totalScore = clamp(
+                Math.round(
+                    creditPoints +
+                    emiPoints +
+                    cashPoints +
+                    savingsPoints +
+                    loanPoints
+                ),
+                0,
+                100
+            );
+
+            const category = getCategory(totalScore);
+
+            /* Main result */
+
+            document.getElementById("readinessScore").textContent =
+                totalScore;
+
+            document.getElementById("resultCategory").textContent =
+                category;
+
+            document.getElementById("monthlyBalance").textContent =
+                formatCurrency(balance);
+
+            document.getElementById("emiBurden").textContent =
+                totalEMIBurden.toFixed(1) + "%";
+
+            document.getElementById("emergencyCoverage").textContent =
+                emergencyMonths.toFixed(1) + " months";
+
+            let summary = "";
+
+            if (balance <= 0) {
+                summary =
+                    "The proposed EMI would leave no positive monthly balance after the expenses entered. Review affordability carefully before considering a loan.";
+            } else if (totalEMIBurden > 40) {
+                summary =
+                    "The combined EMI burden is high relative to the income entered. A smaller payment obligation may be easier to manage.";
+            } else if (totalScore >= 65) {
+                summary =
+                    "The entered figures show comparatively stronger indicators in this educational assessment. Actual eligibility depends on the lender's criteria and complete financial details.";
+            } else {
+                summary =
+                    "The entered figures show areas to review before borrowing. Consider cash flow, existing obligations and emergency savings.";
+            }
+
+            document.getElementById("scoreSummary").textContent = summary;
+
+            document.getElementById("resultTitle").textContent =
+                "Your Loan Readiness Overview";
+
+            /* Breakdown */
+
+            setBreakdown(
+                "creditPoints",
+                "creditBar",
+                creditPoints,
+                25
+            );
+
+            setBreakdown(
+                "emiPoints",
+                "emiBar",
+                emiPoints,
+                30
+            );
+
+            setBreakdown(
+                "cashPoints",
+                "cashBar",
+                cashPoints,
+                20
+            );
+
+            setBreakdown(
+                "savingsPoints",
+                "savingsBar",
+                savingsPoints,
+                15
+            );
+
+            setBreakdown(
+                "loanPoints",
+                "loanBar",
+                loanPoints,
+                10
+            );
+
+            /* Suggestions */
+
+            const suggestions = document.getElementById("suggestions");
+            suggestions.replaceChildren();
+
+            if (totalEMIBurden > 35) {
+                addSuggestion(
+                    suggestions,
+                    "Review the total of existing and proposed EMIs against monthly income."
+                );
+            }
+
+            if (balance <= 0) {
+                addSuggestion(
+                    suggestions,
+                    "Your entered expenses and EMIs use up all available monthly income. Rework the budget before taking on a new payment."
+                );
+            } else if (balance < monthlyIncome * 0.10) {
+                addSuggestion(
+                    suggestions,
+                    "Your remaining monthly balance is relatively small. Allow room for unexpected costs."
+                );
+            }
+
+            if (emergencyMonths < 3) {
+                addSuggestion(
+                    suggestions,
+                    "Review whether you can build an emergency fund covering several months of essential expenses."
+                );
+            }
+
+            if (creditScore < 700) {
+                addSuggestion(
+                    suggestions,
+                    "Review your credit report for errors and maintain on-time payments where applicable."
+                );
+            }
+
+            if (loanToIncome > 1) {
+                addSuggestion(
+                    suggestions,
+                    "Compare the proposed loan amount with your annual income and total repayment cost."
+                );
+            }
+
+            if (suggestions.children.length === 0) {
+                addSuggestion(
+                    suggestions,
+                    "The entered figures do not trigger a major warning in this simplified model. Still compare interest, fees, tenure and total repayment before making a decision."
+                );
+            }
+
+            results.style.display = "block";
+
+            results.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+
+        loanForm.addEventListener("reset", function () {
+            results.style.display = "none";
+            hideError();
+
+            document.getElementById("readinessScore").textContent = "0";
+
+            document.querySelectorAll(".progress-fill").forEach(function (bar) {
+                bar.style.width = "0";
+            });
+        });
+    </script>
+
+</body>
+</html>

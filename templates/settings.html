@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | CreditFit360</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #17243d, #273b60);
+            color: white;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 0 0 32px 8px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .nav a {
+            display: block;
+            padding: 13px 12px;
+            color: #e5e7eb;
+            text-decoration: none;
+            border-radius: 9px;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #3977ed;
+            color: white;
+        }
+
+        .nav .logout {
+            margin-top: 25px;
+            text-align: center;
+            background: #ef4444;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+            min-width: 0;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-info strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .setting-info p {
+            font-size: 13px;
+        }
+
+        select,
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            max-width: 180px;
+        }
+
+        .toggle {
+            width: 43px;
+            height: 23px;
+            accent-color: #2563eb;
+        }
+
+        .btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #64748b;
+            margin-left: 8px;
+        }
+
+        .status {
+            color: #047857;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        footer {
+            color: #6b7280;
+            text-align: center;
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px 15px;
+            }
+
+            .brand {
+                margin-bottom: 15px;
+            }
+
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 4px;
+            }
+
+            .nav a {
+                margin: 0;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">CreditFit<span>360</span></div>
+
+        <nav class="nav">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/personal-credit">Personal CreditFit</a>
+            <a href="/sme-credit-score">SME CreditScore</a>
+            <a href="/loan-readiness">Loan Readiness</a>
+            <a href="/reports">Reports</a>
+            <a href="/what-if-simulator">What-if Simulator</a>
+            <a href="/settings" class="active">Settings</a>
+            <a href="/about">About Us</a>
+            <a href="/disclaimer">Disclaimer</a>
+            <a href="/logout" class="logout">Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="header">
+            <h1>Settings</h1>
+            <p>Manage your CreditFit360 application preferences.</p>
+        </header>
+
+        <section class="card">
+            <h2>Appearance</h2>
+            <p>Customize how CreditFit360 looks on your device.</p>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <strong>Theme</strong>
+                    <p>Choose your preferred display theme.</p>
+                </div>
+
+                <select id="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="system">System default</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <strong>Compact layout</strong>
+                    <p>Reduce spacing between interface elements.</p>
+                </div>
+
+                <input type="checkbox" class="toggle" id="compact">
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Preferences</h2>
+            <p>Choose how you want to use the application.</p>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <strong>Show financial tips</strong>
+                    <p>Display educational financial tips where available.</p>
+                </div>
+
+                <input type="checkbox" class="toggle" id="tips" checked>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <strong>Currency</strong>
+                    <p>Currency used in financial examples.</p>
+                </div>
+
+                <select id="currency">
+                    <option value="INR">INR (₹)</option>
+                    <option value="USD">USD ($)</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Privacy & Data</h2>
+            <p>
+                This demo stores the latest credit assessment result
+                in your Flask session. These controls do not delete
+                information stored elsewhere.
+            </p>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <strong>Clear current assessment</strong>
+                    <p>Remove the latest result from the current session.</p>
+                </div>
+
+                <button class="btn" id="clearResult">
+                    Clear Result
+                </button>
+            </div>
+
+            <p id="status" class="status" role="status"></p>
+        </section>
+
+        <section class="card">
+            <h2>About this application</h2>
+            <p>CreditFit360 is an educational financial-health assessment demo.</p>
+
+            <button class="btn" onclick="location.href='/about'">
+                About Us
+            </button>
+
+            <button class="btn secondary"
+                    onclick="location.href='/disclaimer'">
+                Read Disclaimer
+            </button>
+        </section>
+
+        <footer>
+            CreditFit360 · Settings · Educational use only
+        </footer>
+    </main>
+</div>
+
+<script>
+    const themeSelect = document.getElementById("theme");
+    const compactToggle = document.getElementById("compact");
+    const tipsToggle = document.getElementById("tips");
+    const currencySelect = document.getElementById("currency");
+    const statusText = document.getElementById("status");
+
+    function loadSettings() {
+        themeSelect.value = localStorage.getItem("cf360_theme") || "light";
+        compactToggle.checked = localStorage.getItem("cf360_compact") === "true";
+        tipsToggle.checked = localStorage.getItem("cf360_tips") !== "false";
+        currencySelect.value = localStorage.getItem("cf360_currency") || "INR";
+
+        applyTheme();
+    }
+
+    function saveSetting(key, value) {
+        localStorage.setItem(key, value);
+        statusText.textContent = "Settings saved on this browser.";
+    }
+
+    function applyTheme() {
+        const selectedTheme = themeSelect.value;
+        const dark = selectedTheme === "dark" ||
+            (selectedTheme === "system" &&
+             window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        document.body.style.background = dark ? "#111827" : "#f4f6fb";
+        document.body.style.color = dark ? "#f9fafb" : "#1f2937";
+
+        document.querySelectorAll(".card").forEach(card => {
+            card.style.background = dark ? "#1f2937" : "#ffffff";
+        });
+
+        document.querySelectorAll(".card p").forEach(p => {
+            p.style.color = dark ? "#d1d5db" : "#6b7280";
+        });
+
+        document.querySelectorAll(".setting-row").forEach(row => {
+            row.style.borderColor = dark ? "#374151" : "#e5e7eb";
+        });
+    }
+
+    themeSelect.addEventListener("change", () => {
+        saveSetting("cf360_theme", themeSelect.value);
+        applyTheme();
+    });
+
+    compactToggle.addEventListener("change", () => {
+        saveSetting("cf360_compact", compactToggle.checked);
+        document.querySelectorAll(".card").forEach(card => {
+            card.style.padding = compactToggle.checked ? "16px" : "25px";
+        });
+    });
+
+    tipsToggle.addEventListener("change", () => {
+        saveSetting("cf360_tips", tipsToggle.checked);
+    });
+
+    currencySelect.addEventListener("change", () => {
+        saveSetting("cf360_currency", currencySelect.value);
+    });
+
+    document.getElementById("clearResult").addEventListener("click", async () => {
+        if (!confirm("Clear your current assessment result?")) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/clear-result", {
+                method: "POST"
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                statusText.textContent = "Current assessment result cleared.";
+            } else {
+                statusText.textContent = "Unable to clear the result.";
+            }
+        } catch (error) {
+            statusText.textContent = "Could not contact the server.";
+        }
+    });
+
+    loadSettings();
+</script>
+</body>
+</html>

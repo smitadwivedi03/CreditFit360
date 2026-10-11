@@ -1,0 +1,1137 @@
+/* =========================================================
+   CREDITFIT 360 - COMPLETE STYLE
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172554;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 430px;
+    background: white;
+    padding: 45px;
+    border-radius: 18px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.10);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    background: #3157e0;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo h1 {
+    font-size: 27px;
+    color: #172554;
+}
+
+.logo h1 span {
+    color: #3157e0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-top: 8px;
+    margin-bottom: 35px;
+}
+
+.login-card h2 {
+    color: #172554;
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.login-text {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d9deea;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    outline: none;
+    font-size: 14px;
+}
+
+form input:focus {
+    border-color: #3157e0;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 13px;
+}
+
+.remember {
+    display: flex !important;
+    gap: 7px;
+    align-items: center;
+    font-weight: normal !important;
+}
+
+.login-options a,
+.signup a {
+    color: #3157e0;
+}
+
+.login-card button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #3157e0;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-card button:hover {
+    background: #2445bd;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 28px 0;
+    color: #aaa;
+    font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+}
+
+.signup {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   DASHBOARD LAYOUT
+========================================================= */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: 245px;
+    min-height: 100vh;
+    background: #071746;
+    color: white;
+    padding: 22px 15px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 8px 28px;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #3157e0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.brand h2 {
+    font-size: 19px;
+}
+
+.brand h2 span {
+    color: #4d72ff;
+}
+
+.brand small {
+    display: block;
+    color: #b8c1dc;
+    font-size: 8px;
+    margin-top: 3px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu-item {
+    color: #cbd3eb;
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+.menu-item span {
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: #3157e0;
+    color: white;
+}
+
+.dark-mode {
+    margin-top: auto;
+
+    padding: 15px 10px;
+
+    color: #b8c1dc;
+
+    font-size: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark-mode input {
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+    margin-left: 245px;
+    width: calc(100% - 245px);
+
+    padding: 25px 30px;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar h1 {
+    font-size: 25px;
+    color: #172554;
+}
+
+.topbar p {
+    color: #777;
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.notification {
+    border: none;
+    background: white;
+    font-size: 20px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.profile-circle {
+    width: 38px;
+    height: 38px;
+
+    background: #4435b8;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+}
+
+.profile strong {
+    display: block;
+    font-size: 13px;
+}
+
+.profile small {
+    display: block;
+    color: #777;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.date-row {
+    margin-left: auto;
+
+    margin-top: 15px;
+    margin-bottom: 18px;
+
+    width: 125px;
+
+    background: white;
+
+    border: 1px solid #e1e5ed;
+
+    padding: 9px 10px;
+
+    border-radius: 7px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 11px;
+    color: #555;
+}
+
+
+/* =========================================================
+   SCORE CARDS
+========================================================= */
+
+.score-cards {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+.score-card {
+    background: white;
+
+    border: 1px solid #e8ebf2;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    position: relative;
+
+    min-height: 125px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+}
+
+.card-title {
+    font-size: 12px;
+    color: #666;
+
+    margin-bottom: 13px;
+}
+
+.card-value {
+    font-size: 27px;
+
+    font-weight: bold;
+
+    color: #172554;
+}
+
+.card-value small {
+    font-size: 12px;
+
+    font-weight: normal;
+
+    color: #777;
+}
+
+.status {
+    display: inline-block;
+
+    margin-top: 7px;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+}
+
+.status.good {
+    background: #e5f8ed;
+    color: #159447;
+}
+
+.status.moderate {
+    background: #fff2d9;
+    color: #d18a00;
+}
+
+.card-icon {
+    position: absolute;
+
+    right: 18px;
+    top: 18px;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    background: #eef3ff;
+
+    color: #3157e0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   DASHBOARD GRID
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns: 1.1fr 1.6fr 1fr;
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.panel {
+    background: white;
+
+    border: 1px solid #e8ebf2;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    min-height: 315px;
+}
+
+.panel-header {
+    margin-bottom: 22px;
+}
+
+.panel-header h3 {
+    font-size: 14px;
+    color: #172554;
+}
+
+
+/* =========================================================
+   SCORE CIRCLE
+========================================================= */
+
+.score-overview {
+    text-align: center;
+}
+
+.score-circle {
+    width: 175px;
+    height: 175px;
+
+    margin: 15px auto;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            #19a957 0deg 280deg,
+            #e6edf0 280deg 360deg
+        );
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.score-circle > div {
+    width: 140px;
+    height: 140px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+.score-circle strong {
+    font-size: 38px;
+    color: #172554;
+}
+
+.score-circle span {
+    color: #777;
+    font-size: 12px;
+}
+
+.score-overview h2 {
+    color: #159447;
+    font-size: 15px;
+}
+
+.score-overview p {
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    margin-top: 8px;
+}
+
+
+/* =========================================================
+   SCORE BREAKDOWN
+========================================================= */
+
+.breakdown-row {
+    display: grid;
+
+    grid-template-columns: 155px 1fr 30px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.breakdown-row span {
+    font-size: 11px;
+    color: #555;
+}
+
+.breakdown-row strong {
+    font-size: 11px;
+}
+
+.progress {
+    height: 7px;
+
+    background: #e7f0e9;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress div {
+    height: 100%;
+
+    background: #19a957;
+
+    border-radius: 10px;
+}
+
+.progress.orange {
+    background: #fff0d5;
+}
+
+.progress.orange div {
+    background: #e7a51c;
+}
+
+.progress.red {
+    background: #ffe5dd;
+}
+
+.progress.red div {
+    background: #ed5b22;
+}
+
+
+/* =========================================================
+   INSIGHTS
+========================================================= */
+
+.insight-section {
+    margin-bottom: 20px;
+}
+
+.insight-label {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    margin-bottom: 9px;
+}
+
+.insight-label.strength {
+    background: #ddf6e7;
+    color: #159447;
+}
+
+.insight-label.improve {
+    background: #ffe5df;
+    color: #dc5420;
+}
+
+.insight-section ul {
+    padding-left: 18px;
+    color: #555;
+}
+
+.insight-section li {
+    font-size: 11px;
+    margin-bottom: 7px;
+}
+
+.report-btn {
+    width: 100%;
+
+    border: none;
+
+    background: #3157e0;
+
+    color: white;
+
+    padding: 11px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.quick-actions {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.quick-card {
+    background: white;
+
+    border: 1px solid #e8ebf2;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    display: grid;
+
+    grid-template-columns: 42px 1fr;
+
+    gap: 12px;
+
+    position: relative;
+
+    min-height: 120px;
+}
+
+.quick-icon {
+    width: 40px;
+    height: 40px;
+
+    background: #eef3ff;
+
+    color: #3157e0;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.quick-card h3 {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.quick-card p {
+    font-size: 10px;
+
+    color: #777;
+
+    line-height: 1.5;
+}
+
+.quick-card a {
+    position: absolute;
+
+    right: 18px;
+    bottom: 14px;
+
+    color: #3157e0;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   PERSONAL CREDIT - PROGRESS
+========================================================= */
+
+.credit-progress {
+    background: white;
+
+    border: 1px solid #e5e8ef;
+
+    border-radius: 10px;
+
+    padding: 20px 25px;
+
+    margin-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.step span {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #e7ebf3;
+
+    color: #777;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.step.active span {
+    background: #3157e0;
+    color: white;
+}
+
+.step p {
+    font-size: 11px;
+    color: #777;
+}
+
+.step.active p {
+    color: #3157e0;
+    font-weight: bold;
+}
+
+.line {
+    width: 70px;
+    height: 2px;
+
+    background: #e1e5ed;
+
+    margin: 0 15px;
+}
+
+
+/* =========================================================
+   PERSONAL CREDIT FORM
+========================================================= */
+
+.credit-form-card {
+    background: white;
+
+    border: 1px solid #e5e8ef;
+
+    border-radius: 12px;
+
+    margin-top: 20px;
+
+    padding: 30px;
+
+    max-width: 850px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.form-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    border-bottom: 1px solid #edf0f5;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 25px;
+}
+
+.form-step {
+    display: inline-block;
+
+    background: #eef2ff;
+
+    color: #3157e0;
+
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+.form-header h2 {
+    margin-top: 10px;
+
+    font-size: 20px;
+
+    color: #172554;
+}
+
+.form-header p {
+    color: #777;
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+.step-count {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FORM INPUTS
+========================================================= */
+
+#creditForm {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.form-group label {
+    color: #333;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #dce1ea;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: #3157e0;
+
+    box-shadow:
+        0 0 0 3px rgba(49, 87, 224, 0.08);
+}
+
+
+/* =========================================================
+   FORM BUTTONS
+========================================================= */
+
+.form-actions {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #edf0f5;
+}
+
+.back-btn {
+
+    padding: 11px 25px;
+
+    border: 1px solid #dce1ea;
+
+    border-radius: 7px;
+
+    color: #555;
+
+    font-size: 12px;
+}
+
+.next-btn {
+
+    padding: 11px 28px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #3157e0;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.next-btn:hover {
+
+    background: #2445bd;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .score-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 70px;
+        padding: 15px 8px;
+    }
+
+    .brand div:not(.brand-icon) {
+        display: none;
+    }
+
+    .menu-item {
+        font-size: 0;
+        justify-content: center;
+    }
+
+    .menu-item span {
+        font-size: 17px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+
+        width: calc(100% - 70px);
+
+        padding: 15px;
+    }
+
+    .score-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .credit-progress {
+        overflow-x: auto;
+
+        justify-content: flex-start;
+    }
+
+    .line {
+        width: 30px;
+
+        margin: 0 8px;
+    }
+
+    .step p {
+        display: none;
+    }
+
+    #creditForm {
+        grid-template-columns: 1fr;
+    }
+
+    .credit-form-card {
+        padding: 20px;
+    }
+}

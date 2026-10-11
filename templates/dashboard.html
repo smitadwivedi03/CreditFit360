@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101d36">
+    <title>CreditFit360 | Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4169f5;
+            --primary-dark: #2449d8;
+            --background: #f3f6fd;
+            --white: #ffffff;
+            --text: #15213b;
+            --muted: #71809b;
+            --border: #e5eaf4;
+            --green: #13a878;
+            --orange: #e99a27;
+            --red: #e34e65;
+            --purple: #8b5cf6;
+            --navy: #101d36;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(ellipse at 80% 0%, #e9efff 0, transparent 35%),
+                var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .layout {
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(65,105,245,.20), transparent 40%),
+                linear-gradient(180deg, #111e39, #0c172c);
+            color: white;
+            padding: 25px 15px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 8px 0 30px rgba(14, 30, 60, .07);
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 850;
+            letter-spacing: -1px;
+            padding: 8px 12px 2px;
+            margin-bottom: 3px;
+        }
+
+        .brand span {
+            color: #6c91ff;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: .7px;
+            color: #a7b6d2;
+            padding: 0 12px;
+            margin-bottom: 31px;
+        }
+
+        .menu-label {
+            color: #8498bb;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 5px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            color: #c6d1e5;
+            font-size: 12px;
+            font-weight: 550;
+            transition: background .22s, color .22s, transform .22s;
+        }
+
+        .menu a span {
+            width: 22px;
+            text-align: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .menu a:hover {
+            background: rgba(102, 133, 205, .14);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu a.active {
+            background: linear-gradient(115deg, #456df8, #3453d8);
+            color: white;
+            box-shadow: 0 7px 20px rgba(53, 90, 230, .24);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255,255,255,.11);
+            margin-top: 25px;
+            padding: 18px 12px;
+            font-size: 11px;
+            color: #93a6c7;
+            line-height: 1.9;
+        }
+
+        .sidebar-footer strong {
+            color: #e4ebfa;
+        }
+
+        /* MAIN AREA */
+
+        .main {
+            margin-left: 260px;
+            padding: 28px;
+            min-width: 0;
+            max-width: 1800px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            font-weight: 850;
+            letter-spacing: -.9px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .date-pill {
+            padding: 10px 14px;
+            background: rgba(255,255,255,.9);
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 750;
+            transition: transform .2s, box-shadow .2s, background .2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(120deg, #4b72ff, #3155e8);
+            color: white;
+            box-shadow: 0 6px 16px rgba(53, 91, 235, .20);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(120deg, #3158ee, #2345ce);
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(53, 91, 235, .28);
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-light:hover {
+            border-color: #b9c9fa;
+        }
+
+        /* WELCOME BANNER */
+
+        .welcome {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 80% 110%, rgba(255,181,113,.35), transparent 35%),
+                radial-gradient(ellipse at 72% 0%, rgba(107,129,255,.38), transparent 40%),
+                linear-gradient(115deg, #14264e, #253f91 65%, #4569df);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            min-height: 190px;
+            box-shadow: 0 12px 30px rgba(32, 58, 120, .15);
+        }
+
+        .welcome::after {
+            content: "↗";
+            position: absolute;
+            right: 15%;
+            top: -25px;
+            font-size: 175px;
+            line-height: 1;
+            font-weight: 200;
+            color: rgba(255,255,255,.08);
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+
+        .welcome > div,
+        .welcome > a {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome h2 {
+            font-size: 27px;
+            font-weight: 850;
+            letter-spacing: -.7px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #d9e4ff;
+            font-size: 12px;
+            line-height: 1.9;
+            max-width: 570px;
+        }
+
+        .welcome .btn {
+            background: white;
+            color: #2548c6;
+            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(0,0,0,.12);
+        }
+
+        .welcome .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(0,0,0,.18);
+        }
+
+        /* EMPTY STATE */
+
+        .empty-state {
+            background: white;
+            border: 1px dashed #b9c9e5;
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+            margin-bottom: 17px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* STAT CARDS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: rgba(255,255,255,.96);
+            border: 1px solid rgba(225,232,245,.95);
+            border-radius: 17px;
+            padding: 21px;
+            min-width: 0;
+            box-shadow: 0 5px 20px rgba(35, 57, 101, .035);
+            transition: box-shadow .25s, border-color .25s;
+        }
+
+        .card:hover {
+            box-shadow: 0 9px 25px rgba(35, 57, 101, .065);
+            border-color: #d5e0f7;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 17px;
+        }
+
+        .stat-title {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 650;
+            line-height: 1.6;
+        }
+
+        .stat-icon {
+            width: 41px;
+            height: 41px;
+            border-radius: 13px;
+            background: #edf2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .stats-grid .card:nth-child(2) .stat-icon {
+            background: #e9f9f2;
+        }
+
+        .stats-grid .card:nth-child(3) .stat-icon {
+            background: #fff1e9;
+        }
+
+        .stats-grid .card:nth-child(4) .stat-icon {
+            background: #f2edff;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 850;
+            letter-spacing: -.7px;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .stat-note {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* CONTENT GRIDS */
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -.2px;
+            margin-bottom: 6px;
+        }
+
+        .section-description {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 22px;
+            line-height: 1.8;
+        }
+
+        /* CREDIT SCORE */
+
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 25px;
+            padding: 10px 0 25px;
+            flex-wrap: wrap;
+        }
+
+        .score-circle {
+            width: 175px;
+            height: 175px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: conic-gradient(
+                var(--primary) 0deg,
+                #e4eafa 0deg
+            );
+            position: relative;
+            box-shadow: 0 7px 20px rgba(37,99,235,.08);
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            inset: 11px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-center {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 43px;
+            font-weight: 850;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+        }
+
+        .score-out-of {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .score-status {
+            display: inline-block;
+            margin-top: 9px;
+            background: #edf2ff;
+            color: var(--primary);
+            border-radius: 20px;
+            padding: 6px 11px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .score-summary {
+            min-width: 140px;
+            flex: 1;
+        }
+
+        .score-summary h3 {
+            font-size: 15px;
+            margin-bottom: 9px;
+        }
+
+        .score-summary p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.9;
+            margin-bottom: 14px;
+        }
+
+        /* SCORE BREAKDOWN */
+
+        .breakdown {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .breakdown-row {
+            margin-bottom: 17px;
+        }
+
+        .breakdown-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .breakdown-header span:first-child {
+            color: var(--muted);
+        }
+
+        .breakdown-header strong {
+            font-weight: 800;
+        }
+
+        .progress {
+            height: 8px;
+            width: 100%;
+            background: #edf1f8;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #5280ff, #3457e8);
+            border-radius: 20px;
+            transition: width .6s ease;
+        }
+
+        /* FINANCIAL HEALTH */
+
+        .health-item {
+            margin-bottom: 24px;
+        }
+
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 9px;
+            font-size: 11px;
+        }
+
+        .health-header span:first-child {
+            color: var(--muted);
+        }
+
+        .health-header strong {
+            font-weight: 800;
+        }
+
+        .health-help {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.8;
+            margin-top: 8px;
+        }
+
+        /* INSIGHTS */
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .insight-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 21px;
+            box-shadow: 0 5px 18px rgba(35,57,101,.025);
+        }
+
+        .insight-card h3 {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .insight-list {
+            list-style: none;
+        }
+
+        .insight-list li {
+            padding: 11px 0;
+            border-bottom: 1px solid #f0f3f8;
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
+        .insight-mark {
+            color: var(--green);
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        /* QUICK ACTIONS */
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .quick-link {
+            position: relative;
+            overflow: hidden;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 19px;
+            display: block;
+            transition: transform .22s, border-color .22s, box-shadow .22s;
+        }
+
+        .quick-link::after {
+            content: "↗";
+            position: absolute;
+            right: 13px;
+            top: 13px;
+            color: #aab8d5;
+            font-size: 15px;
+            opacity: 0;
+            transition: opacity .2s, transform .2s;
+        }
+
+        .quick-link:hover {
+            transform: translateY(-4px);
+            border-color: #bdcdfc;
+            box-shadow: 0 12px 25px rgba(53,99,245,.09);
+        }
+
+        .quick-link:hover::after {
+            opacity: 1;
+            transform: translate(2px, -2px);
+        }
+
+        .quick-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edf2ff;
+            border-radius: 13px;
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .quick-link:nth-child(2) .quick-icon {
+            background: #e9f9f2;
+        }
+
+        .quick-link:nth-child(3) .quick-icon {
+            background: #fff4e8;
+        }
+
+        .quick-link:nth-child(4) .quick-icon {
+            background: #f1edff;
+        }
+
+        .quick-link:nth-child(5) .quick-icon {
+            background: #e8f6ff;
+        }
+
+        .quick-link:nth-child(6) .quick-icon {
+            background: #fff0f4;
+        }
+
+        .quick-link:nth-child(7) .quick-icon {
+            background: #e9f9f2;
+        }
+
+        .quick-link:nth-child(8) .quick-icon {
+            background: #fff5df;
+        }
+
+        .quick-link h3 {
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .quick-link p {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        /* NOTICE AND FOOTER */
+
+        .notice {
+            background: #fff9e9;
+            border: 1px solid #f7e3a8;
+            border-radius: 12px;
+            padding: 15px 17px;
+            color: #8b6416;
+            font-size: 10px;
+            line-height: 1.9;
+            margin-bottom: 23px;
+        }
+
+        .footer {
+            padding: 20px 0 5px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.9;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--primary);
+            font-weight: 650;
+            margin-right: 17px;
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1250px) {
+            .main {
+                padding: 23px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 220px;
+                padding: 19px;
+            }
+
+            .date-pill {
+                display: none;
+            }
+
+            .welcome {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                padding: 16px 14px;
+                max-height: none;
+            }
+
+            .brand {
+                font-size: 23px;
+                margin-bottom: 3px;
+            }
+
+            .brand-subtitle {
+                margin-bottom: 17px;
+            }
+
+            .menu-label {
+                margin-top: 13px;
+            }
+
+            .menu {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 5px;
+            }
+
+            .menu li {
+                margin-bottom: 0;
+            }
+
+            .menu a {
+                padding: 10px 8px;
+                font-size: 11px;
+                gap: 6px;
+            }
+
+            .menu a span {
+                width: 19px;
+                font-size: 14px;
+            }
+
+            .sidebar-footer {
+                margin-top: 15px;
+                padding: 11px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 13px;
+            }
+
+            .topbar h1 {
+                font-size: 24px;
+            }
+
+            .topbar-actions {
+                width: 100%;
+            }
+
+            .welcome {
+                padding: 22px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 17px;
+                min-height: auto;
+            }
+
+            .welcome h2 {
+                font-size: 23px;
+            }
+
+            .welcome::after {
+                right: 5%;
+                top: 10px;
+                font-size: 110px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .stat-top {
+                margin-bottom: 13px;
+            }
+
+            .stat-value {
+                font-size: 21px;
+            }
+
+            .stat-icon {
+                width: 33px;
+                height: 33px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .score-container {
+                gap: 20px;
+            }
+
+            .score-circle {
+                width: 155px;
+                height: 155px;
+            }
+
+            .score-number {
+                font-size: 38px;
+            }
+
+            .score-summary {
+                min-width: 100%;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .quick-link {
+                padding: 15px;
+            }
+
+            .quick-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 19px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid,
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">CreditFit<span>360</span></div>
+        <div class="brand-subtitle">SMART CREDIT & FINANCIAL HEALTH</div>
+
+        <div class="menu-label">Main Menu</div>
+
+        <ul class="menu">
+            <li>
+                <a href="/dashboard" class="active">
+                    <span>🏠</span> Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Credit Report
+                </a>
+            </li>
+
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If Simulator
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label" style="margin-top: 27px;">Preferences</div>
+
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Us
+                </a>
+            </li>
+
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    <span>🚪</span> Logout
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Personal Finance Companion<br>
+            Version 1.0
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p class="subtitle">
+                    Your personal credit profile and financial health overview.
+                </p>
+            </div>
+
+            <div class="topbar-actions">
+                <span class="date-pill" id="currentDate">Financial Overview</span>
+                <a href="/personal-credit" class="btn btn-primary">
+                    + Calculate Score
+                </a>
+            </div>
+        </header>
+
+        <!-- WELCOME -->
+        <section class="welcome">
+            <div>
+                <h2 id="welcomeTitle">Welcome to CreditFit360 👋</h2>
+                <p>
+                    Understand your credit profile, track your financial habits,
+                    and discover opportunities to improve your financial readiness.
+                </p>
+            </div>
+
+            <a href="/personal-credit" class="btn">
+                Get Started →
+            </a>
+        </section>
+
+        <!-- NO RESULT MESSAGE -->
+        <section id="emptyState" class="empty-state hidden">
+            <h3>Let's build your financial profile</h3>
+            <p>
+                Your dashboard will display your estimated score, financial
+                indicators and personalised insights after you calculate your score.
+            </p>
+            <a href="/personal-credit" class="btn btn-primary">
+                Calculate My Score
+            </a>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+
+            <div class="card">
+                <div class="stat-top">
+                    <div class="stat-title">CreditFit Score</div>
+                    <div class="stat-icon">📈</div>
+                </div>
+
+                <div class="stat-value" id="statScore">--/100</div>
+                <div class="stat-note" id="statCategory">
+                    Calculate your score to view your category.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <div class="stat-title">Monthly Balance</div>
+                    <div class="stat-icon">💵</div>
+                </div>
+
+                <div class="stat-value" id="statBalance">₹--</div>
+                <div class="stat-note">Estimated income remaining after listed expenses.</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <div class="stat-title">EMI Burden</div>
+                    <div class="stat-icon">🏦</div>
+                </div>
+
+                <div class="stat-value" id="statEMI">--%</div>
+                <div class="stat-note">Existing monthly EMI as a share of income.</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <div class="stat-title">Credit Utilisation</div>
+                    <div class="stat-icon">💳</div>
+                </div>
+
+                <div class="stat-value" id="statUtilisation">--%</div>
+                <div class="stat-note">Outstanding credit compared with credit limit.</div>
+            </div>
+
+        </section>
+
+        <!-- SCORE AND FINANCIAL HEALTH -->
+        <section class="section-grid">
+
+            <div class="card">
+
+                <h2 class="section-title">Your CreditFit Score</h2>
+                <p class="section-description">
+                    Your estimated financial health score out of 100.
+                </p>
+
+                <div class="score-container">
+
+                    <div class="score-circle" id="scoreCircle">
+                        <div class="score-center">
+                            <div class="score-number" id="scoreNumber">--</div>
+                            <div class="score-out-of">out of 100</div>
+                            <div class="score-status" id="scoreCategory">Not calculated</div>
+                        </div>
+                    </div>
+
+                    <div class="score-summary">
+                        <h3 id="scoreHeading">Start your assessment</h3>
+                        <p id="scoreDescription">
+                            Complete your financial profile to view your estimated
+                            CreditFit score.
+                        </p>
+                        <a href="/personal-credit" class="btn btn-primary">
+                            View Assessment
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="breakdown">
+
+                    <h3 class="section-title" style="margin-bottom: 18px;">
+                        Score Breakdown
+                    </h3>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-header">
+                            <span>Credit Behaviour</span>
+                            <strong id="creditBehaviourValue">--/30</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-fill" id="creditBehaviourBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-header">
+                            <span>Debt Management</span>
+                            <strong id="debtManagementValue">--/20</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-fill" id="debtManagementBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-header">
+                            <span>Credit Utilisation</span>
+                            <strong id="utilisationScoreValue">--/15</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-fill" id="utilisationScoreBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-header">
+                            <span>Savings & Emergency Fund</span>
+                            <strong id="savingsScoreValue">--/20</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-fill" id="savingsScoreBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row" style="margin-bottom: 0;">
+                        <div class="breakdown-header">
+                            <span>Financial Stability</span>
+                            <strong id="stabilityScoreValue">--/15</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-fill" id="stabilityScoreBar"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FINANCIAL HEALTH -->
+            <div class="card">
+
+                <h2 class="section-title">Financial Health</h2>
+                <p class="section-description">
+                    Key indicators based on your submitted information.
+                </p>
+
+                <div class="health-item">
+                    <div class="health-header">
+                        <span>EMI Burden</span>
+                        <strong id="healthEMIValue">--%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-fill" id="healthEMIBar"></div>
+                    </div>
+
+                    <p class="health-help" id="healthEMIHelp">
+                        Your EMI-to-income ratio will appear here.
+                    </p>
+                </div>
+
+                <div class="health-item">
+                    <div class="health-header">
+                        <span>Credit Utilisation</span>
+                        <strong id="healthUtilisationValue">--%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-fill" id="healthUtilisationBar"></div>
+                    </div>
+
+                    <p class="health-help" id="healthUtilisationHelp">
+                        Your credit utilisation indicator will appear here.
+                    </p>
+                </div>
+
+                <div class="health-item">
+                    <div class="health-header">
+                        <span>Emergency Savings</span>
+                        <strong id="healthEmergencyValue">-- months</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-fill" id="healthEmergencyBar"></div>
+                    </div>
+
+                    <p class="health-help" id="healthEmergencyHelp">
+                        Your emergency savings coverage will appear here.
+                    </p>
+                </div>
+
+                <div class="health-item" style="margin-bottom: 0;">
+                    <div class="health-header">
+                        <span>EMI Affordability Indicator</span>
+                        <strong id="healthAffordabilityValue">--%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-fill" id="healthAffordabilityBar"></div>
+                    </div>
+
+                    <p class="health-help">
+                        A simple inverse of the EMI burden used in this educational model.
+                        It is not a lender's affordability decision.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PERSONAL INSIGHTS -->
+        <section class="insights-grid">
+
+            <div class="insight-card">
+                <h3>✅ Your Strengths</h3>
+
+                <ul class="insight-list" id="strengthsList">
+                    <li>
+                        <span class="insight-mark">•</span>
+                        <span>Calculate your score to identify your financial strengths.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="insight-card">
+                <h3>🎯 Areas to Improve</h3>
+
+                <ul class="insight-list" id="improvementsList">
+                    <li>
+                        <span class="insight-mark">•</span>
+                        <span>Your personalised improvement suggestions will appear here.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- QUICK ACTIONS -->
+        <h2 class="section-title" style="margin-bottom: 7px;">
+            Explore CreditFit360
+        </h2>
+
+        <p class="section-description">
+            Access your financial tools and account information.
+        </p>
+
+        <section class="quick-grid">
+
+            <a href="/personal-credit" class="quick-link">
+                <div class="quick-icon">👤</div>
+                <h3>Personal CreditFit</h3>
+                <p>Review your personal financial information and calculate your score.</p>
+            </a>
+
+            <a href="/sme-credit-score" class="quick-link">
+                <div class="quick-icon">🏢</div>
+                <h3>SME Credit Score</h3>
+                <p>Explore the credit assessment section for small businesses.</p>
+            </a>
+
+            <a href="/loan-readiness" class="quick-link">
+                <div class="quick-icon">💰</div>
+                <h3>Loan Readiness</h3>
+                <p>Explore financial indicators related to loan preparedness.</p>
+            </a>
+
+            <a href="/credit-result" class="quick-link">
+                <div class="quick-icon">📊</div>
+                <h3>Credit Report</h3>
+                <p>View the latest calculated CreditFit assessment.</p>
+            </a>
+
+            <a href="/what-if-simulator" class="quick-link">
+                <div class="quick-icon">🔮</div>
+                <h3>What-If Simulator</h3>
+                <p>Explore possible financial scenarios and their impact.</p>
+            </a>
+
+            <a href="/settings" class="quick-link">
+                <div class="quick-icon">⚙️</div>
+                <h3>Settings</h3>
+                <p>Open your account preferences and settings page.</p>
+            </a>
+
+            <a href="/about" class="quick-link">
+                <div class="quick-icon">ℹ️</div>
+                <h3>About Us</h3>
+                <p>Learn about CreditFit360 and its purpose.</p>
+            </a>
+
+            <a href="/disclaimer" class="quick-link">
+                <div class="quick-icon">📋</div>
+                <h3>Disclaimer</h3>
+                <p>Understand the limitations of the educational assessment.</p>
+            </a>
+
+        </section>
+
+        <!-- DISCLAIMER -->
+        <div class="notice">
+            <strong>Important:</strong> CreditFit360 provides an educational estimate
+            based on information you enter. It is not an official credit bureau score,
+            financial advice, a loan approval, or a guarantee of eligibility.
+            Always verify your official credit information with the relevant credit bureau
+            and lender.
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div style="margin-bottom: 10px;">
+                <a href="/about">About Us</a>
+                <a href="/settings">Settings</a>
+                <a href="/disclaimer">Disclaimer</a>
+            </div>
+
+            ©️ <span id="currentYear"></span> CreditFit360.
+            All rights reserved.
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- Flask session result is safely encoded as JSON -->
+<script id="dashboard-data" type="application/json">{{ result | default(None) | tojson }}</script>
+
+<script>
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+
+    function formatINR(value) {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) {
+            return "₹--";
+        }
+
+        return "₹" + number.toLocaleString("en-IN", {
+            maximumFractionDigits: 2
+        });
+    }
+
+    function safeNumber(value, fallback = 0) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : fallback;
+    }
+
+    function setText(id, value) {
+        const element = $(id);
+
+        if (element) {
+            element.textContent = value;
+        }
+    }
+
+    function setProgress(id, value, maximum, colour) {
+        const element = $(id);
+
+        if (!element) {
+            return;
+        }
+
+        const number = safeNumber(value);
+        const max = Math.max(1, safeNumber(maximum, 100));
+        const percentage = Math.max(
+            0,
+            Math.min(100, (number / max) * 100)
+        );
+
+        element.style.width = percentage + "%";
+
+        if (colour) {
+            element.style.background = colour;
+        }
+    }
+
+    function setHealthProgress(id, value, colour) {
+        setProgress(id, value, 100, colour);
+    }
+
+    function renderList(id, items, emptyMessage, symbol) {
+        const list = $(id);
+
+        if (!list) {
+            return;
+        }
+
+        list.replaceChildren();
+
+        const values = Array.isArray(items) ? items : [];
+
+        if (values.length === 0) {
+            const li = document.createElement("li");
+            const mark = document.createElement("span");
+            const message = document.createElement("span");
+
+            mark.className = "insight-mark";
+            mark.textContent = "•";
+            message.textContent = emptyMessage;
+
+            li.append(mark, message);
+            list.appendChild(li);
+
+            return;
+        }
+
+        values.forEach((item) => {
+            const li = document.createElement("li");
+            const mark = document.createElement("span");
+            const message = document.createElement("span");
+
+            mark.className = "insight-mark";
+            mark.textContent = symbol;
+            message.textContent = String(item);
+
+            li.append(mark, message);
+            list.appendChild(li);
+        });
+    }
+
+    function updateScore(result) {
+        if (!result || result.success === false) {
+            $("emptyState").classList.remove("hidden");
+            return;
+        }
+
+        $("emptyState").classList.add("hidden");
+
+        const score = Math.max(
+            0,
+            Math.min(100, safeNumber(result.total_score ?? result.score))
+        );
+
+        const category = String(result.category || "Not calculated");
+
+        setText("statScore", score + "/100");
+        setText("statCategory", category + " estimated profile");
+
+        setText("scoreNumber", score);
+        setText("scoreCategory", category);
+
+        const name = String(result.full_name || "").trim();
+
+        if (name) {
+            setText("welcomeTitle", "Welcome back, " + name + " 👋");
+        }
+
+        let scoreDescription =
+            "Your current educational CreditFit assessment.";
+
+        if (score >= 80) {
+            scoreDescription =
+                "Your current assessment indicates relatively strong financial indicators.";
+        } else if (score >= 70) {
+            scoreDescription =
+                "Your current assessment indicates a good set of financial indicators, with room to improve.";
+        } else if (score >= 50) {
+            scoreDescription =
+                "Review your financial indicators and work on the areas identified below.";
+        } else {
+            scoreDescription =
+                "Focus on building consistent payment habits, manageable debt and emergency savings.";
+        }
+
+        setText("scoreHeading", category + " Profile");
+        setText("scoreDescription", scoreDescription);
+
+        const scoreDegrees = (score / 100) * 360;
+
+        $("scoreCircle").style.background =
+            "conic-gradient(#4169f5 " + scoreDegrees +
+            "deg, #e4eafa " + scoreDegrees + "deg)";
+
+        const balance = safeNumber(result.monthly_balance);
+
+        const emi = Math.max(
+            0,
+            Math.min(100, safeNumber(result.emi_burden))
+        );
+
+        const utilisation = Math.max(
+            0,
+            Math.min(100, safeNumber(result.credit_utilisation))
+        );
+
+        const emergencyMonths = Math.max(
+            0,
+            safeNumber(result.emergency_months)
+        );
+
+        const affordability = Math.max(
+            0,
+            Math.min(
+                100,
+                safeNumber(result.emi_affordability, 100 - emi)
+            )
+        );
+
+        setText("statBalance", formatINR(balance));
+        setText("statEMI", emi.toFixed(1) + "%");
+        setText("statUtilisation", utilisation.toFixed(1) + "%");
+
+        setText("healthEMIValue", emi.toFixed(1) + "%");
+        setText("healthUtilisationValue", utilisation.toFixed(1) + "%");
+        setText(
+            "healthEmergencyValue",
+            emergencyMonths.toFixed(1) + " months"
+        );
+        setText(
+            "healthAffordabilityValue",
+            affordability.toFixed(1) + "%"
+        );
+
+        setHealthProgress(
+            "healthEMIBar",
+            emi,
+            emi <= 30 ? "#13a878" :
+                emi <= 40 ? "#e99a27" : "#e34e65"
+        );
+
+        setHealthProgress(
+            "healthUtilisationBar",
+            utilisation,
+            utilisation <= 30 ? "#13a878" :
+                utilisation <= 50 ? "#e99a27" : "#e34e65"
+        );
+
+        setHealthProgress(
+            "healthEmergencyBar",
+            Math.min(100, (emergencyMonths / 6) * 100),
+            emergencyMonths >= 3 ? "#13a878" : "#e99a27"
+        );
+
+        setHealthProgress(
+            "healthAffordabilityBar",
+            affordability,
+            affordability >= 70 ? "#13a878" :
+                affordability >= 50 ? "#e99a27" : "#e34e65"
+        );
+
+        setText(
+            "healthEMIHelp",
+            emi <= 30
+                ? "Your EMI burden is within the commonly used 30% guideline."
+                : "Consider reviewing your debt commitments; this ratio is relatively high."
+        );
+
+        setText(
+            "healthUtilisationHelp",
+            utilisation <= 30
+                ? "Your reported credit utilisation is within the commonly used 30% guideline."
+                : "Reducing revolving credit utilisation may help your credit profile."
+        );
+
+        setText(
+            "healthEmergencyHelp",
+            emergencyMonths >= 6
+                ? "Your reported savings cover approximately six or more months of essential expenses."
+                : emergencyMonths >= 3
+                    ? "Your reported savings cover approximately three or more months of essential expenses."
+                    : "Consider building an emergency fund gradually."
+        );
+
+        /*
+         * These field names match the values returned by app.py.
+         */
+        const creditBehaviour = safeNumber(result.credit_behaviour);
+        const debtManagement = safeNumber(result.debt_management);
+        const utilisationScore = safeNumber(result.utilisation_score);
+        const savingsScore = safeNumber(result.savings_score);
+        const stabilityScore = safeNumber(result.stability_score);
+
+        setText("creditBehaviourValue", creditBehaviour + "/30");
+        setText("debtManagementValue", debtManagement + "/20");
+        setText("utilisationScoreValue", utilisationScore + "/15");
+        setText("savingsScoreValue", savingsScore + "/20");
+        setText("stabilityScoreValue", stabilityScore + "/15");
+
+        setProgress("creditBehaviourBar", creditBehaviour, 30);
+        setProgress("debtManagementBar", debtManagement, 20);
+        setProgress("utilisationScoreBar", utilisationScore, 15);
+        setProgress("savingsScoreBar", savingsScore, 20);
+        setProgress("stabilityScoreBar", stabilityScore, 15);
+
+        renderList(
+            "strengthsList",
+            result.strengths,
+            "No specific strengths were identified from the submitted information yet.",
+            "✓"
+        );
+
+        renderList(
+            "improvementsList",
+            result.improvements,
+            "No specific improvement items were returned. Continue reviewing your financial habits.",
+            "→"
+        );
+    }
+
+    function initialiseDashboard() {
+        const now = new Date();
+
+        setText(
+            "currentDate",
+            now.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            })
+        );
+
+        setText("currentYear", now.getFullYear());
+
+        try {
+            const jsonElement = $("dashboard-data");
+            const raw = jsonElement
+                ? jsonElement.textContent.trim()
+                : "null";
+
+            const result = raw ? JSON.parse(raw) : null;
+
+            updateScore(result);
+        } catch (error) {
+            console.error(
+                "Dashboard data could not be loaded:",
+                error
+            );
+
+            $("emptyState").classList.remove("hidden");
+        }
+    }
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initialiseDashboard
+    );
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CreditFit360 - Personal CreditFit</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 13px 15px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .logout {
+            margin-top: 35px;
+            padding-bottom: 20px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 35px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+
+        /* ================= STEPS ================= */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .step {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            margin: auto auto 8px auto;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+
+        .step.active .step-number {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .step.completed {
+            border-color: #16a34a;
+        }
+
+        .step.completed .step-number {
+            background: #16a34a;
+            color: white;
+        }
+
+
+        /* ================= FORM CARD ================= */
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 23px;
+            color: #4f46e5;
+            margin-bottom: 7px;
+        }
+
+        .form-subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px rgba(79,70,229,0.1);
+        }
+
+        .field small {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .button {
+            border: none;
+            padding: 13px 25px;
+            border-radius: 9px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .next-button,
+        .submit-button {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .next-button:hover,
+        .submit-button:hover {
+            background: #4338ca;
+        }
+
+        .back-button {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .back-button:hover {
+            background: #d1d5db;
+        }
+
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+            margin-top: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .summary h3 {
+            margin-bottom: 10px;
+        }
+
+        .summary p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error-message {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .container {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ================================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+            CreditFit<span>360</span>
+        </div>
+
+
+        <ul class="menu">
+
+
+            <li>
+                <a href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+            </li>
+
+
+            <li>
+                <a
+                    href="{{ url_for('personal_credit') }}"
+                    class="active">
+
+                    Personal CreditFit
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('sme_credit_score') }}">
+                    SME CreditScore
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('loan_readiness') }}">
+                    Loan Readiness
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('credit_result') }}">
+                    Reports
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    What-if Simulator
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    Settings
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    About Us
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    Disclaimer
+                </a>
+            </li>
+
+
+        </ul>
+
+
+        <div class="logout">
+
+            <a href="{{ url_for('login') }}">
+                Logout
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================================================= -->
+    <!-- MAIN -->
+    <!-- ================================================= -->
+
+    <main class="main">
+
+
+        <div class="header">
+
+            <h1>
+                Personal CreditFit
+            </h1>
+
+            <p>
+                Evaluate your personal financial health
+                and calculate your CreditFit score.
+            </p>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- STEPS -->
+        <!-- ================================================= -->
+
+        <div class="steps">
+
+
+            <div
+                class="step active"
+                id="stepIndicator1">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div>
+                    Basic Information
+                </div>
+
+            </div>
+
+
+            <div
+                class="step"
+                id="stepIndicator2">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div>
+                    Financial Position
+                </div>
+
+            </div>
+
+
+            <div
+                class="step"
+                id="stepIndicator3">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div>
+                    Credit Information
+                </div>
+
+            </div>
+
+
+            <div
+                class="step"
+                id="stepIndicator4">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <div>
+                    Savings & Emergency
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- FORM CARD -->
+        <!-- ================================================= -->
+
+        <div class="card">
+
+
+            <div
+                class="error-message"
+                id="errorMessage">
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- STEP 1 -->
+            <!-- ================================================= -->
+
+            <div
+                class="form-step active"
+                id="step1">
+
+
+                <h2 class="form-title">
+                    Basic Information
+                </h2>
+
+
+                <p class="form-subtitle">
+                    Tell us about yourself.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field full">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter your full name">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            min="1"
+                            max="100"
+                            placeholder="Enter your age">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Employment Type
+                        </label>
+
+                        <select id="employmentType">
+
+                            <option value="">
+                                Select employment type
+                            </option>
+
+                            <option value="Salaried">
+                                Salaried
+                            </option>
+
+                            <option value="Self Employed">
+                                Self Employed
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                            <option value="Student">
+                                Student
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Monthly Income (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="monthlyIncome"
+                            min="0"
+                            placeholder="Enter monthly income">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Years of Employment
+                        </label>
+
+                        <input
+                            type="number"
+                            id="employmentYears"
+                            min="0"
+                            step="0.1"
+                            placeholder="0 - 5">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <div></div>
+
+                    <button
+                        type="button"
+                        class="button next-button"
+                        onclick="nextStep(1)">
+
+                        Next
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- STEP 2 -->
+            <!-- ================================================= -->
+
+            <div
+                class="form-step"
+                id="step2">
+
+
+                <h2 class="form-title">
+                    Financial Position
+                </h2>
+
+
+                <p class="form-subtitle">
+                    Enter your monthly financial details.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            Monthly Income (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="monthlyIncome2"
+                            min="0"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Household Expenses (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="householdExpenses"
+                            min="0"
+                            placeholder="Monthly household expenses">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Existing EMI (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="existingEmi"
+                            min="0"
+                            placeholder="Total monthly EMI">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Monthly Savings (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="monthlySavings"
+                            min="0"
+                            placeholder="Monthly savings">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Monthly Investment (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="monthlyInvestment"
+                            min="0"
+                            placeholder="Monthly investment">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="button back-button"
+                        onclick="previousStep(2)">
+
+                        Back
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="button next-button"
+                        onclick="nextStep(2)">
+
+                        Next
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- STEP 3 -->
+            <!-- ================================================= -->
+
+            <div
+                class="form-step"
+                id="step3">
+
+
+                <h2 class="form-title">
+                    Credit Information
+                </h2>
+
+
+                <p class="form-subtitle">
+                    Enter your credit-related information.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            Credit Score
+                        </label>
+
+                        <input
+                            type="number"
+                            id="creditScore"
+                            min="0"
+                            max="900"
+                            placeholder="Example: 700">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Credit Limit (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="creditLimit"
+                            min="0"
+                            placeholder="Total credit limit">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Credit Outstanding (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="creditOutstanding"
+                            min="0"
+                            placeholder="Current outstanding amount">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Active Loans
+                        </label>
+
+                        <input
+                            type="number"
+                            id="activeLoans"
+                            min="0"
+                            placeholder="Number of active loans">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Missed Payments
+                        </label>
+
+                        <input
+                            type="number"
+                            id="missedPayments"
+                            min="0"
+                            placeholder="Number of missed payments">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Credit Applications
+                        </label>
+
+                        <input
+                            type="number"
+                            id="creditApplications"
+                            min="0"
+                            placeholder="Recent applications">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="button back-button"
+                        onclick="previousStep(3)">
+
+                        Back
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="button next-button"
+                        onclick="nextStep(3)">
+
+                        Next
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- STEP 4 -->
+            <!-- ================================================= -->
+
+            <div
+                class="form-step"
+                id="step4">
+
+
+                <h2 class="form-title">
+                    Savings & Emergency
+                </h2>
+
+
+                <p class="form-subtitle">
+                    Enter your savings and emergency fund details.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            Current Savings (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="currentSavings"
+                            min="0"
+                            placeholder="Current savings">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Investments (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="investments"
+                            min="0"
+                            placeholder="Total investments">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Emergency Fund (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="emergencyFund"
+                            min="0"
+                            placeholder="Emergency fund">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Essential Expenses (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="essentialExpenses"
+                            min="0"
+                            placeholder="Monthly essential expenses"
+                            oninput="calculateEmergencyMonths()">
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            Expenses Covered
+                        </label>
+
+                        <input
+                            type="text"
+                            id="expensesCovered"
+                            value="0 Months"
+                            readonly>
+
+                        <small>
+                            Automatically calculated from
+                            emergency fund and essential expenses.
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="summary">
+
+                    <h3>
+                        Before submitting
+                    </h3>
+
+                    <p>
+                        Please make sure all entered values
+                        are correct. Your CreditFit score is
+                        an educational financial-health
+                        assessment based on the information
+                        you provide.
+                    </p>
+
+                </div>
+
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="button back-button"
+                        onclick="previousStep(4)">
+
+                        Back
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="button submit-button"
+                        onclick="calculateScore()">
+
+                        Calculate CreditFit Score
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+/* ========================================================= */
+/* CURRENT STEP */
+/* ========================================================= */
+
+let currentStep = 1;
+
+
+
+/* ========================================================= */
+/* SHOW STEP */
+/* ========================================================= */
+
+function showStep(step) {
+
+
+    document
+        .querySelectorAll(".form-step")
+        .forEach(function (element) {
+
+            element.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const selectedStep =
+        document.getElementById(
+            "step" + step
+        );
+
+
+    if (selectedStep) {
+
+        selectedStep.classList.add(
+            "active"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(".step")
+        .forEach(function (element) {
+
+            element.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const indicator =
+        document.getElementById(
+            "stepIndicator" + step
+        );
+
+
+    if (indicator) {
+
+        indicator.classList.add(
+            "active"
+        );
+
+    }
+
+
+    for (
+        let i = 1;
+        i < step;
+        i++
+    ) {
+
+        const previous =
+            document.getElementById(
+                "stepIndicator" + i
+            );
+
+        if (previous) {
+
+            previous.classList.add(
+                "completed"
+            );
+
+        }
+
+    }
+
+
+    currentStep = step;
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* ========================================================= */
+/* ERROR */
+/* ========================================================= */
+
+function showError(message) {
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    error.textContent =
+        message;
+
+
+    error.style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+
+function hideError() {
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    error.style.display =
+        "none";
+
+}
+
+
+
+/* ========================================================= */
+/* VALIDATE STEP 1 */
+/* ========================================================= */
+
+function validateStep1() {
+
+
+    const name =
+        document.getElementById(
+            "fullName"
+        ).value.trim();
+
+
+    const age =
+        Number(
+            document.getElementById(
+                "age"
+            ).value
+        );
+
+
+    const employment =
+        document.getElementById(
+            "employmentType"
+        ).value;
+
+
+    const income =
+        Number(
+            document.getElementById(
+                "monthlyIncome"
+            ).value
+        );
+
+
+    const years =
+        Number(
+            document.getElementById(
+                "employmentYears"
+            ).value
+        );
+
+
+    if (!name) {
+
+        showError(
+            "Please enter your full name."
+        );
+
+        return false;
+    }
+
+
+    if (
+        !age ||
+        age < 1 ||
+        age > 100
+    ) {
+
+        showError(
+            "Please enter a valid age."
+        );
+
+        return false;
+    }
+
+
+    if (!employment) {
+
+        showError(
+            "Please select employment type."
+        );
+
+        return false;
+    }
+
+
+    if (
+        income < 0 ||
+        isNaN(income)
+    ) {
+
+        showError(
+            "Please enter your monthly income."
+        );
+
+        return false;
+    }
+
+
+    if (
+        years < 0 ||
+        isNaN(years)
+    ) {
+
+        showError(
+            "Please enter your employment years."
+        );
+
+        return false;
+    }
+
+
+    return true;
+
+}
+
+
+
+/* ========================================================= */
+/* VALIDATE STEP 2 */
+/* ========================================================= */
+
+function validateStep2() {
+
+
+    const expenses =
+        Number(
+            document.getElementById(
+                "householdExpenses"
+            ).value
+        );
+
+
+    const emi =
+        Number(
+            document.getElementById(
+                "existingEmi"
+            ).value
+        );
+
+
+    const savings =
+        Number(
+            document.getElementById(
+                "monthlySavings"
+            ).value
+        );
+
+
+    const investment =
+        Number(
+            document.getElementById(
+                "monthlyInvestment"
+            ).value
+        );
+
+
+    if (
+        expenses < 0 ||
+        isNaN(expenses)
+    ) {
+
+        showError(
+            "Please enter household expenses."
+        );
+
+        return false;
+    }
+
+
+    if (
+        emi < 0 ||
+        isNaN(emi)
+    ) {
+
+        showError(
+            "Please enter existing EMI."
+        );
+
+        return false;
+    }
+
+
+    if (
+        savings < 0 ||
+        isNaN(savings)
+    ) {
+
+        showError(
+            "Please enter monthly savings."
+        );
+
+        return false;
+    }
+
+
+    if (
+        investment < 0 ||
+        isNaN(investment)
+    ) {
+
+        showError(
+            "Please enter monthly investment."
+        );
+
+        return false;
+    }
+
+
+    return true;
+
+}
+
+
+
+/* ========================================================= */
+/* VALIDATE STEP 3 */
+/* ========================================================= */
+
+function validateStep3() {
+
+
+    const creditScore =
+        Number(
+            document.getElementById(
+                "creditScore"
+            ).value
+        );
+
+
+    const creditLimit =
+        Number(
+            document.getElementById(
+                "creditLimit"
+            ).value
+        );
+
+
+    const outstanding =
+        Number(
+            document.getElementById(
+                "creditOutstanding"
+            ).value
+        );
+
+
+    const loans =
+        Number(
+            document.getElementById(
+                "activeLoans"
+            ).value
+        );
+
+
+    const missed =
+        Number(
+            document.getElementById(
+                "missedPayments"
+            ).value
+        );
+
+
+    const applications =
+        Number(
+            document.getElementById(
+                "creditApplications"
+            ).value
+        );
+
+
+    if (
+        creditScore < 0 ||
+        creditScore > 900 ||
+        isNaN(creditScore)
+    ) {
+
+        showError(
+            "Please enter a valid credit score between 0 and 900."
+        );
+
+        return false;
+    }
+
+
+    if (
+        creditLimit < 0 ||
+        isNaN(creditLimit)
+    ) {
+
+        showError(
+            "Please enter a valid credit limit."
+        );
+
+        return false;
+    }
+
+
+    if (
+        outstanding < 0 ||
+        isNaN(outstanding)
+    ) {
+
+        showError(
+            "Please enter a valid outstanding amount."
+        );
+
+        return false;
+    }
+
+
+    if (
+        loans < 0 ||
+        isNaN(loans)
+    ) {
+
+        showError(
+            "Please enter the number of active loans."
+        );
+
+        return false;
+    }
+
+
+    if (
+        missed < 0 ||
+        isNaN(missed)
+    ) {
+
+        showError(
+            "Please enter missed payments."
+        );
+
+        return false;
+    }
+
+
+    if (
+        applications < 0 ||
+        isNaN(applications)
+    ) {
+
+        showError(
+            "Please enter credit applications."
+        );
+
+        return false;
+    }
+
+
+    if (
+        creditLimit > 0 &&
+        outstanding > creditLimit
+    ) {
+
+        showError(
+            "Credit outstanding cannot be greater than credit limit."
+        );
+
+        return false;
+    }
+
+
+    return true;
+
+}
+
+
+
+/* ========================================================= */
+/* VALIDATE STEP 4 */
+/* ========================================================= */
+
+function validateStep4() {
+
+
+    const savings =
+        Number(
+            document.getElementById(
+                "currentSavings"
+            ).value
+        );
+
+
+    const investments =
+        Number(
+            document.getElementById(
+                "investments"
+            ).value
+        );
+
+
+    const emergency =
+        Number(
+            document.getElementById(
+                "emergencyFund"
+            ).value
+        );
+
+
+    const essential =
+        Number(
+            document.getElementById(
+                "essentialExpenses"
+            ).value
+        );
+
+
+    if (
+        savings < 0 ||
+        isNaN(savings)
+    ) {
+
+        showError(
+            "Please enter current savings."
+        );
+
+        return false;
+    }
+
+
+    if (
+        investments < 0 ||
+        isNaN(investments)
+    ) {
+
+        showError(
+            "Please enter investments."
+        );
+
+        return false;
+    }
+
+
+    if (
+        emergency < 0 ||
+        isNaN(emergency)
+    ) {
+
+        showError(
+            "Please enter emergency fund."
+        );
+
+        return false;
+    }
+
+
+    if (
+        essential < 0 ||
+        isNaN(essential)
+    ) {
+
+        showError(
+            "Please enter essential expenses."
+        );
+
+        return false;
+    }
+
+
+    return true;
+
+}
+
+
+
+/* ========================================================= */
+/* NEXT STEP */
+/* ========================================================= */
+
+function nextStep(step) {
+
+
+    hideError();
+
+
+    let valid = true;
+
+
+    if (step === 1) {
+
+        valid =
+            validateStep1();
+
+    }
+
+
+    if (step === 2) {
+
+        valid =
+            validateStep2();
+
+    }
+
+
+    if (step === 3) {
+
+        valid =
+            validateStep3();
+
+    }
+
+
+    if (!valid) {
+
+        return;
+
+    }
+
+
+    /* Copy income to Step 2 */
+
+    if (step === 1) {
+
+        document.getElementById(
+            "monthlyIncome2"
+        ).value =
+            document.getElementById(
+                "monthlyIncome"
+            ).value;
+
+    }
+
+
+    showStep(
+        step + 1
+    );
+
+}
+
+
+
+/* ========================================================= */
+/* PREVIOUS STEP */
+/* ========================================================= */
+
+function previousStep(step) {
+
+    hideError();
+
+    showStep(
+        step - 1
+    );
+
+}
+
+
+
+/* ========================================================= */
+/* EMERGENCY MONTHS */
+/* ========================================================= */
+
+function calculateEmergencyMonths() {
+
+
+    const emergency =
+        Number(
+            document.getElementById(
+                "emergencyFund"
+            ).value
+        ) || 0;
+
+
+    const essential =
+        Number(
+            document.getElementById(
+                "essentialExpenses"
+            ).value
+        ) || 0;
+
+
+    const output =
+        document.getElementById(
+            "expensesCovered"
+        );
+
+
+    if (
+        essential > 0
+    ) {
+
+        const months =
+            emergency /
+            essential;
+
+
+        output.value =
+            months.toFixed(1) +
+            " Months";
+
+    } else {
+
+        output.value =
+            "0 Months";
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* CALCULATE SCORE */
+/* ========================================================= */
+
+async function calculateScore() {
+
+
+    hideError();
+
+
+    if (!validateStep4()) {
+
+        return;
+
+    }
+
+
+    const data = {
+
+
+        /* Step 1 */
+
+        full_name:
+            document.getElementById(
+                "fullName"
+            ).value.trim(),
+
+
+        age:
+            Number(
+                document.getElementById(
+                    "age"
+                ).value
+            ),
+
+
+        employment_type:
+            document.getElementById(
+                "employmentType"
+            ).value,
+
+
+        monthly_income:
+            Number(
+                document.getElementById(
+                    "monthlyIncome"
+                ).value
+            ),
+
+
+        employment_years:
+            Number(
+                document.getElementById(
+                    "employmentYears"
+                ).value
+            ),
+
+
+
+        /* Step 2 */
+
+        household_expenses:
+            Number(
+                document.getElementById(
+                    "householdExpenses"
+                ).value
+            ),
+
+
+        existing_emi:
+            Number(
+                document.getElementById(
+                    "existingEmi"
+                ).value
+            ),
+
+
+        monthly_savings:
+            Number(
+                document.getElementById(
+                    "monthlySavings"
+                ).value
+            ),
+
+
+        monthly_investment:
+            Number(
+                document.getElementById(
+                    "monthlyInvestment"
+                ).value
+            ),
+
+
+
+        /* Step 3 */
+
+        credit_score:
+            Number(
+                document.getElementById(
+                    "creditScore"
+                ).value
+            ),
+
+
+        credit_limit:
+            Number(
+                document.getElementById(
+                    "creditLimit"
+                ).value
+            ),
+
+
+        credit_outstanding:
+            Number(
+                document.getElementById(
+                    "creditOutstanding"
+                ).value
+            ),
+
+
+        active_loans:
+            Number(
+                document.getElementById(
+                    "activeLoans"
+                ).value
+            ),
+
+
+        missed_payments:
+            Number(
+                document.getElementById(
+                    "missedPayments"
+                ).value
+            ),
+
+
+        credit_applications:
+            Number(
+                document.getElementById(
+                    "creditApplications"
+                ).value
+            ),
+
+
+
+        /* Step 4 */
+
+        current_savings:
+            Number(
+                document.getElementById(
+                    "currentSavings"
+                ).value
+            ),
+
+
+        investments:
+            Number(
+                document.getElementById(
+                    "investments"
+                ).value
+            ),
+
+
+        emergency_fund:
+            Number(
+                document.getElementById(
+                    "emergencyFund"
+                ).value
+            ),
+
+
+        essential_expenses:
+            Number(
+                document.getElementById(
+                    "essentialExpenses"
+                ).value
+            )
+
+    };
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/calculate-score",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            data
+                        )
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            result.success === false
+        ) {
+
+            throw new Error(
+                result.error ||
+                "Unable to calculate score."
+            );
+
+        }
+
+
+        /* Save result */
+
+        sessionStorage.setItem(
+            "creditFitResult",
+            JSON.stringify(
+                result
+            )
+        );
+
+
+        /* Go to report */
+
+        window.location.href =
+            "/credit-result";
+
+
+    } catch (error) {
+
+
+        console.error(
+            "CreditFit Error:",
+            error
+        );
+
+
+        showError(
+            "Unable to calculate score. Please make sure Flask is running."
+        );
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* INITIALIZE */
+/* ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        showStep(1);
+
+        calculateEmergencyMonths();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

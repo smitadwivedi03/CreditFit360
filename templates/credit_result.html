@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreditFit360 - Result</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#17213c;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:210px;
+    height:100vh;
+    background:#071536;
+    color:white;
+    padding:18px 12px;
+}
+
+.logo{
+    text-align:center;
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:28px;
+}
+
+.logo span{
+    color:#19c58b;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#d8def0;
+    padding:12px 10px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#1649d8;
+    color:white;
+}
+
+/* MAIN */
+.main{
+    margin-left:210px;
+    padding:20px 25px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.header h1{
+    font-size:22px;
+}
+
+.user{
+    font-size:12px;
+    color:#667085;
+}
+
+/* TOP CARDS */
+.top-cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:18px;
+}
+
+.top-card{
+    background:white;
+    border-radius:8px;
+    padding:16px;
+    border:1px solid #e9edf4;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.top-card-title{
+    font-size:11px;
+    color:#6b7280;
+    margin-bottom:8px;
+}
+
+.top-card-value{
+    font-size:25px;
+    font-weight:700;
+}
+
+.top-card-status{
+    font-size:11px;
+    margin-top:5px;
+    color:#159447;
+}
+
+/* MAIN CONTENT */
+.content{
+    display:grid;
+    grid-template-columns:1fr 1.25fr 1fr;
+    gap:15px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border:1px solid #e9edf4;
+    border-radius:8px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.title{
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+/* SCORE */
+.score-area{
+    text-align:center;
+}
+
+.circle{
+    width:175px;
+    height:175px;
+    margin:10px auto 15px;
+    border-radius:50%;
+    background:conic-gradient(
+        #16a34a 0deg,
+        #16a34a 280deg,
+        #e8edf0 280deg,
+        #e8edf0 360deg
+    );
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.circle:after{
+    content:"";
+    position:absolute;
+    width:140px;
+    height:140px;
+    background:white;
+    border-radius:50%;
+}
+
+.circle-content{
+    position:relative;
+    z-index:2;
+}
+
+.circle-content h2{
+    font-size:40px;
+}
+
+.circle-content span{
+    font-size:12px;
+    color:#777;
+}
+
+.good{
+    color:#159447;
+    font-weight:700;
+    font-size:16px;
+}
+
+.description{
+    font-size:11px;
+    color:#777;
+    line-height:1.6;
+    margin-top:8px;
+}
+
+/* BREAKDOWN */
+.breakdown-item{
+    margin-bottom:17px;
+}
+
+.breakdown-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.bar{
+    height:7px;
+    background:#edf0f3;
+    border-radius:10px;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    border-radius:10px;
+    background:#19a052;
+    transition:width .8s ease;
+}
+
+.yellow{
+    background:#e9a72b;
+}
+
+.orange{
+    background:#ef5b22;
+}
+
+/* INSIGHTS */
+.tag{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:12px;
+    font-size:10px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.green-tag{
+    background:#dff7e8;
+    color:#15803d;
+}
+
+.orange-tag{
+    background:#fff0df;
+    color:#d65b09;
+}
+
+.insights ul{
+    padding-left:17px;
+    margin-bottom:18px;
+}
+
+.insights li{
+    font-size:11px;
+    color:#596174;
+    margin-bottom:7px;
+}
+
+.report-btn{
+    width:100%;
+    border:none;
+    background:#1850d8;
+    color:white;
+    padding:12px;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.report-btn:hover{
+    background:#103da9;
+}
+
+/* BOTTOM METRICS */
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-top:15px;
+}
+
+.metric{
+    background:white;
+    border:1px solid #e9edf4;
+    padding:15px;
+    border-radius:8px;
+}
+
+.metric-title{
+    font-size:10px;
+    color:#737b8c;
+}
+
+.metric-value{
+    font-size:21px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.metric-info{
+    font-size:10px;
+    color:#8a909d;
+    margin-top:4px;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+
+    .top-cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .content{
+        grid-template-columns:1fr;
+    }
+
+    .metrics{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+        padding:15px;
+    }
+
+    .top-cards,
+    .metrics{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        CREDITFIT <span>360</span>
+    </div>
+
+    <nav class="menu">
+
+        <a href="/dashboard">🏠 Dashboard</a>
+
+        <a href="/personal-credit" class="active">
+            👤 Personal CreditFit
+        </a>
+
+        <a href="#">🏢 SME CreditScore</a>
+
+        <a href="#">💳 Loan Readiness</a>
+
+        <a href="#">📊 What-if Simulator</a>
+
+        <a href="#">📄 Reports</a>
+
+        <a href="#">⚙️ Settings</a>
+
+        <a href="#">ℹ️ About Us</a>
+
+    </nav>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+    <div class="header">
+
+        <h1>Welcome back, User 👋</h1>
+
+        <div class="user">
+            CreditFit360 • Personal Credit
+        </div>
+
+    </div>
+
+
+    <!-- TOP CARDS -->
+    <section class="top-cards">
+
+        <div class="top-card">
+
+            <div class="top-card-title">
+                CreditFit Score
+            </div>
+
+            <div class="top-card-value" id="topScore">
+                --
+            </div>
+
+            <div class="top-card-status" id="topCategory">
+                --
+            </div>
+
+        </div>
+
+
+        <div class="top-card">
+
+            <div class="top-card-title">
+                EMI Burden
+            </div>
+
+            <div class="top-card-value" id="topEmi">
+                --
+            </div>
+
+            <div class="top-card-status">
+                Calculated
+            </div>
+
+        </div>
+
+
+        <div class="top-card">
+
+            <div class="top-card-title">
+                Credit Utilisation
+            </div>
+
+            <div class="top-card-value" id="topUtilisation">
+                --
+            </div>
+
+            <div class="top-card-status">
+                Calculated
+            </div>
+
+        </div>
+
+
+        <div class="top-card">
+
+            <div class="top-card-title">
+                Emergency Fund
+            </div>
+
+            <div class="top-card-value" id="topEmergency">
+                --
+            </div>
+
+            <div class="top-card-status">
+                Calculated
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTENT -->
+    <section class="content">
+
+
+        <!-- SCORE OVERVIEW -->
+        <div class="card score-area">
+
+            <div class="title">
+                CREDITFIT SCORE OVERVIEW
+            </div>
+
+            <div class="circle" id="scoreCircle">
+
+                <div class="circle-content">
+
+                    <h2 id="score">
+                        --
+                    </h2>
+
+                    <span>/100</span>
+
+                </div>
+
+            </div>
+
+            <div class="good" id="category">
+                --
+            </div>
+
+            <div class="description" id="scoreMessage">
+                Your CreditFit score is calculated from your submitted financial information.
+            </div>
+
+        </div>
+
+
+        <!-- SCORE BREAKDOWN -->
+        <div class="card">
+
+            <div class="title">
+                SCORE BREAKDOWN
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>Credit Behaviour</span>
+                    <strong id="creditBehaviourScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" id="creditBehaviourBar"></div>
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>Debt Management</span>
+                    <strong id="debtManagementScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill yellow" id="debtManagementBar"></div>
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>EMI Affordability</span>
+                    <strong id="emiScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" id="emiBar"></div>
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>Savings & Emergency Fund</span>
+                    <strong id="savingsScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" id="savingsBar"></div>
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>Credit Utilisation</span>
+                    <strong id="utilisationScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill orange" id="utilisationBar"></div>
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-item">
+
+                <div class="breakdown-label">
+                    <span>Financial Stability</span>
+                    <strong id="stabilityScore">0</strong>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" id="stabilityBar"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INSIGHTS -->
+        <div class="card insights">
+
+            <div class="title">
+                TOP INSIGHTS
+            </div>
+
+
+            <span class="tag green-tag">
+                Strengths
+            </span>
+
+            <ul id="strengthsList">
+                <li>Loading...</li>
+            </ul>
+
+
+            <span class="tag orange-tag">
+                Areas to Improve
+            </span>
+
+            <ul id="improvementsList">
+                <li>Loading...</li>
+            </ul>
+
+
+            <button class="report-btn" onclick="viewReport()">
+                View Full Report
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- METRICS -->
+    <section class="metrics">
+
+        <div class="metric">
+
+            <div class="metric-title">
+                EMI BURDEN
+            </div>
+
+            <div class="metric-value" id="emiMetric">
+                --
+            </div>
+
+            <div class="metric-info">
+                Monthly EMI / Income
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                CREDIT UTILISATION
+            </div>
+
+            <div class="metric-value" id="utilisationMetric">
+                --
+            </div>
+
+            <div class="metric-info">
+                Outstanding / Credit Limit
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                EMERGENCY FUND
+            </div>
+
+            <div class="metric-value" id="emergencyMetric">
+                --
+            </div>
+
+            <div class="metric-info">
+                Essential expense coverage
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                MONTHLY BALANCE
+            </div>
+
+            <div class="metric-value" id="balanceMetric">
+                --
+            </div>
+
+            <div class="metric-info">
+                Monthly financial balance
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* ==========================================
+   GET SAVED RESULT
+========================================== */
+
+const savedResult =
+    sessionStorage.getItem("creditFitResult");
+
+
+if (!savedResult) {
+
+    alert("No CreditFit result found.");
+
+    window.location.href =
+        "/personal-credit";
+
+} else {
+
+    try {
+
+        const result =
+            JSON.parse(savedResult);
+
+        loadResult(result);
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert("Unable to load result.");
+
+        window.location.href =
+            "/personal-credit";
+    }
+}
+
+
+/* ==========================================
+   LOAD RESULT
+========================================== */
+
+function loadResult(result){
+
+    const score =
+        Number(result.score || 0);
+
+    const category =
+        result.category || "Needs Improvement";
+
+    const breakdown =
+        result.breakdown || {};
+
+    const metrics =
+        result.metrics || {};
+
+    const insights =
+        result.insights || {};
+
+
+    /* SCORE */
+
+    document.getElementById("score")
+        .textContent = score;
+
+    document.getElementById("topScore")
+        .textContent = score + " / 100";
+
+
+    /* CATEGORY */
+
+    document.getElementById("category")
+        .textContent = category;
+
+    document.getElementById("topCategory")
+        .textContent = category;
+
+
+    /* SCORE MESSAGE */
+
+    let message;
+
+    if(score >= 80){
+
+        message =
+            "Your financial health is strong based on this assessment.";
+
+    }else if(score >= 70){
+
+        message =
+            "Your financial profile is in a good range based on this assessment.";
+
+    }else if(score >= 50){
+
+        message =
+            "Some areas of your financial profile can be improved.";
+
+    }else{
+
+        message =
+            "Several areas of your financial profile may need improvement.";
+    }
+
+    document.getElementById("scoreMessage")
+        .textContent = message;
+
+
+    /* SCORE CIRCLE */
+
+    const degree =
+        Math.min(score,100) * 3.6;
+
+    document.getElementById("scoreCircle").style.background =
+        `conic-gradient(
+            #16a34a 0deg,
+            #16a34a ${degree}deg,
+            #e8edf0 ${degree}deg,
+            #e8edf0 360deg
+        )`;
+
+
+    /* BREAKDOWN */
+
+    setBreakdown(
+        "creditBehaviourScore",
+        "creditBehaviourBar",
+        breakdown.creditBehaviour,
+        30
+    );
+
+
+    setBreakdown(
+        "debtManagementScore",
+        "debtManagementBar",
+        breakdown.debtManagement,
+        20
+    );
+
+
+    /* EMI AFFORDABILITY */
+
+    const emiBurden =
+        Number(metrics.emiBurden || 0);
+
+    let emiScore;
+
+    if(emiBurden <= 20){
+
+        emiScore = 15;
+
+    }else if(emiBurden <= 30){
+
+        emiScore = 12;
+
+    }else if(emiBurden <= 40){
+
+        emiScore = 9;
+
+    }else if(emiBurden <= 50){
+
+        emiScore = 6;
+
+    }else{
+
+        emiScore = 3;
+    }
+
+
+    setBreakdown(
+        "emiScore",
+        "emiBar",
+        emiScore,
+        15
+    );
+
+
+    setBreakdown(
+        "savingsScore",
+        "savingsBar",
+        breakdown.savingsEmergency,
+        20
+    );
+
+
+    setBreakdown(
+        "utilisationScore",
+        "utilisationBar",
+        breakdown.creditUtilisation,
+        15
+    );
+
+
+    setBreakdown(
+        "stabilityScore",
+        "stabilityBar",
+        breakdown.financialStability,
+        15
+    );
+
+
+    /* TOP METRICS */
+
+    document.getElementById("topEmi")
+        .textContent =
+        formatNumber(metrics.emiBurden) + "%";
+
+
+    document.getElementById("topUtilisation")
+        .textContent =
+        formatNumber(metrics.creditUtilisation) + "%";
+
+
+    document.getElementById("topEmergency")
+        .textContent =
+        formatNumber(metrics.emergencyMonths) + " Months";
+
+
+    /* BOTTOM METRICS */
+
+    document.getElementById("emiMetric")
+        .textContent =
+        formatNumber(metrics.emiBurden) + "%";
+
+
+    document.getElementById("utilisationMetric")
+        .textContent =
+        formatNumber(metrics.creditUtilisation) + "%";
+
+
+    document.getElementById("emergencyMetric")
+        .textContent =
+        formatNumber(metrics.emergencyMonths) + " Months";
+
+
+    document.getElementById("balanceMetric")
+        .textContent =
+        "₹ " + formatMoney(metrics.monthlyBalance);
+
+
+    /* INSIGHTS */
+
+    loadList(
+        "strengthsList",
+        insights.strengths || [],
+        "No specific strengths recorded."
+    );
+
+
+    loadList(
+        "improvementsList",
+        insights.improvements || [],
+        "No major improvement areas recorded."
+    );
+
+}
+
+
+/* ==========================================
+   BREAKDOWN
+========================================== */
+
+function setBreakdown(
+    scoreId,
+    barId,
+    value,
+    maximum
+){
+
+    const score =
+        Number(value || 0);
+
+    const percentage =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                (score / maximum) * 100
+            )
+        );
+
+
+    document.getElementById(scoreId)
+        .textContent =
+        Math.round(score);
+
+
+    document.getElementById(barId)
+        .style.width =
+        percentage + "%";
+}
+
+
+/* ==========================================
+   INSIGHT LIST
+========================================== */
+
+function loadList(
+    id,
+    items,
+    emptyMessage
+){
+
+    const list =
+        document.getElementById(id);
+
+    list.innerHTML = "";
+
+
+    if(!items.length){
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            emptyMessage;
+
+        list.appendChild(li);
+
+        return;
+    }
+
+
+    items.forEach(item => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent = item;
+
+        list.appendChild(li);
+
+    });
+}
+
+
+/* ==========================================
+   NUMBER
+========================================== */
+
+function formatNumber(value){
+
+    const number =
+        Number(value);
+
+    if(isNaN(number)){
+        return "0";
+    }
+
+    return number.toFixed(1);
+}
+
+
+/* ==========================================
+   MONEY
+========================================== */
+
+function formatMoney(value){
+
+    const number =
+        Number(value);
+
+    if(isNaN(number)){
+        return "0";
+    }
+
+    return number.toLocaleString(
+        "en-IN",
+        {
+            maximumFractionDigits:0
+        }
+    );
+}
+
+
+/* ==========================================
+   FULL REPORT
+========================================== */
+
+function viewReport(){
+
+    alert(
+        "Full Report module will be added next."
+    );
+
+}
+
+</script>
+
+</body>
+</html>

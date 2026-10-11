@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | CreditFit360</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #17243d, #273b60);
+            color: white;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 0 0 32px 8px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .nav a {
+            display: block;
+            padding: 13px 12px;
+            color: #e5e7eb;
+            text-decoration: none;
+            border-radius: 9px;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #3977ed;
+            color: white;
+        }
+
+        .nav .logout {
+            margin-top: 25px;
+            text-align: center;
+            background: #ef4444;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+            min-width: 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: white;
+            padding: 42px 35px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            margin-bottom: 14px;
+        }
+
+        .hero p {
+            line-height: 1.8;
+            max-width: 700px;
+            color: #eff6ff;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+        }
+
+        .card h2 {
+            color: #1d4ed8;
+            margin-bottom: 14px;
+            font-size: 21px;
+        }
+
+        .card p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .feature {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+            color: #1e40af;
+            font-size: 17px;
+        }
+
+        .feature p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 8px 8px 0 0;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px 15px;
+            }
+
+            .brand {
+                margin-bottom: 15px;
+            }
+
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 4px;
+            }
+
+            .nav a {
+                margin: 0;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            .hero {
+                padding: 28px 22px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">CreditFit<span>360</span></div>
+
+        <nav class="nav">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/personal-credit">Personal CreditFit</a>
+            <a href="/sme-credit-score">SME CreditScore</a>
+            <a href="/loan-readiness">Loan Readiness</a>
+            <a href="/reports">Reports</a>
+            <a href="/what-if-simulator">What-if Simulator</a>
+            <a href="/settings">Settings</a>
+            <a href="/about" class="active">About Us</a>
+            <a href="/disclaimer">Disclaimer</a>
+            <a href="/logout" class="logout">Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <section class="hero">
+            <h1>About CreditFit360</h1>
+
+            <p>
+                CreditFit360 is an educational financial-health
+                assessment project designed to help users understand
+                important financial indicators through simple tools
+                and interactive simulations.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Our Purpose</h2>
+
+            <p>
+                Financial decisions can be difficult when income,
+                expenses, existing EMIs, credit usage and savings
+                are considered separately.
+            </p>
+
+            <p>
+                CreditFit360 brings these indicators together in one
+                place to help users explore their financial position
+                and understand areas that may need attention.
+            </p>
+
+            <p>
+                This application is an educational project. It does
+                not represent a bank, lender, credit bureau or
+                regulated financial institution.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>What You Can Explore</h2>
+
+            <div class="features">
+
+                <div class="feature">
+                    <h3>Personal CreditFit</h3>
+                    <p>
+                        Explore a sample assessment based on
+                        personal financial information.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <h3>SME CreditScore</h3>
+                    <p>
+                        Explore financial indicators relevant to
+                        small-business assessments.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <h3>Loan Readiness</h3>
+                    <p>
+                        Understand how income, expenses, savings
+                        and proposed EMIs affect an illustrative
+                        affordability assessment.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <h3>What-if Simulator</h3>
+                    <p>
+                        Compare hypothetical financial scenarios
+                        and see how changed inputs affect
+                        the application's estimates.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Our Approach</h2>
+
+            <p>
+                We aim to make financial concepts easier to explore
+                through accessible language, understandable
+                calculations and a simple user interface.
+            </p>
+
+            <p>
+                The application's scores are illustrative outputs
+                from its own formulas. They are not official
+                credit scores or guarantees of creditworthiness.
+            </p>
+
+            <a href="/dashboard" class="btn">Go to Dashboard</a>
+            <a href="/disclaimer" class="btn">Read Disclaimer</a>
+        </section>
+
+        <footer>
+            CreditFit360 · Educational project · Not a financial institution
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SME CreditScore | CreditFit360</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background: #101827;
+            padding: 28px 18px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 10px;
+        }
+
+        .logo span {
+            color: #367cff;
+        }
+
+        .menu a {
+            display: block;
+            color: #d8dde7;
+            text-decoration: none;
+            padding: 14px 12px;
+            margin-bottom: 5px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #1d283a;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #367cff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout {
+            margin-top: 25px;
+            background: #ff5b22 !important;
+            color: white !important;
+            text-align: center;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #687386;
+            margin-bottom: 28px;
+        }
+
+        /* ================= INFO ================= */
+
+        .info {
+            background: #eef4ff;
+            border-left: 5px solid #367cff;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* ================= FORM ================= */
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            max-width: 850px;
+        }
+
+        .card h2 {
+            margin-bottom: 25px;
+            font-size: 21px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            margin-bottom: 5px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #367cff;
+        }
+
+        .hint {
+            margin-top: 5px;
+            color: #7b8492;
+            font-size: 12px;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 9px;
+            background: #367cff;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #2869dc;
+        }
+
+        /* ================= RESULT ================= */
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            max-width: 850px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .result-card h2 {
+            margin-bottom: 25px;
+        }
+
+        .score-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .score-box {
+            border: 1px solid #e1e5eb;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .score-box.main-score {
+            border: 2px solid #367cff;
+        }
+
+        .score-label {
+            color: #697386;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #367cff;
+        }
+
+        .score-out {
+            color: #7b8492;
+            font-size: 14px;
+        }
+
+        .category {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f5f7fb;
+            text-align: center;
+        }
+
+        .category-title {
+            color: #697386;
+            font-size: 14px;
+        }
+
+        .category-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        /* ================= BREAKDOWN ================= */
+
+        .breakdown {
+            margin-top: 25px;
+        }
+
+        .breakdown h3 {
+            margin-bottom: 15px;
+        }
+
+        .bar-row {
+            margin-bottom: 17px;
+        }
+
+        .bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .bar {
+            height: 10px;
+            background: #e8ebf0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: #367cff;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-top: 22px;
+            padding: 18px;
+            background: #f8f9fb;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            text-align: center;
+            color: #7b8492;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 850px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .score-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        CreditFit<span>360</span>
+    </div>
+
+    <div class="menu">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/personal-credit">
+            Personal CreditFit
+        </a>
+
+        <a href="/sme-credit-score" class="active">
+            SME CreditScore
+        </a>
+
+        <a href="/loan-readiness">
+            Loan Readiness
+        </a>
+
+        <a href="/credit-result">
+            Reports
+        </a>
+
+        <!-- IMPORTANT -->
+        <a href="/what-if-simulator">
+            What-if Simulator
+        </a>
+
+        <br>
+
+        <a href="#">
+            Settings
+        </a>
+
+        <a href="#">
+            About Us
+        </a>
+
+        <a href="#">
+            Disclaimer
+        </a>
+
+        <a href="/" class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="main">
+
+    <div class="header">
+
+        <h1>SME CreditScore</h1>
+
+        <p>
+            Evaluate basic business financial health using your business information.
+        </p>
+
+    </div>
+
+
+    <div class="info">
+
+        <strong>SME CreditScore</strong><br>
+
+        Enter your business details below.
+        CreditFit360 will calculate an educational business profile score
+        based on the information entered.
+
+    </div>
+
+
+    <!-- =================================================
+         FORM
+    ================================================= -->
+
+    <div class="card">
+
+        <h2>
+            Business Information
+        </h2>
+
+
+        <div class="form-grid">
+
+
+            <!-- BUSINESS NAME -->
+
+            <div class="field full">
+
+                <label>
+                    Business Name
+                </label>
+
+                <input
+                    type="text"
+                    id="businessName"
+                    placeholder="Enter business name"
+                >
+
+            </div>
+
+
+            <!-- BUSINESS TYPE -->
+
+            <div class="field">
+
+                <label>
+                    Business Type
+                </label>
+
+                <select id="businessType">
+
+                    <option value="">
+                        Select business type
+                    </option>
+
+                    <option value="sole">
+                        Sole Proprietorship
+                    </option>
+
+                    <option value="partnership">
+                        Partnership
+                    </option>
+
+                    <option value="private">
+                        Private Limited
+                    </option>
+
+                    <option value="llp">
+                        LLP
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BUSINESS AGE -->
+
+            <div class="field">
+
+                <label>
+                    Business Age (Years)
+                </label>
+
+                <input
+                    type="number"
+                    id="businessAge"
+                    placeholder="Example: 5"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- REVENUE -->
+
+            <div class="field">
+
+                <label>
+                    Monthly Revenue (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="monthlyRevenue"
+                    placeholder="Example: 500000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- EXPENSES -->
+
+            <div class="field">
+
+                <label>
+                    Monthly Expenses (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="monthlyExpenses"
+                    placeholder="Example: 300000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- DEBT -->
+
+            <div class="field">
+
+                <label>
+                    Existing Monthly Debt (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="monthlyDebt"
+                    placeholder="Example: 50000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- SAVINGS -->
+
+            <div class="field">
+
+                <label>
+                    Business Savings (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="businessSavings"
+                    placeholder="Example: 300000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- PAYMENT HISTORY -->
+
+            <div class="field">
+
+                <label>
+                    Payment History
+                </label>
+
+                <select id="paymentHistory">
+
+                    <option value="">
+                        Select payment history
+                    </option>
+
+                    <option value="excellent">
+                        Always on time
+                    </option>
+
+                    <option value="good">
+                        Mostly on time
+                    </option>
+
+                    <option value="average">
+                        Some delays
+                    </option>
+
+                    <option value="poor">
+                        Frequent delays
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            type="button"
+            class="calculate-btn"
+            id="calculateButton"
+        >
+            Calculate SME Score
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         RESULT
+    ================================================= -->
+
+    <div id="result">
+
+        <div class="result-card">
+
+            <h2>
+                SME CreditScore Result
+            </h2>
+
+
+            <div class="score-area">
+
+
+                <div class="score-box main-score">
+
+                    <div class="score-label">
+                        Business Score
+                    </div>
+
+                    <div
+                        class="score-number"
+                        id="totalScore"
+                    >
+                        0
+                    </div>
+
+                    <div class="score-out">
+                        out of 90
+                    </div>
+
+                </div>
+
+
+                <div class="score-box">
+
+                    <div class="score-label">
+                        Business
+                    </div>
+
+                    <div
+                        style="font-size:22px;font-weight:bold;margin-top:15px;"
+                        id="businessResult"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="category">
+
+                <div class="category-title">
+                    Business Profile
+                </div>
+
+                <div
+                    class="category-value"
+                    id="category"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <!-- BREAKDOWN -->
+
+            <div class="breakdown">
+
+                <h3>
+                    Score Breakdown
+                </h3>
+
+
+                <!-- BUSINESS AGE -->
+
+                <div class="bar-row">
+
+                    <div class="bar-header">
+
+                        <span>
+                            Business Stability
+                        </span>
+
+                        <strong>
+                            <span id="ageScore">0</span>/20
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="ageBar"
+                            style="width:0%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROFITABILITY -->
+
+                <div class="bar-row">
+
+                    <div class="bar-header">
+
+                        <span>
+                            Profitability
+                        </span>
+
+                        <strong>
+                            <span id="profitScore">0</span>/25
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="profitBar"
+                            style="width:0%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div class="bar-row">
+
+                    <div class="bar-header">
+
+                        <span>
+                            Payment History
+                        </span>
+
+                        <strong>
+                            <span id="paymentScore">0</span>/25
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="paymentBar"
+                            style="width:0%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SAVINGS -->
+
+                <div class="bar-row">
+
+                    <div class="bar-header">
+
+                        <span>
+                            Business Savings
+                        </span>
+
+                        <strong>
+                            <span id="savingScore">0</span>/20
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="savingBar"
+                            style="width:0%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                class="message"
+                id="resultMessage"
+            >
+                Result will appear here.
+            </div>
+
+
+            <div class="disclaimer">
+
+                This is an educational SME financial-health
+                simulator. It is not an actual credit-bureau score
+                and does not guarantee business loan approval.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        document
+            .getElementById("calculateButton")
+            .addEventListener(
+                "click",
+                calculateSMEScore
+            );
+
+    }
+);
+
+
+/* NUMBER */
+
+function getNumber(id) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (!element) {
+        return 0;
+    }
+
+
+    const value =
+        Number(element.value);
+
+
+    return isNaN(value)
+        ? 0
+        : value;
+}
+
+
+/* CALCULATE */
+
+function calculateSMEScore() {
+
+
+    const businessName =
+        document
+            .getElementById("businessName")
+            .value
+            .trim();
+
+
+    const businessType =
+        document
+            .getElementById("businessType")
+            .value;
+
+
+    const businessAge =
+        getNumber("businessAge");
+
+
+    const revenue =
+        getNumber("monthlyRevenue");
+
+
+    const expenses =
+        getNumber("monthlyExpenses");
+
+
+    const debt =
+        getNumber("monthlyDebt");
+
+
+    const savings =
+        getNumber("businessSavings");
+
+
+    const paymentHistory =
+        document
+            .getElementById("paymentHistory")
+            .value;
+
+
+    /* ==========================================
+       BUSINESS AGE SCORE - 20
+    ========================================== */
+
+    let ageScore = 0;
+
+
+    if (businessAge >= 10) {
+
+        ageScore = 20;
+
+    }
+    else if (businessAge >= 5) {
+
+        ageScore = 17;
+
+    }
+    else if (businessAge >= 3) {
+
+        ageScore = 14;
+
+    }
+    else if (businessAge >= 1) {
+
+        ageScore = 9;
+
+    }
+    else {
+
+        ageScore = 5;
+
+    }
+
+
+    /* ==========================================
+       PROFITABILITY SCORE - 25
+    ========================================== */
+
+    let profitScore = 0;
+
+
+    const profit =
+        revenue - expenses;
+
+
+    if (revenue <= 0) {
+
+        profitScore = 5;
+
+    }
+    else {
+
+        const profitMargin =
+            (profit / revenue) * 100;
+
+
+        if (profitMargin >= 30) {
+
+            profitScore = 25;
+
+        }
+        else if (profitMargin >= 20) {
+
+            profitScore = 22;
+
+        }
+        else if (profitMargin >= 10) {
+
+            profitScore = 18;
+
+        }
+        else if (profitMargin > 0) {
+
+            profitScore = 12;
+
+        }
+        else {
+
+            profitScore = 5;
+
+        }
+
+    }
+
+
+    /* ==========================================
+       PAYMENT HISTORY - 25
+    ========================================== */
+
+    let paymentScore = 0;
+
+
+    if (paymentHistory === "excellent") {
+
+        paymentScore = 25;
+
+    }
+    else if (paymentHistory === "good") {
+
+        paymentScore = 21;
+
+    }
+    else if (paymentHistory === "average") {
+
+        paymentScore = 14;
+
+    }
+    else if (paymentHistory === "poor") {
+
+        paymentScore = 6;
+
+    }
+    else {
+
+        paymentScore = 10;
+
+    }
+
+
+    /* ==========================================
+       SAVINGS SCORE - 20
+    ========================================== */
+
+    let savingScore = 0;
+
+
+    if (savings >= expenses * 6) {
+
+        savingScore = 20;
+
+    }
+    else if (savings >= expenses * 3) {
+
+        savingScore = 16;
+
+    }
+    else if (savings >= expenses) {
+
+        savingScore = 11;
+
+    }
+    else if (savings > 0) {
+
+        savingScore = 7;
+
+    }
+    else {
+
+        savingScore = 3;
+
+    }
+
+
+    /* ==========================================
+       DEBT ADJUSTMENT
+    ========================================== */
+
+    if (revenue > 0) {
+
+        const debtRatio =
+            (debt / revenue) * 100;
+
+
+        if (debtRatio > 50) {
+
+            profitScore -= 3;
+
+        }
+        else if (debtRatio > 30) {
+
+            profitScore -= 1;
+
+        }
+
+    }
+
+
+    profitScore =
+        Math.max(
+            0,
+            Math.min(
+                25,
+                profitScore
+            )
+        );
+
+
+    /* ==========================================
+       TOTAL
+    ========================================== */
+
+    const totalScore =
+        ageScore +
+        profitScore +
+        paymentScore +
+        savingScore;
+
+
+    /* ==========================================
+       CATEGORY
+    ========================================== */
+
+    let category = "";
+
+
+    if (totalScore >= 75) {
+
+        category =
+            "Strong Business Profile";
+
+    }
+    else if (totalScore >= 60) {
+
+        category =
+            "Good Business Profile";
+
+    }
+    else if (totalScore >= 45) {
+
+        category =
+            "Moderate Business Profile";
+
+    }
+    else {
+
+        category =
+            "Needs Improvement";
+
+    }
+
+
+    /* ==========================================
+       DISPLAY RESULT
+    ========================================== */
+
+    document.getElementById(
+        "totalScore"
+    ).innerText =
+        totalScore;
+
+
+    document.getElementById(
+        "businessResult"
+    ).innerText =
+        businessName || "Your Business";
+
+
+    document.getElementById(
+        "category"
+    ).innerText =
+        category;
+
+
+    document.getElementById(
+        "ageScore"
+    ).innerText =
+        ageScore;
+
+
+    document.getElementById(
+        "profitScore"
+    ).innerText =
+        profitScore;
+
+
+    document.getElementById(
+        "paymentScore"
+    ).innerText =
+        paymentScore;
+
+
+    document.getElementById(
+        "savingScore"
+    ).innerText =
+        savingScore;
+
+
+    /* ==========================================
+       PROGRESS BARS
+    ========================================== */
+
+    document.getElementById(
+        "ageBar"
+    ).style.width =
+        (ageScore / 20 * 100) + "%";
+
+
+    document.getElementById(
+        "profitBar"
+    ).style.width =
+        (profitScore / 25 * 100) + "%";
+
+
+    document.getElementById(
+        "paymentBar"
+    ).style.width =
+        (paymentScore / 25 * 100) + "%";
+
+
+    document.getElementById(
+        "savingBar"
+    ).style.width =
+        (savingScore / 20 * 100) + "%";
+
+
+    /* ==========================================
+       MESSAGE
+    ========================================== */
+
+    const message =
+        document.getElementById(
+            "resultMessage"
+        );
+
+
+    if (totalScore >= 75) {
+
+        message.innerHTML =
+            "<strong>Result:</strong><br><br>" +
+            "The entered business profile shows " +
+            "relatively strong financial indicators " +
+            "within this educational simulator.";
+
+    }
+    else if (totalScore >= 60) {
+
+        message.innerHTML =
+            "<strong>Result:</strong><br><br>" +
+            "The entered business profile shows " +
+            "generally good indicators, with some areas " +
+            "that could be improved.";
+
+    }
+    else if (totalScore >= 45) {
+
+        message.innerHTML =
+            "<strong>Result:</strong><br><br>" +
+            "The business profile is moderate in this " +
+            "educational assessment. Review profitability, " +
+            "payment history and savings.";
+
+    }
+    else {
+
+        message.innerHTML =
+            "<strong>Result:</strong><br><br>" +
+            "The entered profile has several areas that " +
+            "could be improved within this simulator.";
+
+    }
+
+
+    /* SHOW RESULT */
+
+    document.getElementById(
+        "result"
+    ).style.display =
+        "block";
+
+
+    /* SCROLL */
+
+    document.getElementById(
+        "result"
+    ).scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+</script>
+
+</body>
+</html>

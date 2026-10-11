@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What-if Simulator | CreditFit360</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 245px;
+            padding: 25px 17px;
+            background: #101827;
+            color: white;
+            overflow-y: auto;
+        }
+
+        .logo {
+            margin: 0 10px 30px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #4385ff;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 12px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            color: #d8deea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background: #202c40;
+        }
+
+        .menu a.active {
+            background: #367cff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .main {
+            margin-left: 245px;
+            padding: 30px;
+            max-width: 1500px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .header p {
+            color: #687386;
+            line-height: 1.6;
+        }
+
+        .notice {
+            margin-bottom: 24px;
+            padding: 16px;
+            border-left: 4px solid #367cff;
+            border-radius: 8px;
+            background: #eaf2ff;
+            line-height: 1.6;
+        }
+
+        .card {
+            margin-bottom: 24px;
+            padding: 25px;
+            border: 1px solid #e8edf4;
+            border-radius: 13px;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0,0,0,.04);
+        }
+
+        .card h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .subtext {
+            margin-bottom: 22px;
+            color: #758094;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7deea;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .field input:focus {
+            border-color: #367cff;
+            box-shadow: 0 0 0 3px rgba(54,124,255,.1);
+        }
+
+        .field small {
+            display: block;
+            margin-top: 6px;
+            color: #758094;
+            line-height: 1.5;
+        }
+
+        .range-row {
+            margin-top: 12px;
+        }
+
+        .range-row input {
+            width: 100%;
+            accent-color: #367cff;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            color: #758094;
+            font-size: 12px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 13px 19px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #367cff;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #2869dc;
+        }
+
+        .secondary {
+            border: 1px solid #d7deea;
+            background: white;
+            color: #172033;
+        }
+
+        .results {
+            display: none;
+            scroll-margin-top: 20px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric {
+            padding: 20px;
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .metric p {
+            margin-bottom: 10px;
+            color: #687386;
+            font-size: 13px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 27px;
+            overflow-wrap: anywhere;
+        }
+
+        .metric small {
+            display: block;
+            margin-top: 8px;
+            color: #758094;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .score-box {
+            padding: 24px;
+            border: 1px solid #e4eaf2;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .score-box h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #367cff;
+        }
+
+        .outof {
+            color: #758094;
+            font-size: 13px;
+        }
+
+        .category {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 8px 12px;
+            border-radius: 7px;
+            background: #edf3ff;
+            color: #245dcc;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .difference {
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 9px;
+            background: #f4f7fb;
+            line-height: 1.7;
+        }
+
+        .breakdown-row {
+            margin-top: 21px;
+        }
+
+        .breakdown-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .track {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #e8edf4;
+        }
+
+        .fill {
+            width: 0;
+            height: 100%;
+            border-radius: 20px;
+            background: #367cff;
+            transition: width .4s;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #e8edf4;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .comparison-table th {
+            background: #f7f9fc;
+        }
+
+        .suggestions {
+            padding-left: 22px;
+            line-height: 1.8;
+        }
+
+        .suggestions li {
+            margin-bottom: 8px;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            color: #758094;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .error {
+            display: none;
+            margin-top: 16px;
+            padding: 13px;
+            border-radius: 8px;
+            background: #fff0f0;
+            color: #b42318;
+            line-height: 1.5;
+        }
+
+        @media(max-width: 1050px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                padding: 20px;
+            }
+
+            .metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 16px;
+            }
+
+            .grid,
+            .metrics,
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 5px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="logo">CreditFit<span>360</span></div>
+
+    <nav class="menu">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/personal-credit">Personal CreditFit</a>
+        <a href="/sme-credit-score">SME CreditScore</a>
+        <a href="/loan-readiness">Loan Readiness</a>
+        <a href="/credit-result">Reports</a>
+        <a href="/what-if-simulator" class="active">What-if Simulator</a>
+        <a href="#">Settings</a>
+        <a href="#">About Us</a>
+        <a href="#">Disclaimer</a>
+        <a href="/" style="margin-top:20px;background:#ff572b;color:white;text-align:center">Logout</a>
+    </nav>
+</aside>
+
+<main class="main">
+
+    <header class="header">
+        <h1>What-if Simulator</h1>
+        <p>Change your financial figures and compare an illustrative score before and after those changes.</p>
+    </header>
+
+    <div class="notice">
+        <strong>How it works:</strong>
+        Enter your current financial details, adjust the scenario values, then click
+        <strong>Run Simulation</strong> to compare both profiles.
+        This is a demo model, not a real credit-bureau score.
+    </div>
+
+    <section class="card">
+        <h2>1. Current Financial Profile</h2>
+        <p class="subtext">Enter your current figures. The simulator uses these as the baseline.</p>
+
+        <div class="grid">
+            <div class="field">
+                <label for="currentIncome">Monthly Income (₹)</label>
+                <input id="currentIncome" type="number" min="1" step="any" value="50000">
+            </div>
+
+            <div class="field">
+                <label for="currentExpenses">Monthly Expenses (₹)</label>
+                <input id="currentExpenses" type="number" min="0" step="any" value="20000">
+            </div>
+
+            <div class="field">
+                <label for="currentEMI">Existing Monthly EMI (₹)</label>
+                <input id="currentEMI" type="number" min="0" step="any" value="5000">
+            </div>
+
+            <div class="field">
+                <label for="currentSavings">Current Savings (₹)</label>
+                <input id="currentSavings" type="number" min="0" step="any" value="100000">
+            </div>
+
+            <div class="field">
+                <label for="currentCredit">Credit Score (300–900)</label>
+                <input id="currentCredit" type="number" min="300" max="900" step="1" value="750">
+            </div>
+
+            <div class="field">
+                <label for="essentialExpenses">Essential Monthly Expenses (₹)</label>
+                <input id="essentialExpenses" type="number" min="1" step="any" value="15000">
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>2. Change Your Scenario</h2>
+        <p class="subtext">Try a different income, spending, EMI, savings or credit-score value.</p>
+
+        <div class="grid">
+            <div class="field">
+                <label for="scenarioIncome">Scenario Monthly Income (₹)</label>
+                <input id="scenarioIncome" type="number" min="1" step="any" value="60000">
+                <div class="range-row">
+                    <input id="incomeRange" type="range" min="1" max="200000" value="60000">
+                    <div class="range-labels"><span>₹1</span><span>₹2,00,000</span></div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="scenarioExpenses">Scenario Monthly Expenses (₹)</label>
+                <input id="scenarioExpenses" type="number" min="0" step="any" value="18000">
+                <div class="range-row">
+                    <input id="expensesRange" type="range" min="0" max="100000" value="18000">
+                    <div class="range-labels"><span>₹0</span><span>₹1,00,000</span></div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="scenarioEMI">Scenario Existing EMI (₹)</label>
+                <input id="scenarioEMI" type="number" min="0" step="any" value="4000">
+                <div class="range-row">
+                    <input id="emiRange" type="range" min="0" max="100000" value="4000">
+                    <div class="range-labels"><span>₹0</span><span>₹1,00,000</span></div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="scenarioSavings">Scenario Savings (₹)</label>
+                <input id="scenarioSavings" type="number" min="0" step="any" value="150000">
+                <div class="range-row">
+                    <input id="savingsRange" type="range" min="0" max="1000000" value="150000">
+                    <div class="range-labels"><span>₹0</span><span>₹10,00,000</span></div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="scenarioCredit">Scenario Credit Score (300–900)</label>
+                <input id="scenarioCredit" type="number" min="300" max="900" step="1" value="780">
+                <div class="range-row">
+                    <input id="creditRange" type="range" min="300" max="900" value="780">
+                    <div class="range-labels"><span>300</span><span>900</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="primary" id="runButton" type="button">Run Simulation</button>
+            <button class="secondary" id="resetButton" type="button">Reset Example</button>
+        </div>
+
+        <div id="errorMessage" class="error" role="alert"></div>
+    </section>
+
+    <section id="results" class="results">
+
+        <h2 style="margin-bottom:20px">Simulation Results</h2>
+
+        <div class="metrics">
+            <div class="metric">
+                <p>Current Monthly Balance</p>
+                <strong id="currentBalance">₹0</strong>
+                <small>Income minus expenses and EMI</small>
+            </div>
+
+            <div class="metric">
+                <p>Scenario Monthly Balance</p>
+                <strong id="scenarioBalance">₹0</strong>
+                <small>Income minus expenses and EMI</small>
+            </div>
+
+            <div class="metric">
+                <p>Score Difference</p>
+                <strong id="scoreDifference">0</strong>
+                <small>Scenario score minus current score</small>
+            </div>
+
+            <div class="metric">
+                <p>Current EMI Burden</p>
+                <strong id="currentBurden">0%</strong>
+                <small>Existing EMI as a share of income</small>
+            </div>
+
+            <div class="metric">
+                <p>Scenario EMI Burden</p>
+                <strong id="scenarioBurden">0%</strong>
+                <small>Scenario EMI as a share of income</small>
+            </div>
+
+            <div class="metric">
+                <p>Scenario Savings Coverage</p>
+                <strong id="scenarioCoverage">0 months</strong>
+                <small>Savings divided by essential expenses</small>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Before vs After</h2>
+            <p class="subtext">Scores are calculated using the same illustrative model.</p>
+
+            <div class="comparison">
+                <div class="score-box">
+                    <h3>Current Profile</h3>
+                    <div id="currentScore" class="score">0</div>
+                    <div class="outof">out of 100</div>
+                    <div id="currentCategory" class="category">-</div>
+                </div>
+
+                <div class="score-box">
+                    <h3>Scenario Profile</h3>
+                    <div id="scenarioScore" class="score">0</div>
+                    <div class="outof">out of 100</div>
+                    <div id="scenarioCategory" class="category">-</div>
+                </div>
+            </div>
+
+            <div id="differenceMessage" class="difference"></div>
+        </div>
+
+        <div class="card">
+            <h2>Score Component Comparison</h2>
+
+            <div id="breakdown"></div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Current</th>
+                        <th>Scenario</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonTable"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Suggestions</h2>
+            <ul id="suggestions" class="suggestions"></ul>
+        </div>
+
+        <p class="disclaimer">
+            Disclaimer: This feature is an educational demonstration. Its score is not a CIBIL score,
+            lender score or loan approval prediction. Actual lending decisions depend on lender rules,
+            verified information and other factors. Do not use simulated results as a guarantee of credit eligibility.
+        </p>
+    </section>
+
+</main>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const defaultValues = {
+    currentIncome: 50000,
+    currentExpenses: 20000,
+    currentEMI: 5000,
+    currentSavings: 100000,
+    currentCredit: 750,
+    essentialExpenses: 15000,
+    scenarioIncome: 60000,
+    scenarioExpenses: 18000,
+    scenarioEMI: 4000,
+    scenarioSavings: 150000,
+    scenarioCredit: 780
+};
+
+const pairs = [
+    ["scenarioIncome", "incomeRange"],
+    ["scenarioExpenses", "expensesRange"],
+    ["scenarioEMI", "emiRange"],
+    ["scenarioSavings", "savingsRange"],
+    ["scenarioCredit", "creditRange"]
+];
+
+function currency(value) {
+    return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0
+    }).format(value);
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+function category(score) {
+    if (score >= 80) return "Excellent Demo Profile";
+    if (score >= 70) return "Good Demo Profile";
+    if (score >= 50) return "Moderate Demo Profile";
+    return "Needs Improvement";
+}
+
+function numberValue(id) {
+    return Number($(id).value);
+}
+
+function getProfile(prefix) {
+    if (prefix === "current") {
+        return {
+            income: numberValue("currentIncome"),
+            expenses: numberValue("currentExpenses"),
+            emi: numberValue("currentEMI"),
+            savings: numberValue("currentSavings"),
+            credit: numberValue("currentCredit"),
+            essential: numberValue("essentialExpenses")
+        };
+    }
+
+    return {
+        income: numberValue("scenarioIncome"),
+        expenses: numberValue("scenarioExpenses"),
+        emi: numberValue("scenarioEMI"),
+        savings: numberValue("scenarioSavings"),
+        credit: numberValue("scenarioCredit"),
+        essential: numberValue("essentialExpenses")
+    };
+}
+
+function calculateProfile(p) {
+    const balance = p.income - p.expenses - p.emi;
+    const burden = (p.emi / p.income) * 100;
+    const coverage = p.savings / p.essential;
+
+    let creditPoints;
+    if (p.credit >= 800) creditPoints = 25;
+    else if (p.credit >= 750) creditPoints = 23;
+    else if (p.credit >= 700) creditPoints = 19;
+    else if (p.credit >= 650) creditPoints = 14;
+    else if (p.credit >= 600) creditPoints = 9;
+    else creditPoints = 4;
+
+    let emiPoints;
+    if (burden <= 15) emiPoints = 30;
+    else if (burden <= 25) emiPoints = 26;
+    else if (burden <= 35) emiPoints = 20;
+    else if (burden <= 45) emiPoints = 12;
+    else emiPoints = 4;
+
+    const balanceRatio = balance / p.income;
+
+    let cashPoints;
+    if (balanceRatio >= 0.30) cashPoints = 20;
+    else if (balanceRatio >= 0.20) cashPoints = 17;
+    else if (balanceRatio >= 0.10) cashPoints = 13;
+    else if (balanceRatio > 0) cashPoints = 8;
+    else cashPoints = 2;
+
+    let savingsPoints;
+    if (coverage >= 6) savingsPoints = 15;
+    else if (coverage >= 3) savingsPoints = 12;
+    else if (coverage >= 1) savingsPoints = 8;
+    else savingsPoints = 3;
+
+    const total = clamp(
+        creditPoints + emiPoints + cashPoints + savingsPoints + 10,
+        0,
+        100
+    );
+
+    return {
+        balance,
+        burden,
+        coverage,
+        creditPoints,
+        emiPoints,
+        cashPoints,
+        savingsPoints,
+        total,
+        category: category(total)
+    };
+}
+
+function validateInputs() {
+    const values = [
+        "currentIncome", "currentExpenses", "currentEMI",
+        "currentSavings", "currentCredit", "essentialExpenses",
+        "scenarioIncome", "scenarioExpenses", "scenarioEMI",
+        "scenarioSavings", "scenarioCredit"
+    ];
+
+    for (const id of values) {
+        const element = $(id);
+        const value = Number(element.value);
+
+        if (element.value.trim() === "" || !Number.isFinite(value)) {
+            return "Please fill every field with a valid number.";
+        }
+
+        if (value < 0) {
+            return "Financial values cannot be negative.";
+        }
+    }
+
+    if (
+        numberValue("currentIncome") <= 0 ||
+        numberValue("scenarioIncome") <= 0 ||
+        numberValue("essentialExpenses") <= 0
+    ) {
+        return "Income and essential expenses must be greater than zero.";
+    }
+
+    for (const id of ["currentCredit", "scenarioCredit"]) {
+        const score = numberValue(id);
+        if (!Number.isInteger(score) || score < 300 || score > 900) {
+            return "Credit scores must be whole numbers between 300 and 900.";
+        }
+    }
+
+    return null;
+}
+
+function showBreakdown(name, current, scenario, maximum) {
+    const difference = scenario - current;
+    const percentage = points => (points / maximum) * 100;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "breakdown-row";
+
+    const heading = document.createElement("div");
+    heading.className = "breakdown-head";
+
+    const title = document.createElement("span");
+    title.textContent = name;
+
+    const values = document.createElement("strong");
+    values.textContent =
+        current + "/" + maximum + " → " +
+        scenario + "/" + maximum +
+        " (" + (difference > 0 ? "+" : "") + difference + ")";
+
+    heading.append(title, values);
+
+    const track = document.createElement("div");
+    track.className = "track";
+
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    fill.style.width = percentage(current) + "%";
+
+    track.appendChild(fill);
+
+    const scenarioTrack = document.createElement("div");
+    scenarioTrack.className = "track";
+    scenarioTrack.style.marginTop = "7px";
+
+    const scenarioFill = document.createElement("div");
+    scenarioFill.className = "fill";
+    scenarioFill.style.width = percentage(scenario) + "%";
+    scenarioFill.style.background = "#20a36a";
+
+    scenarioTrack.appendChild(scenarioFill);
+    wrapper.append(heading, track, scenarioTrack);
+    $("breakdown").appendChild(wrapper);
+}
+
+function addTableRow(label, current, scenario) {
+    const row = document.createElement("tr");
+
+    [label, current, scenario].forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.appendChild(cell);
+    });
+
+    $("comparisonTable").appendChild(row);
+}
+
+function addSuggestion(message) {
+    const item = document.createElement("li");
+    item.textContent = message;
+    $("suggestions").appendChild(item);
+}
+
+function runSimulation() {
+    $("errorMessage").style.display = "none";
+
+    const error = validateInputs();
+
+    if (error) {
+        $("errorMessage").textContent = error;
+        $("errorMessage").style.display = "block";
+        return;
+    }
+
+    const current = calculateProfile(getProfile("current"));
+    const scenario = calculateProfile(getProfile("scenario"));
+    const difference = scenario.total - current.total;
+
+    $("currentScore").textContent = current.total;
+    $("scenarioScore").textContent = scenario.total;
+    $("currentCategory").textContent = current.category;
+    $("scenarioCategory").textContent = scenario.category;
+
+    $("currentBalance").textContent = currency(current.balance);
+    $("scenarioBalance").textContent = currency(scenario.balance);
+    $("scoreDifference").textContent =
+        (difference > 0 ? "+" : "") + difference + " points";
+
+    $("currentBurden").textContent = current.burden.toFixed(1) + "%";
+    $("scenarioBurden").textContent = scenario.burden.toFixed(1) + "%";
+    $("scenarioCoverage").textContent =
+        scenario.coverage.toFixed(1) + " months";
+
+    let message;
+
+    if (difference > 0) {
+        message = "The scenario score is " + difference +
+            " point(s) higher than the current score in this demo model.";
+    } else if (difference < 0) {
+        message = "The scenario score is " + Math.abs(difference) +
+            " point(s) lower than the current score in this demo model.";
+    } else {
+        message = "The scenario and current scores are equal in this demo model.";
+    }
+
+    if (scenario.balance < 0) {
+        message += " The scenario has a negative monthly balance; review expenses and obligations.";
+    }
+
+    $("differenceMessage").textContent = message;
+
+    $("breakdown").replaceChildren();
+    showBreakdown("Credit Profile", current.creditPoints, scenario.creditPoints, 25);
+    showBreakdown("EMI Affordability", current.emiPoints, scenario.emiPoints, 30);
+    showBreakdown("Monthly Cash Flow", current.cashPoints, scenario.cashPoints, 20);
+    showBreakdown("Emergency Savings", current.savingsPoints, scenario.savingsPoints, 15);
+
+    $("comparisonTable").replaceChildren();
+
+    addTableRow("Monthly Income", currency(numberValue("currentIncome")), currency(numberValue("scenarioIncome")));
+    addTableRow("Monthly Expenses", currency(numberValue("currentExpenses")), currency(numberValue("scenarioExpenses")));
+    addTableRow("Existing EMI", currency(numberValue("currentEMI")), currency(numberValue("scenarioEMI")));
+    addTableRow("Savings", currency(numberValue("currentSavings")), currency(numberValue("scenarioSavings")));
+    addTableRow("Credit Score", numberValue("currentCredit"), numberValue("scenarioCredit"));
+    addTableRow("Monthly Balance", currency(current.balance), currency(scenario.balance));
+    addTableRow("EMI Burden", current.burden.toFixed(1) + "%", scenario.burden.toFixed(1) + "%");
+
+    $("suggestions").replaceChildren();
+
+    if (scenario.balance < 0) {
+        addSuggestion("Scenario expenses and EMI exceed monthly income. Review the budget before taking on more obligations.");
+    } else if (scenario.balance < scenario.income * 0.1) {
+        addSuggestion("The scenario leaves a relatively small monthly balance. Allow for unexpected expenses.");
+    }
+
+    if (scenario.burden > 35) {
+        addSuggestion("Scenario EMI is a large share of income. Review the affordability of monthly repayments.");
+    }
+
+    if (scenario.coverage < 3) {
+        addSuggestion("Consider whether an emergency fund covering several months of essential expenses is feasible.");
+    }
+
+    if (scenario.credit < current.credit) {
+        addSuggestion("The scenario assumes a lower credit score. Keep credit-report information accurate and review payment history.");
+    }
+
+    if ($("suggestions").children.length === 0) {
+        addSuggestion("No major warning was triggered by this simplified model. Real-life affordability still depends on your full budget and loan terms.");
+    }
+
+    $("results").style.display = "block";
+    $("results").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+pairs.forEach(([numberId, rangeId]) => {
+    $(rangeId).addEventListener("input", () => {
+        $(numberId).value = $(rangeId).value;
+    });
+
+    $(numberId).addEventListener("input", () => {
+        const value = Number($(numberId).value);
+        const min = Number($(rangeId).min);
+        const max = Number($(rangeId).max);
+
+        if (Number.isFinite(value)) {
+            $(rangeId).value = clamp(value, min, max);
+        }
+    });
+});
+
+$("runButton").addEventListener("click", runSimulation);
+
+$("resetButton").addEventListener("click", () => {
+    Object.entries(defaultValues).forEach(([id, value]) => {
+        $(id).value = value;
+    });
+
+    pairs.forEach(([numberId, rangeId]) => {
+        $(rangeId).value = $(numberId).value;
+    });
+
+    $("results").style.display = "none";
+    $("errorMessage").style.display = "none";
+});
+
+</script>
+
+</body>
+</html>

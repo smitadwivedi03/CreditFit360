@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditFit 360 - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <div class="logo-icon">✓</div>
+            <h1>CreditFit <span>360</span></h1>
+        </div>
+
+        <p class="subtitle">
+            Understand. Improve. Empower.
+        </p>
+
+        <h2>Welcome Back</h2>
+        <p class="login-text">Login to access your financial dashboard</p>
+
+        <form action="/dashboard">
+
+            <label>Email Address</label>
+            <input type="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" required>
+
+            <div class="login-options">
+                <label class="remember">
+                    <input type="checkbox">
+                    Remember me
+                </label>
+
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit">Login →</button>
+
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <p class="signup">
+            Don't have an account?
+            <a href="#">Create Account</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
