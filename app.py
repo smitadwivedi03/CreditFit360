@@ -62,12 +62,44 @@ def credit_result():
 
 
 # =========================================================
-# WHAT-IF SIMULATOR
+# WHAT-IF SIMULATOR (FINTWIN)
 # =========================================================
 
 @app.route("/what-if-simulator")
 def what_if_simulator():
-    return render_template("what_if_simulator.html")
+    result = session.get("creditFitResult")
+    return render_template("what_if_simulator.html", result=result)
+
+
+# =========================================================
+# MONEYMAP (CASH FLOW & BUDGET TRACKING)
+# =========================================================
+
+@app.route("/moneymap")
+def moneymap():
+    result = session.get("creditFitResult")
+    return render_template("moneymap.html", result=result)
+
+
+# =========================================================
+# DECISION LAB (A/B SCENARIO COMPARISON)
+# =========================================================
+
+@app.route("/decision-lab")
+def decision_lab():
+    result = session.get("creditFitResult")
+    return render_template("decision_lab.html", result=result)
+
+
+# =========================================================
+# WEALTH PATH (GOAL PLANNING & MILESTONES)
+# =========================================================
+
+@app.route("/wealth-path")
+def wealth_path():
+    result = session.get("creditFitResult")
+    return render_template("wealth_path.html", result=result)
+
 
 
 # =========================================================
@@ -540,6 +572,26 @@ def calculate_score():
             "strengths": strengths,
             "improvements": improvements,
 
+            "breakdown": {
+                "creditBehaviour": credit_behaviour,
+                "debtManagement": debt_management,
+                "creditUtilisation": utilisation_score,
+                "savingsEmergency": savings_score,
+                "financialStability": stability_score
+            },
+
+            "metrics": {
+                "emiBurden": round(emi_burden, 2),
+                "creditUtilisation": round(credit_utilisation, 2),
+                "emergencyMonths": round(emergency_months, 2),
+                "monthlyBalance": round(monthly_balance, 2)
+            },
+
+            "insights": {
+                "strengths": strengths,
+                "improvements": improvements
+            },
+
             "disclaimer": (
                 "This is an educational estimate, not an official "
                 "credit bureau score or loan approval decision."
@@ -599,7 +651,7 @@ def test():
 
 if __name__ == "__main__":
     app.run(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=5000,
         debug=True
     )

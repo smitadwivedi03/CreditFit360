@@ -3,116 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
 
     <title>SME CreditScore | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background: #f5f7fb;
-            color: #172033;
+            background: #07080d;
+            color: #f8fafc;
         }
 
         /* ================= SIDEBAR ================= */
 
         .sidebar {
+            width: 260px;
             position: fixed;
-            left: 0;
             top: 0;
+            left: 0;
             bottom: 0;
-            width: 250px;
-            background: #101827;
-            padding: 28px 18px;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             color: white;
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            margin-bottom: 35px;
-            padding-left: 10px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
         }
 
-        .logo span {
-            color: #367cff;
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: #64748b;
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
         }
 
         .menu a {
-            display: block;
-            color: #d8dde7;
-            text-decoration: none;
-            padding: 14px 12px;
-            margin-bottom: 5px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
         }
 
         .menu a:hover {
-            background: #1d283a;
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .menu a.active {
-            background: #367cff;
-            color: white;
-            font-weight: bold;
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
         }
 
-        .logout {
-            margin-top: 25px;
-            background: #ff5b22 !important;
-            color: white !important;
-            text-align: center;
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: #f8fafc;
         }
 
         /* ================= MAIN ================= */
 
         .main {
-            margin-left: 250px;
-            padding: 35px;
+            margin-left: 260px;
+            padding: 35px 40px;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            color: #ffffff;
         }
 
         .header p {
-            color: #687386;
-            margin-bottom: 28px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            font-size: 14px;
         }
 
         /* ================= INFO ================= */
 
         .info {
-            background: #eef4ff;
-            border-left: 5px solid #367cff;
-            padding: 18px;
-            border-radius: 10px;
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid #06b6d4;
+            padding: 16px 20px;
+            border-radius: 12px;
             margin-bottom: 25px;
             line-height: 1.6;
+            color: #cffafe;
+            font-size: 13px;
         }
 
         /* ================= FORM ================= */
 
         .card {
-            background: white;
+            background: #0f121a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             max-width: 850px;
         }
 
         .card h2 {
-            margin-bottom: 25px;
-            font-size: 21px;
+            margin-bottom: 22px;
+            font-size: 20px;
+            color: #ffffff;
         }
 
         .form-grid {
@@ -131,30 +229,40 @@
 
         .field label {
             display: block;
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 13px;
             margin-bottom: 8px;
+            color: #cbd5e1;
         }
 
         .field input,
         .field select {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #d8dee8;
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 13px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            font-size: 14px;
             outline: none;
-            background: white;
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .field select option {
+            background: #0f121a;
+            color: #ffffff;
         }
 
         .field input:focus,
         .field select:focus {
-            border-color: #367cff;
+            border-color: #06b6d4;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
         }
 
         .hint {
             margin-top: 5px;
-            color: #7b8492;
+            color: #64748b;
             font-size: 12px;
         }
 
@@ -162,19 +270,22 @@
 
         .calculate-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             margin-top: 25px;
             border: none;
-            border-radius: 9px;
-            background: #367cff;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
             color: white;
-            font-size: 17px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 4px 18px rgba(6, 182, 212, 0.35);
+            transition: all 0.2s;
         }
 
         .calculate-btn:hover {
-            background: #2869dc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.55);
         }
 
         /* ================= RESULT ================= */
@@ -344,60 +455,98 @@
      SIDEBAR
 ===================================================== -->
 
-<div class="sidebar">
+<aside class="sidebar">
 
-    <div class="logo">
-        CreditFit<span>360</span>
+    <div class="brand">
+        <div class="brand-icon">✓</div>
+        <div>CreditFit<span>360</span></div>
+    </div>
+    <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+    <div class="menu-label">Main Suite</div>
+    <ul class="menu">
+        <li>
+            <a href="/dashboard">
+                <span>📈</span> Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="/moneymap">
+                <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+            </a>
+        </li>
+        <li>
+            <a href="/decision-lab">
+                <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+            </a>
+        </li>
+        <li>
+            <a href="/wealth-path">
+                <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+            </a>
+        </li>
+        <li>
+            <a href="/what-if-simulator">
+                <span>🔮</span> What-If (FinTwin)
+            </a>
+        </li>
+    </ul>
+
+    <div class="menu-label">Assessment Core</div>
+    <ul class="menu">
+        <li>
+            <a href="/personal-credit">
+                <span>👤</span> Personal CreditFit
+            </a>
+        </li>
+        <li>
+            <a href="/sme-credit-score" class="active">
+                <span>🏢</span> SME Credit Score
+            </a>
+        </li>
+        <li>
+            <a href="/loan-readiness">
+                <span>💰</span> Loan Readiness
+            </a>
+        </li>
+        <li>
+            <a href="/credit-result">
+                <span>📊</span> Reports & Results
+            </a>
+        </li>
+    </ul>
+
+    <div class="menu-label">System</div>
+    <ul class="menu">
+        <li>
+            <a href="/settings">
+                <span>⚙️</span> Settings
+            </a>
+        </li>
+        <li>
+            <a href="/about">
+                <span>ℹ️</span> About Platform
+            </a>
+        </li>
+        <li>
+            <a href="/disclaimer">
+                <span>📋</span> Disclaimer
+            </a>
+        </li>
+        <li>
+            <a href="/logout" style="color: #f87171;">
+                <span>🚪</span> Sign Out
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-footer">
+        <strong>CreditFit360</strong><br>
+        Powered by FINVERSE Core Engine<br>
+        Version 2.5 (Neon Bento Edition)
     </div>
 
-    <div class="menu">
-
-        <a href="/dashboard">
-            Dashboard
-        </a>
-
-        <a href="/personal-credit">
-            Personal CreditFit
-        </a>
-
-        <a href="/sme-credit-score" class="active">
-            SME CreditScore
-        </a>
-
-        <a href="/loan-readiness">
-            Loan Readiness
-        </a>
-
-        <a href="/credit-result">
-            Reports
-        </a>
-
-        <!-- IMPORTANT -->
-        <a href="/what-if-simulator">
-            What-if Simulator
-        </a>
-
-        <br>
-
-        <a href="#">
-            Settings
-        </a>
-
-        <a href="#">
-            About Us
-        </a>
-
-        <a href="#">
-            Disclaimer
-        </a>
-
-        <a href="/" class="logout">
-            Logout
-        </a>
-
-    </div>
-
-</div>
+</aside>
 
 
 <!-- =====================================================

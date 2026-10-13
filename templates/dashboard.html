@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#101d36">
-    <title>CreditFit360 | Dashboard</title>
+    <meta name="theme-color" content="#07080d">
+    <title>CreditFit360 | Dashboard & Financial Intelligence</title>
+
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -14,18 +19,25 @@
         }
 
         :root {
-            --primary: #4169f5;
-            --primary-dark: #2449d8;
-            --background: #f3f6fd;
-            --white: #ffffff;
-            --text: #15213b;
-            --muted: #71809b;
-            --border: #e5eaf4;
-            --green: #13a878;
-            --orange: #e99a27;
-            --red: #e34e65;
-            --purple: #8b5cf6;
-            --navy: #101d36;
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card-inner: #101217;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            /* Reference Bento Neon Palette */
+            --neon-magenta: #f43f5e;
+            --neon-magenta-glow: rgba(244, 63, 94, 0.4);
+            --neon-teal: #06b6d4;
+            --neon-teal-glow: rgba(6, 182, 212, 0.4);
+            --neon-lime: #84cc16;
+            --neon-lime-glow: rgba(132, 204, 22, 0.4);
+            --neon-blue: #3b82f6;
+            --neon-blue-glow: rgba(59, 130, 246, 0.4);
+            --neon-emerald: #10b981;
         }
 
         html {
@@ -33,18 +45,12 @@
         }
 
         body {
-            font-family: Inter, -apple-system, BlinkMacSystemFont,
-                "Segoe UI", Arial, sans-serif;
-            background:
-                radial-gradient(ellipse at 80% 0%, #e9efff 0, transparent 35%),
-                var(--background);
-            color: var(--text);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-        }
-
-        button, a {
-            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
         a {
@@ -57,914 +63,1193 @@
         }
 
         .layout {
+            display: flex;
             min-height: 100vh;
         }
 
-        /* SIDEBAR */
-
+        /* ================= SIDEBAR ================= */
         .sidebar {
             width: 260px;
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
-            background:
-                radial-gradient(ellipse at 10% 0%, rgba(65,105,245,.20), transparent 40%),
-                linear-gradient(180deg, #111e39, #0c172c);
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
             color: white;
-            padding: 25px 15px;
+            padding: 28px 18px;
             overflow-y: auto;
             z-index: 1000;
-            box-shadow: 8px 0 30px rgba(14, 30, 60, .07);
+            display: flex;
+            flex-direction: column;
         }
 
         .brand {
-            font-size: 25px;
-            font-weight: 850;
-            letter-spacing: -1px;
-            padding: 8px 12px 2px;
-            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
         }
 
         .brand span {
-            color: #6c91ff;
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .brand-subtitle {
             font-size: 10px;
-            letter-spacing: .7px;
-            color: #a7b6d2;
-            padding: 0 12px;
-            margin-bottom: 31px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         .menu-label {
-            color: #8498bb;
-            font-size: 10px;
+            color: var(--text-muted);
+            font-size: 10.5px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.8px;
-            padding: 0 12px;
-            margin-bottom: 12px;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
         }
 
         .menu {
             list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
         }
 
         .menu a {
             display: flex;
             align-items: center;
             gap: 11px;
-            padding: 12px;
-            border: 1px solid transparent;
-            border-radius: 11px;
-            color: #c6d1e5;
-            font-size: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
             font-weight: 550;
-            transition: background .22s, color .22s, transform .22s;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
         }
 
         .menu a span {
-            width: 22px;
-            text-align: center;
             font-size: 16px;
-            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
         }
 
         .menu a:hover {
-            background: rgba(102, 133, 205, .14);
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
             transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .menu a.active {
-            background: linear-gradient(115deg, #456df8, #3453d8);
-            color: white;
-            box-shadow: 0 7px 20px rgba(53, 90, 230, .24);
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
         .sidebar-footer {
-            border-top: 1px solid rgba(255,255,255,.11);
-            margin-top: 25px;
-            padding: 18px 12px;
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
             font-size: 11px;
-            color: #93a6c7;
-            line-height: 1.9;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
         .sidebar-footer strong {
-            color: #e4ebfa;
+            color: var(--text-primary);
         }
 
-        /* MAIN AREA */
-
+        /* ================= MAIN CONTENT ================= */
         .main {
             margin-left: 260px;
-            padding: 28px;
-            min-width: 0;
-            max-width: 1800px;
+            width: calc(100% - 260px);
+            padding: 32px 40px;
+            min-height: 100vh;
         }
 
+        /* Topbar */
         .topbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         .topbar h1 {
             font-size: 28px;
-            font-weight: 850;
-            letter-spacing: -.9px;
-            margin-bottom: 5px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
         }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.7;
+        .topbar .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 2px;
         }
 
         .topbar-actions {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 12px;
         }
 
         .date-pill {
-            padding: 10px 14px;
-            background: rgba(255,255,255,.9);
-            border: 1px solid var(--border);
-            border-radius: 11px;
-            font-size: 11px;
-            color: var(--muted);
-            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            padding: 9px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn {
+        .date-pill::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .btn-calc {
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-size: 13.5px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 18px rgba(244, 63, 94, 0.35);
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 7px;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 16px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 750;
-            transition: transform .2s, box-shadow .2s, background .2s;
+            gap: 8px;
         }
 
-        .btn-primary {
-            background: linear-gradient(120deg, #4b72ff, #3155e8);
-            color: white;
-            box-shadow: 0 6px 16px rgba(53, 91, 235, .20);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(120deg, #3158ee, #2345ce);
+        .btn-calc:hover {
             transform: translateY(-2px);
-            box-shadow: 0 9px 20px rgba(53, 91, 235, .28);
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.5);
         }
 
-        .btn-light {
-            background: white;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-light:hover {
-            border-color: #b9c9fa;
-        }
-
-        /* WELCOME BANNER */
-
-        .welcome {
-            position: relative;
-            overflow: hidden;
-            background:
-                radial-gradient(ellipse at 80% 110%, rgba(255,181,113,.35), transparent 35%),
-                radial-gradient(ellipse at 72% 0%, rgba(107,129,255,.38), transparent 40%),
-                linear-gradient(115deg, #14264e, #253f91 65%, #4569df);
-            color: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            min-height: 190px;
-            box-shadow: 0 12px 30px rgba(32, 58, 120, .15);
-        }
-
-        .welcome::after {
-            content: "↗";
-            position: absolute;
-            right: 15%;
-            top: -25px;
-            font-size: 175px;
-            line-height: 1;
-            font-weight: 200;
-            color: rgba(255,255,255,.08);
-            transform: rotate(-8deg);
-            pointer-events: none;
-        }
-
-        .welcome > div,
-        .welcome > a {
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome h2 {
-            font-size: 27px;
-            font-weight: 850;
-            letter-spacing: -.7px;
-            margin-bottom: 10px;
-        }
-
-        .welcome p {
-            color: #d9e4ff;
-            font-size: 12px;
-            line-height: 1.9;
-            max-width: 570px;
-        }
-
-        .welcome .btn {
-            background: white;
-            color: #2548c6;
-            white-space: nowrap;
-            box-shadow: 0 6px 18px rgba(0,0,0,.12);
-        }
-
-        .welcome .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 9px 22px rgba(0,0,0,.18);
-        }
-
-        /* EMPTY STATE */
-
+        /* Banner Notification / Empty State */
         .empty-state {
-            background: white;
-            border: 1px dashed #b9c9e5;
-            border-radius: 16px;
-            padding: 28px 20px;
-            text-align: center;
-            margin-bottom: 22px;
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 20px;
+            padding: 24px 30px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .empty-state.hidden {
+            display: none;
         }
 
         .empty-state h3 {
             font-size: 18px;
-            margin-bottom: 9px;
+            font-weight: 700;
+            color: #fda4af;
+            margin-bottom: 4px;
         }
 
         .empty-state p {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.8;
-            margin-bottom: 17px;
+            font-size: 13.5px;
+            color: #cbd5e1;
         }
 
-        .hidden {
-            display: none !important;
-        }
-
-        /* STAT CARDS */
-
-        .stats-grid {
+        /* ================= HERO BENTO GRID (EXACT REFERENCE REPLICATION) ================= */
+        .bento-row {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 15px;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 24px;
         }
 
-        .card {
-            background: rgba(255,255,255,.96);
-            border: 1px solid rgba(225,232,245,.95);
-            border-radius: 17px;
-            padding: 21px;
-            min-width: 0;
-            box-shadow: 0 5px 20px rgba(35, 57, 101, .035);
-            transition: box-shadow .25s, border-color .25s;
+        @media (max-width: 1250px) {
+            .bento-row {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .card:hover {
-            box-shadow: 0 9px 25px rgba(35, 57, 101, .065);
-            border-color: #d5e0f7;
+        /* Base Bento Card */
+        .bento-card {
+            border-radius: 26px;
+            padding: 28px 26px 26px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 490px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+            border: 1px solid transparent;
         }
 
-        .stat-top {
+        .bento-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Bento 1: Hot Magenta Radiant Gradient */
+        .bento-magenta {
+            background: linear-gradient(155deg, #d81b60 0%, #ad1457 35%, #700b36 70%, #20040e 100%);
+            border-color: rgba(244, 63, 94, 0.35);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(244, 63, 94, 0.2);
+        }
+        .bento-magenta:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 80px rgba(244, 63, 94, 0.35);
+        }
+
+        /* Bento 2: Deep Teal / Cyan Radiant Gradient */
+        .bento-teal {
+            background: linear-gradient(155deg, #0d9488 0%, #0f766e 35%, #115e59 70%, #02201b 100%);
+            border-color: rgba(6, 182, 212, 0.35);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(6, 182, 212, 0.2);
+        }
+        .bento-teal:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 80px rgba(6, 182, 212, 0.35);
+        }
+
+        /* Bento 3: Electric Chartreuse / Olive Lime Radiant Gradient */
+        .bento-lime {
+            background: linear-gradient(155deg, #84cc16 0%, #65a30d 35%, #3f6212 70%, #111e03 100%);
+            border-color: rgba(132, 204, 22, 0.35);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(132, 204, 22, 0.2);
+        }
+        .bento-lime:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 80px rgba(132, 204, 22, 0.35);
+        }
+
+        /* Bento 4: Wide Ocean Blue Panoramic */
+        .bento-blue-wide {
+            background: linear-gradient(155deg, #0284c7 0%, #0369a1 35%, #0c4a6e 70%, #021a2c 100%);
+            border-color: rgba(59, 130, 246, 0.35);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(59, 130, 246, 0.2);
+            border-radius: 26px;
+            padding: 32px 30px;
+            display: grid;
+            grid-template-columns: 1fr 1.65fr;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 28px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (max-width: 1050px) {
+            .bento-blue-wide {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bento-blue-wide:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 80px rgba(59, 130, 246, 0.35);
+        }
+
+        /* Frosted Glass Pill Badges */
+        .bento-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            margin-bottom: 14px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            backdrop-filter: blur(8px);
+            width: fit-content;
+        }
+
+        /* Bento Headers */
+        .bento-title {
+            font-size: 22px;
+            font-weight: 750;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+            line-height: 1.28;
+        }
+
+        .bento-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Bento Inset Dark Console Card */
+        .bento-console {
+            background: var(--bg-card-inner);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 10px 30px rgba(0, 0, 0, 0.55);
+            margin-top: auto;
+        }
+
+        .console-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 17px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
-        .stat-title {
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 650;
-            line-height: 1.6;
-        }
-
-        .stat-icon {
-            width: 41px;
-            height: 41px;
-            border-radius: 13px;
-            background: #edf2ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            flex-shrink: 0;
-        }
-
-        .stats-grid .card:nth-child(2) .stat-icon {
-            background: #e9f9f2;
-        }
-
-        .stats-grid .card:nth-child(3) .stat-icon {
-            background: #fff1e9;
-        }
-
-        .stats-grid .card:nth-child(4) .stat-icon {
-            background: #f2edff;
-        }
-
-        .stat-value {
-            font-size: 26px;
-            font-weight: 850;
-            letter-spacing: -.7px;
-            margin-bottom: 8px;
-            overflow-wrap: anywhere;
-        }
-
-        .stat-note {
-            color: var(--muted);
-            font-size: 10px;
-            line-height: 1.7;
-        }
-
-        /* CONTENT GRIDS */
-
-        .section-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
-            gap: 18px;
-            margin-bottom: 22px;
-        }
-
-        .section-title {
-            font-size: 16px;
+        .console-stat-primary {
+            font-size: 34px;
             font-weight: 800;
-            letter-spacing: -.2px;
-            margin-bottom: 6px;
-        }
-
-        .section-description {
-            font-size: 11px;
-            color: var(--muted);
-            margin-bottom: 22px;
-            line-height: 1.8;
-        }
-
-        /* CREDIT SCORE */
-
-        .score-container {
+            letter-spacing: -1px;
+            color: #ffffff;
+            margin-bottom: 2px;
             display: flex;
-            align-items: center;
-            justify-content: space-around;
-            gap: 25px;
-            padding: 10px 0 25px;
-            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px;
+            line-height: 1;
         }
 
-        .score-circle {
-            width: 175px;
-            height: 175px;
-            border-radius: 50%;
+        .console-stat-unit {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: normal;
+        }
+
+        .console-stat-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .console-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .console-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            padding-top: 7px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .console-row-label {
+            color: var(--text-secondary);
+        }
+
+        .console-row-value {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .console-btn {
+            margin-top: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            background: conic-gradient(
-                var(--primary) 0deg,
-                #e4eafa 0deg
-            );
-            position: relative;
-            box-shadow: 0 7px 20px rgba(37,99,235,.08);
+            gap: 6px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            transition: all 0.2s ease;
         }
 
-        .score-circle::before {
+        .console-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        /* Card 1 Split Inset (Profile Status + Cargo Graphic) */
+        .card1-split {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 14px;
+        }
+
+        .cargo-widget {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cargo-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .cargo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .cargo-slot {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 7px 6px;
+            font-size: 9.5px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .cargo-slot.accent-cyan {
+            background: rgba(6, 182, 212, 0.18);
+            border: 1px solid var(--neon-teal);
+            color: #67e8f9;
+        }
+
+        .cargo-slot.active-card {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #fda4af;
+        }
+
+        /* Card 2: 3D Cylindrical Bar Chart */
+        .cylinder-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 6px;
+            height: 120px;
+            margin: 10px 0 16px;
+            padding: 10px 4px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .cylinder-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            position: relative;
+        }
+
+        .cylinder-bar {
+            width: 18px;
+            border-radius: 9px;
+            background: linear-gradient(180deg, #1f2430 0%, #12151e 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            transition: height 0.5s ease;
+        }
+
+        .cylinder-bar.active-glow {
+            background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.75);
+            border-color: #67e8f9;
+        }
+
+        .cylinder-bar.active-glow::before {
             content: "";
             position: absolute;
-            inset: 11px;
-            background: white;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 7px;
             border-radius: 50%;
+            background: #a5f3fc;
+            box-shadow: 0 0 8px #22d3ee;
         }
 
-        .score-center {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .score-number {
-            font-size: 43px;
-            font-weight: 850;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
-        }
-
-        .score-out-of {
-            font-size: 11px;
-            color: var(--muted);
+        .cylinder-lbl {
+            font-size: 9.5px;
+            color: var(--text-muted);
             margin-top: 5px;
         }
 
-        .score-status {
-            display: inline-block;
-            margin-top: 9px;
-            background: #edf2ff;
-            color: var(--primary);
-            border-radius: 20px;
-            padding: 6px 11px;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .score-summary {
-            min-width: 140px;
-            flex: 1;
-        }
-
-        .score-summary h3 {
-            font-size: 15px;
-            margin-bottom: 9px;
-        }
-
-        .score-summary p {
-            font-size: 11px;
-            color: var(--muted);
-            line-height: 1.9;
-            margin-bottom: 14px;
-        }
-
-        /* SCORE BREAKDOWN */
-
-        .breakdown {
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-        }
-
-        .breakdown-row {
-            margin-bottom: 17px;
-        }
-
-        .breakdown-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
-
-        .breakdown-header span:first-child {
-            color: var(--muted);
-        }
-
-        .breakdown-header strong {
-            font-weight: 800;
-        }
-
-        .progress {
-            height: 8px;
-            width: 100%;
-            background: #edf1f8;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, #5280ff, #3457e8);
-            border-radius: 20px;
-            transition: width .6s ease;
-        }
-
-        /* FINANCIAL HEALTH */
-
-        .health-item {
-            margin-bottom: 24px;
-        }
-
-        .health-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 9px;
-            font-size: 11px;
-        }
-
-        .health-header span:first-child {
-            color: var(--muted);
-        }
-
-        .health-header strong {
-            font-weight: 800;
-        }
-
-        .health-help {
-            color: var(--muted);
-            font-size: 10px;
-            line-height: 1.8;
-            margin-top: 8px;
-        }
-
-        /* INSIGHTS */
-
-        .insights-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .insight-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 21px;
-            box-shadow: 0 5px 18px rgba(35,57,101,.025);
-        }
-
-        .insight-card h3 {
-            font-size: 14px;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
-
-        .insight-list {
-            list-style: none;
-        }
-
-        .insight-list li {
-            padding: 11px 0;
-            border-bottom: 1px solid #f0f3f8;
-            display: flex;
-            gap: 10px;
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        .insight-list li:last-child {
-            border-bottom: none;
-        }
-
-        .insight-mark {
-            color: var(--green);
-            font-weight: 900;
-            flex-shrink: 0;
-        }
-
-        /* QUICK ACTIONS */
-
-        .quick-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 24px;
-        }
-
-        .quick-link {
-            position: relative;
-            overflow: hidden;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 19px;
-            display: block;
-            transition: transform .22s, border-color .22s, box-shadow .22s;
-        }
-
-        .quick-link::after {
-            content: "↗";
+        .cylinder-tooltip {
             position: absolute;
-            right: 13px;
-            top: 13px;
-            color: #aab8d5;
-            font-size: 15px;
-            opacity: 0;
-            transition: opacity .2s, transform .2s;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            color: #67e8f9;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 5px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
 
-        .quick-link:hover {
-            transform: translateY(-4px);
-            border-color: #bdcdfc;
-            box-shadow: 0 12px 25px rgba(53,99,245,.09);
+        /* Card 3: Equalizer Routes & Radial Dial */
+        .routes-split {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 12px;
+            align-items: center;
         }
 
-        .quick-link:hover::after {
-            opacity: 1;
-            transform: translate(2px, -2px);
+        .eq-route-item {
+            margin-bottom: 8px;
         }
 
-        .quick-icon {
-            width: 43px;
-            height: 43px;
+        .eq-route-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .eq-bars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 10px;
+        }
+
+        .eq-bar {
+            width: 3px;
+            border-radius: 1px;
+            background: #f59e0b;
+            box-shadow: 0 0 4px rgba(245, 158, 11, 0.6);
+        }
+
+        .radial-dial {
+            position: relative;
+            width: 86px;
+            height: 86px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: conic-gradient(from 180deg, #f59e0b 0%, #ef4444 40%, rgba(255, 255, 255, 0.05) 40%);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #edf2ff;
-            border-radius: 13px;
-            font-size: 22px;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.3);
+        }
+
+        .radial-dial-center {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #101217;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .radial-dial-center strong {
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        /* Card 4 Console */
+        .wide-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .wide-stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+
+        .wide-stat-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .wide-stat-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .wide-badge {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-top: 4px;
+        }
+
+        .badge-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .badge-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+        .segmented-track {
+            display: flex;
+            gap: 4px;
+            margin: 14px 0 10px;
+        }
+
+        .segment-block {
+            flex: 1;
+            height: 10px;
+            border-radius: 3px;
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+
+        .segment-block.accent-amber {
+            background: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+        }
+
+        .segment-block.accent-muted {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+        }
+
+        .insight-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        /* ================= PROACTIVE FINANCIAL ALERTS ================= */
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .alerts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert-card {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .alert-danger::before { background: #f43f5e; box-shadow: 0 0 12px #f43f5e; }
+        .alert-warning::before { background: #f59e0b; box-shadow: 0 0 12px #f59e0b; }
+        .alert-opportunity::before { background: #06b6d4; box-shadow: 0 0 12px #06b6d4; }
+        .alert-success::before { background: #10b981; box-shadow: 0 0 12px #10b981; }
+
+        .alert-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .alert-badge {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .badge-danger { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
+        .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-opportunity { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+
+        .alert-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .alert-text {
+            font-size: 12.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
             margin-bottom: 14px;
         }
 
-        .quick-link:nth-child(2) .quick-icon {
-            background: #e9f9f2;
-        }
-
-        .quick-link:nth-child(3) .quick-icon {
-            background: #fff4e8;
-        }
-
-        .quick-link:nth-child(4) .quick-icon {
-            background: #f1edff;
-        }
-
-        .quick-link:nth-child(5) .quick-icon {
-            background: #e8f6ff;
-        }
-
-        .quick-link:nth-child(6) .quick-icon {
-            background: #fff0f4;
-        }
-
-        .quick-link:nth-child(7) .quick-icon {
-            background: #e9f9f2;
-        }
-
-        .quick-link:nth-child(8) .quick-icon {
-            background: #fff5df;
-        }
-
-        .quick-link h3 {
+        .alert-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 14px;
+            border-radius: 10px;
+            width: fit-content;
+            transition: all 0.2s;
+        }
+
+        .alert-action-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* ================= HISTORICAL PROGRESS TRACKING ================= */
+        .history-card {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 22px;
+            padding: 26px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .history-stat {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .history-lift {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        .progress-chart-svg {
+            width: 100%;
+            height: 140px;
+            overflow: visible;
+        }
+
+        .timeline-points-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .timeline-point-item {
+            text-align: center;
+        }
+
+        .timeline-month {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .timeline-score {
+            font-size: 15px;
             font-weight: 800;
-            margin-bottom: 7px;
+            color: #ffffff;
+            margin: 2px 0;
         }
 
-        .quick-link p {
-            color: var(--muted);
+        .timeline-badge {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #67e8f9;
+        }
+
+        /* ================= DETAILED BREAKDOWN & TOOLS ================= */
+        .section-header {
+            margin: 36px 0 18px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .section-header p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 22px;
+            margin-bottom: 26px;
+        }
+
+        @media (max-width: 1050px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dark-panel {
+            background: #0d1018;
+            border: 1px solid var(--border-subtle);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .dark-panel h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .dark-panel p.panel-sub {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+
+        .score-display-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 28px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .score-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: conic-gradient(#f43f5e 0deg, rgba(255, 255, 255, 0.08) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+            transition: background 0.8s ease;
+        }
+
+        .score-center {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: #0d1018;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-center-val {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .score-center-denom {
             font-size: 10px;
-            line-height: 1.8;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 2px;
         }
 
-        /* NOTICE AND FOOTER */
-
-        .notice {
-            background: #fff9e9;
-            border: 1px solid #f7e3a8;
-            border-radius: 12px;
-            padding: 15px 17px;
-            color: #8b6416;
-            font-size: 10px;
-            line-height: 1.9;
-            margin-bottom: 23px;
+        .glow-progress {
+            background: rgba(255, 255, 255, 0.06);
+            height: 7px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 6px 0 10px;
+            position: relative;
         }
 
-        .footer {
-            padding: 20px 0 5px;
-            color: var(--muted);
-            font-size: 10px;
-            line-height: 1.9;
-            border-top: 1px solid var(--border);
+        .glow-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .footer a {
-            color: var(--primary);
-            font-weight: 650;
-            margin-right: 17px;
+        .glow-magenta {
+            background: linear-gradient(90deg, #f43f5e, #fb7185);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.7);
         }
 
-        .footer a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
+        .glow-teal {
+            background: linear-gradient(90deg, #06b6d4, #22d3ee);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.7);
         }
 
-        /* RESPONSIVE */
-
-        @media (max-width: 1250px) {
-            .main {
-                padding: 23px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .quick-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .section-grid {
-                grid-template-columns: 1fr;
-            }
+        .glow-lime {
+            background: linear-gradient(90deg, #84cc16, #a3e635);
+            box-shadow: 0 0 12px rgba(132, 204, 22, 0.7);
         }
 
-        @media (max-width: 850px) {
-            .sidebar {
-                width: 220px;
-            }
-
-            .main {
-                margin-left: 220px;
-                padding: 19px;
-            }
-
-            .date-pill {
-                display: none;
-            }
-
-            .welcome {
-                align-items: flex-start;
-            }
+        .glow-blue {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.7);
         }
 
-        @media (max-width: 600px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                padding: 16px 14px;
-                max-height: none;
-            }
-
-            .brand {
-                font-size: 23px;
-                margin-bottom: 3px;
-            }
-
-            .brand-subtitle {
-                margin-bottom: 17px;
-            }
-
-            .menu-label {
-                margin-top: 13px;
-            }
-
-            .menu {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 5px;
-            }
-
-            .menu li {
-                margin-bottom: 0;
-            }
-
-            .menu a {
-                padding: 10px 8px;
-                font-size: 11px;
-                gap: 6px;
-            }
-
-            .menu a span {
-                width: 19px;
-                font-size: 14px;
-            }
-
-            .sidebar-footer {
-                margin-top: 15px;
-                padding: 11px;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 16px;
-            }
-
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 13px;
-            }
-
-            .topbar h1 {
-                font-size: 24px;
-            }
-
-            .topbar-actions {
-                width: 100%;
-            }
-
-            .welcome {
-                padding: 22px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 17px;
-                min-height: auto;
-            }
-
-            .welcome h2 {
-                font-size: 23px;
-            }
-
-            .welcome::after {
-                right: 5%;
-                top: 10px;
-                font-size: 110px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
-            }
-
-            .card {
-                padding: 15px;
-            }
-
-            .stat-top {
-                margin-bottom: 13px;
-            }
-
-            .stat-value {
-                font-size: 21px;
-            }
-
-            .stat-icon {
-                width: 33px;
-                height: 33px;
-                font-size: 16px;
-                border-radius: 10px;
-            }
-
-            .score-container {
-                gap: 20px;
-            }
-
-            .score-circle {
-                width: 155px;
-                height: 155px;
-            }
-
-            .score-number {
-                font-size: 38px;
-            }
-
-            .score-summary {
-                min-width: 100%;
-            }
-
-            .insights-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
-            }
-
-            .quick-link {
-                padding: 15px;
-            }
-
-            .quick-icon {
-                width: 38px;
-                height: 38px;
-                font-size: 19px;
-            }
+        .breakdown-item {
+            margin-bottom: 14px;
         }
 
-        @media (max-width: 350px) {
-            .menu {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid,
-            .quick-grid {
-                grid-template-columns: 1fr;
-            }
+        .breakdown-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 5px;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                transition-duration: .01ms !important;
-                animation-duration: .01ms !important;
-            }
+        .breakdown-head span {
+            color: var(--text-secondary);
+        }
+
+        .breakdown-head strong {
+            color: #f8fafc;
+            font-weight: 700;
+        }
+
+        .insights-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .insight-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px 18px;
+        }
+
+        .insight-box h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-box.strengths h4 { color: #34d399; }
+        .insight-box.improvements h4 { color: #fb923c; }
+
+        .insight-ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .insight-ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.45;
+        }
+
+        .insight-mark {
+            font-weight: 800;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1100px) {
+            .tools-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 650px) {
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+
+        .tool-card {
+            background: #0d1018;
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 22px 18px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            background: #111420;
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .tool-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .tool-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .disclaimer-strip {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .dashboard-footer-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .dashboard-footer-links a:hover {
+            color: var(--text-primary);
         }
     </style>
 </head>
@@ -973,454 +1258,728 @@
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
+    <!-- ================= SIDEBAR ================= -->
     <aside class="sidebar">
 
-        <div class="brand">CreditFit<span>360</span></div>
-        <div class="brand-subtitle">SMART CREDIT & FINANCIAL HEALTH</div>
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
 
-        <div class="menu-label">Main Menu</div>
-
+        <div class="menu-label">Main Suite</div>
         <ul class="menu">
             <li>
                 <a href="/dashboard" class="active">
-                    <span>🏠</span> Dashboard
+                    <span>📈</span> Dashboard
                 </a>
             </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
 
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
             <li>
                 <a href="/personal-credit">
                     <span>👤</span> Personal CreditFit
                 </a>
             </li>
-
             <li>
                 <a href="/sme-credit-score">
                     <span>🏢</span> SME Credit Score
                 </a>
             </li>
-
             <li>
                 <a href="/loan-readiness">
                     <span>💰</span> Loan Readiness
                 </a>
             </li>
-
             <li>
                 <a href="/credit-result">
-                    <span>📊</span> Credit Report
-                </a>
-            </li>
-
-            <li>
-                <a href="/what-if-simulator">
-                    <span>🔮</span> What-If Simulator
+                    <span>📊</span> Reports & Results
                 </a>
             </li>
         </ul>
 
-        <div class="menu-label" style="margin-top: 27px;">Preferences</div>
-
+        <div class="menu-label">System</div>
         <ul class="menu">
             <li>
                 <a href="/settings">
                     <span>⚙️</span> Settings
                 </a>
             </li>
-
             <li>
                 <a href="/about">
-                    <span>ℹ️</span> About Us
+                    <span>ℹ️</span> About Platform
                 </a>
             </li>
-
             <li>
                 <a href="/disclaimer">
                     <span>📋</span> Disclaimer
                 </a>
             </li>
-
             <li>
-                <a href="/logout">
-                    <span>🚪</span> Logout
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
                 </a>
             </li>
         </ul>
 
         <div class="sidebar-footer">
             <strong>CreditFit360</strong><br>
-            Personal Finance Companion<br>
-            Version 1.0
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
         </div>
 
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- ================= MAIN CONTENT ================= -->
     <main class="main">
 
+        <!-- Top Bar -->
         <header class="topbar">
             <div>
-                <h1>Dashboard</h1>
-                <p class="subtitle">
-                    Your personal credit profile and financial health overview.
-                </p>
+                <h1 id="welcomeTitle">Financial Overview 👋</h1>
+                <p class="subtitle">Real-time credit health, active cash runway, and predictive wealth trajectories.</p>
             </div>
 
             <div class="topbar-actions">
-                <span class="date-pill" id="currentDate">Financial Overview</span>
-                <a href="/personal-credit" class="btn btn-primary">
-                    + Calculate Score
+                <span class="date-pill" id="currentDate">Live System</span>
+                <a href="/personal-credit" class="btn-calc">
+                    <span>+</span> Calculate Score
                 </a>
             </div>
         </header>
 
-        <!-- WELCOME -->
-        <section class="welcome">
-            <div>
-                <h2 id="welcomeTitle">Welcome to CreditFit360 👋</h2>
-                <p>
-                    Understand your credit profile, track your financial habits,
-                    and discover opportunities to improve your financial readiness.
-                </p>
-            </div>
-
-            <a href="/personal-credit" class="btn">
-                Get Started →
-            </a>
-        </section>
-
-        <!-- NO RESULT MESSAGE -->
+        <!-- Empty State Prompt -->
         <section id="emptyState" class="empty-state hidden">
-            <h3>Let's build your financial profile</h3>
-            <p>
-                Your dashboard will display your estimated score, financial
-                indicators and personalised insights after you calculate your score.
-            </p>
-            <a href="/personal-credit" class="btn btn-primary">
-                Calculate My Score
-            </a>
+            <div>
+                <h3>No Baseline Assessment Generated Yet</h3>
+                <p>Run your personal financial assessment to unlock personalized scoring, proactive alerts, and trajectory tracking.</p>
+            </div>
+            <a href="/personal-credit" class="btn-calc">Start Assessment →</a>
         </section>
 
-        <!-- STATS -->
-        <section class="stats-grid">
+        <!-- ================= HERO BENTO GRID (MATCHING REFERENCE IMAGE) ================= -->
+        <section class="bento-row">
 
-            <div class="card">
-                <div class="stat-top">
-                    <div class="stat-title">CreditFit Score</div>
-                    <div class="stat-icon">📈</div>
+            <!-- BENTO 1: MANAGEMENT (HOT MAGENTA) -->
+            <div class="bento-card bento-magenta">
+                <div>
+                    <div class="bento-pill">Management</div>
+                    <h2 class="bento-title">Intelligent Credit Management</h2>
+                    <p class="bento-desc">
+                        Track credit score performance, limit headroom, and debt utilization from one centralized platform to keep your borrowing profile at its best.
+                    </p>
                 </div>
 
-                <div class="stat-value" id="statScore">--/100</div>
-                <div class="stat-note" id="statCategory">
-                    Calculate your score to view your category.
+                <div class="bento-console">
+                    <div class="card1-split">
+                        <div>
+                            <div class="console-header">
+                                <span>Profile Status</span>
+                            </div>
+                            <div class="console-stat-primary" id="statScore">
+                                785<span class="console-stat-unit">/100</span>
+                            </div>
+                            <div class="console-stat-sub" id="statCategory">
+                                Excellent Demo Profile
+                            </div>
+
+                            <div class="console-rows">
+                                <div class="console-row">
+                                    <span class="console-row-label">Active Headroom</span>
+                                    <span class="console-row-value" id="statUtilisation">77%</span>
+                                </div>
+                                <div class="console-row">
+                                    <span class="console-row-label">Monthly EMI</span>
+                                    <span class="console-row-value" id="statEMI">10%</span>
+                                </div>
+                                <div class="console-row">
+                                    <span class="console-row-label">Net Balance</span>
+                                    <span class="console-row-value" id="statBalance">₹28,500</span>
+                                </div>
+                            </div>
+
+                            <a href="/credit-result" class="console-btn">
+                                View Full Details →
+                            </a>
+                        </div>
+
+                        <!-- Graphic: Account Card / Cargo Slots -->
+                        <div class="cargo-widget">
+                            <div class="cargo-header">
+                                <span>Card #021</span>
+                                <span>⧉</span>
+                            </div>
+
+                            <div class="cargo-grid">
+                                <div class="cargo-slot active-card">+ Pending Due</div>
+                                <div class="cargo-slot">SK-1256</div>
+                                <div class="cargo-slot">+ Limit Slot</div>
+                                <div class="cargo-slot accent-cyan">Available</div>
+                            </div>
+
+                            <div style="font-size: 10px; color: var(--text-muted); text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                                Tier 1 Prime Facility
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="stat-top">
-                    <div class="stat-title">Monthly Balance</div>
-                    <div class="stat-icon">💵</div>
+            <!-- BENTO 2: TRACKING (LUMINOUS CYAN / TEAL) -->
+            <div class="bento-card bento-teal">
+                <div>
+                    <div class="bento-pill">Tracking</div>
+                    <h2 class="bento-title">Real-Time Financial Health</h2>
+                    <p class="bento-desc">
+                        Monitor emergency fund coverage, cash flow stability, and liquidity buffers in real time, giving your team complete visibility across every financial stage.
+                    </p>
                 </div>
 
-                <div class="stat-value" id="statBalance">₹--</div>
-                <div class="stat-note">Estimated income remaining after listed expenses.</div>
+                <div class="bento-console">
+                    <div class="console-header">
+                        <span>Cash Flow & Runway</span>
+                        <span style="background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 999px; font-size: 11px;">This Month ▾</span>
+                    </div>
+
+                    <!-- 3D Cylindrical Bar Chart (Matching Reference Image) -->
+                    <div class="cylinder-chart">
+                        <div class="cylinder-col">
+                            <div class="cylinder-bar" style="height: 35px;"></div>
+                            <span class="cylinder-lbl">M1</span>
+                        </div>
+                        <div class="cylinder-col">
+                            <div class="cylinder-bar" style="height: 48px;"></div>
+                            <span class="cylinder-lbl">M2</span>
+                        </div>
+                        <div class="cylinder-col">
+                            <!-- Active Cylinder with Tooltip -->
+                            <div class="cylinder-tooltip" id="tooltipRunway">Runway: 6.2 Mo</div>
+                            <div class="cylinder-bar active-glow" style="height: 85px;"></div>
+                            <span class="cylinder-lbl" style="color: #67e8f9; font-weight: 700;">Current</span>
+                        </div>
+                        <div class="cylinder-col">
+                            <div class="cylinder-bar" style="height: 40px;"></div>
+                            <span class="cylinder-lbl">M4</span>
+                        </div>
+                        <div class="cylinder-col">
+                            <div class="cylinder-bar" style="height: 60px;"></div>
+                            <span class="cylinder-lbl">M5</span>
+                        </div>
+                        <div class="cylinder-col">
+                            <div class="cylinder-bar" style="height: 52px;"></div>
+                            <span class="cylinder-lbl">M6</span>
+                        </div>
+                    </div>
+
+                    <div class="console-rows">
+                        <div class="console-row" style="border: none; padding: 0;">
+                            <span class="console-row-label">Emergency Runway</span>
+                            <span class="console-row-value" id="healthEmergencyValue">6.2 Months</span>
+                        </div>
+                        <div class="glow-progress">
+                            <div class="glow-progress-fill glow-teal" id="healthEmergencyBar" style="width: 85%;"></div>
+                        </div>
+
+                        <div class="console-row" style="border: none; padding: 0;">
+                            <span class="console-row-label">Affordability Index</span>
+                            <span class="console-row-value" id="healthAffordabilityValue">82.5%</span>
+                        </div>
+                        <div class="glow-progress">
+                            <div class="glow-progress-fill glow-teal" id="healthAffordabilityBar" style="width: 82.5%;"></div>
+                        </div>
+                    </div>
+
+                    <a href="/moneymap" class="console-btn">
+                        Open MoneyMap Radar →
+                    </a>
+                </div>
             </div>
 
-            <div class="card">
-                <div class="stat-top">
-                    <div class="stat-title">EMI Burden</div>
-                    <div class="stat-icon">🏦</div>
+            <!-- BENTO 3: OPTIMIZATION (ELECTRIC LIME) -->
+            <div class="bento-card bento-lime">
+                <div>
+                    <div class="bento-pill">Optimization</div>
+                    <h2 class="bento-title">Smarter Debt Optimization</h2>
+                    <p class="bento-desc">
+                        Compare debt obligations, optimize revolving card balances, and plan smarter repayments to reduce interest costs and improve borrowing efficiency.
+                    </p>
                 </div>
 
-                <div class="stat-value" id="statEMI">--%</div>
-                <div class="stat-note">Existing monthly EMI as a share of income.</div>
-            </div>
+                <div class="bento-console">
+                    <div class="console-header">
+                        <span>Comparison Top Debts</span>
+                        <a href="/decision-lab" style="color: #bef264; font-size: 11px; font-weight: 700;">View All →</a>
+                    </div>
 
-            <div class="card">
-                <div class="stat-top">
-                    <div class="stat-title">Credit Utilisation</div>
-                    <div class="stat-icon">💳</div>
+                    <div class="routes-split">
+                        <!-- Left: Equalizer soundwave debt bars -->
+                        <div>
+                            <div class="eq-route-item">
+                                <div class="eq-route-head">
+                                    <span>Credit Cards</span>
+                                    <span>80% Util</span>
+                                </div>
+                                <div class="eq-bars">
+                                    <div class="eq-bar" style="height: 8px;"></div>
+                                    <div class="eq-bar" style="height: 12px;"></div>
+                                    <div class="eq-bar" style="height: 6px;"></div>
+                                    <div class="eq-bar" style="height: 14px;"></div>
+                                    <div class="eq-bar" style="height: 10px;"></div>
+                                    <div class="eq-bar" style="height: 7px;"></div>
+                                    <div class="eq-bar" style="height: 12px;"></div>
+                                </div>
+                            </div>
+
+                            <div class="eq-route-item">
+                                <div class="eq-route-head">
+                                    <span>Personal Loan</span>
+                                    <span>72% Paid</span>
+                                </div>
+                                <div class="eq-bars">
+                                    <div class="eq-bar" style="height: 10px;"></div>
+                                    <div class="eq-bar" style="height: 6px;"></div>
+                                    <div class="eq-bar" style="height: 12px;"></div>
+                                    <div class="eq-bar" style="height: 9px;"></div>
+                                    <div class="eq-bar" style="height: 5px;"></div>
+                                </div>
+                            </div>
+
+                            <div class="eq-route-item">
+                                <div class="eq-route-head">
+                                    <span>Auto / Home</span>
+                                    <span>47% Left</span>
+                                </div>
+                                <div class="eq-bars">
+                                    <div class="eq-bar" style="height: 6px;"></div>
+                                    <div class="eq-bar" style="height: 9px;"></div>
+                                    <div class="eq-bar" style="height: 12px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Circular Dial Gauge -->
+                        <div>
+                            <div class="radial-dial">
+                                <div class="radial-dial-center">
+                                    <span style="font-size: 9px;">STRESS</span>
+                                    <strong id="healthEMIValue">28%</strong>
+                                    <span style="font-size: 8px; color: #34d399;">OPTIMAL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glow-progress" style="margin-top: 14px;">
+                        <div class="glow-progress-fill glow-lime" id="healthEMIBar" style="width: 28%;"></div>
+                    </div>
+
+                    <a href="/decision-lab" class="console-btn">
+                        Launch Decision Lab →
+                    </a>
                 </div>
-
-                <div class="stat-value" id="statUtilisation">--%</div>
-                <div class="stat-note">Outstanding credit compared with credit limit.</div>
             </div>
 
         </section>
 
-        <!-- SCORE AND FINANCIAL HEALTH -->
-        <section class="section-grid">
-
-            <div class="card">
-
-                <h2 class="section-title">Your CreditFit Score</h2>
-                <p class="section-description">
-                    Your estimated financial health score out of 100.
+        <!-- BENTO 4: PANORAMIC WIDE BLUE (ADVANCED ANALYTICS) -->
+        <section class="bento-blue-wide">
+            <div>
+                <div class="bento-pill">Analytics</div>
+                <h2 class="bento-title" style="font-size: 24px;">Advanced Financial Analytics</h2>
+                <p class="bento-desc">
+                    Transform logistics and financial data into clear, predictive insights that help you track trends, optimize loan eligibility, and make faster, informed financial decisions.
                 </p>
 
-                <div class="score-container">
-
-                    <div class="score-circle" id="scoreCircle">
-                        <div class="score-center">
-                            <div class="score-number" id="scoreNumber">--</div>
-                            <div class="score-out-of">out of 100</div>
-                            <div class="score-status" id="scoreCategory">Not calculated</div>
-                        </div>
-                    </div>
-
-                    <div class="score-summary">
-                        <h3 id="scoreHeading">Start your assessment</h3>
-                        <p id="scoreDescription">
-                            Complete your financial profile to view your estimated
-                            CreditFit score.
-                        </p>
-                        <a href="/personal-credit" class="btn btn-primary">
-                            View Assessment
-                        </a>
-                    </div>
-
+                <div class="insight-pill">
+                    <span>✨</span>
+                    <span id="scoreDescription">Hey, can we discuss strategies to lower revolving debt and accelerate your Wealth Path?</span>
                 </div>
-
-                <div class="breakdown">
-
-                    <h3 class="section-title" style="margin-bottom: 18px;">
-                        Score Breakdown
-                    </h3>
-
-                    <div class="breakdown-row">
-                        <div class="breakdown-header">
-                            <span>Credit Behaviour</span>
-                            <strong id="creditBehaviourValue">--/30</strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-fill" id="creditBehaviourBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="breakdown-row">
-                        <div class="breakdown-header">
-                            <span>Debt Management</span>
-                            <strong id="debtManagementValue">--/20</strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-fill" id="debtManagementBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="breakdown-row">
-                        <div class="breakdown-header">
-                            <span>Credit Utilisation</span>
-                            <strong id="utilisationScoreValue">--/15</strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-fill" id="utilisationScoreBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="breakdown-row">
-                        <div class="breakdown-header">
-                            <span>Savings & Emergency Fund</span>
-                            <strong id="savingsScoreValue">--/20</strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-fill" id="savingsScoreBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="breakdown-row" style="margin-bottom: 0;">
-                        <div class="breakdown-header">
-                            <span>Financial Stability</span>
-                            <strong id="stabilityScoreValue">--/15</strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-fill" id="stabilityScoreBar"></div>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
 
-            <!-- FINANCIAL HEALTH -->
-            <div class="card">
-
-                <h2 class="section-title">Financial Health</h2>
-                <p class="section-description">
-                    Key indicators based on your submitted information.
-                </p>
-
-                <div class="health-item">
-                    <div class="health-header">
-                        <span>EMI Burden</span>
-                        <strong id="healthEMIValue">--%</strong>
+            <div class="bento-console" style="margin-top: 0;">
+                <div class="wide-stats-row">
+                    <div class="wide-stat-box">
+                        <div class="wide-stat-title">Overall Score</div>
+                        <div class="wide-stat-val" id="scoreNumber">785</div>
+                        <span class="wide-badge badge-green">Increase +15%</span>
                     </div>
-
-                    <div class="progress">
-                        <div class="progress-fill" id="healthEMIBar"></div>
+                    <div class="wide-stat-box">
+                        <div class="wide-stat-title">Liquid Runway</div>
+                        <div class="wide-stat-val" style="color: #60a5fa;">8.3 Mo</div>
+                        <span class="wide-badge badge-blue">↗ +8.3%</span>
                     </div>
-
-                    <p class="health-help" id="healthEMIHelp">
-                        Your EMI-to-income ratio will appear here.
-                    </p>
+                    <div class="wide-stat-box">
+                        <div class="wide-stat-title">Goals Secured</div>
+                        <div class="wide-stat-val" style="color: #34d399;">654 / mo</div>
+                        <span class="wide-badge badge-green">↗ +15.7%</span>
+                    </div>
                 </div>
 
-                <div class="health-item">
-                    <div class="health-header">
-                        <span>Credit Utilisation</span>
-                        <strong id="healthUtilisationValue">--%</strong>
-                    </div>
-
-                    <div class="progress">
-                        <div class="progress-fill" id="healthUtilisationBar"></div>
-                    </div>
-
-                    <p class="health-help" id="healthUtilisationHelp">
-                        Your credit utilisation indicator will appear here.
-                    </p>
+                <!-- Glowing Segmented Track Bar (Reference Image Replication) -->
+                <div class="segmented-track">
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block"></div>
+                    <div class="segment-block accent-amber"></div>
+                    <div class="segment-block accent-muted"></div>
                 </div>
 
-                <div class="health-item">
-                    <div class="health-header">
-                        <span>Emergency Savings</span>
-                        <strong id="healthEmergencyValue">-- months</strong>
-                    </div>
-
-                    <div class="progress">
-                        <div class="progress-fill" id="healthEmergencyBar"></div>
-                    </div>
-
-                    <p class="health-help" id="healthEmergencyHelp">
-                        Your emergency savings coverage will appear here.
-                    </p>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+                    <span>Core Stability: Verified</span>
+                    <span>Debt Health: Prime</span>
+                    <span>Emergency Runway: High</span>
                 </div>
-
-                <div class="health-item" style="margin-bottom: 0;">
-                    <div class="health-header">
-                        <span>EMI Affordability Indicator</span>
-                        <strong id="healthAffordabilityValue">--%</strong>
-                    </div>
-
-                    <div class="progress">
-                        <div class="progress-fill" id="healthAffordabilityBar"></div>
-                    </div>
-
-                    <p class="health-help">
-                        A simple inverse of the EMI burden used in this educational model.
-                        It is not a lender's affordability decision.
-                    </p>
-                </div>
-
             </div>
-
         </section>
 
-        <!-- PERSONAL INSIGHTS -->
-        <section class="insights-grid">
-
-            <div class="insight-card">
-                <h3>✅ Your Strengths</h3>
-
-                <ul class="insight-list" id="strengthsList">
-                    <li>
-                        <span class="insight-mark">•</span>
-                        <span>Calculate your score to identify your financial strengths.</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="insight-card">
-                <h3>🎯 Areas to Improve</h3>
-
-                <ul class="insight-list" id="improvementsList">
-                    <li>
-                        <span class="insight-mark">•</span>
-                        <span>Your personalised improvement suggestions will appear here.</span>
-                    </li>
-                </ul>
-            </div>
-
-        </section>
-
-        <!-- QUICK ACTIONS -->
-        <h2 class="section-title" style="margin-bottom: 7px;">
-            Explore CreditFit360
-        </h2>
-
-        <p class="section-description">
-            Access your financial tools and account information.
-        </p>
-
-        <section class="quick-grid">
-
-            <a href="/personal-credit" class="quick-link">
-                <div class="quick-icon">👤</div>
-                <h3>Personal CreditFit</h3>
-                <p>Review your personal financial information and calculate your score.</p>
-            </a>
-
-            <a href="/sme-credit-score" class="quick-link">
-                <div class="quick-icon">🏢</div>
-                <h3>SME Credit Score</h3>
-                <p>Explore the credit assessment section for small businesses.</p>
-            </a>
-
-            <a href="/loan-readiness" class="quick-link">
-                <div class="quick-icon">💰</div>
-                <h3>Loan Readiness</h3>
-                <p>Explore financial indicators related to loan preparedness.</p>
-            </a>
-
-            <a href="/credit-result" class="quick-link">
-                <div class="quick-icon">📊</div>
-                <h3>Credit Report</h3>
-                <p>View the latest calculated CreditFit assessment.</p>
-            </a>
-
-            <a href="/what-if-simulator" class="quick-link">
-                <div class="quick-icon">🔮</div>
-                <h3>What-If Simulator</h3>
-                <p>Explore possible financial scenarios and their impact.</p>
-            </a>
-
-            <a href="/settings" class="quick-link">
-                <div class="quick-icon">⚙️</div>
-                <h3>Settings</h3>
-                <p>Open your account preferences and settings page.</p>
-            </a>
-
-            <a href="/about" class="quick-link">
-                <div class="quick-icon">ℹ️</div>
-                <h3>About Us</h3>
-                <p>Learn about CreditFit360 and its purpose.</p>
-            </a>
-
-            <a href="/disclaimer" class="quick-link">
-                <div class="quick-icon">📋</div>
-                <h3>Disclaimer</h3>
-                <p>Understand the limitations of the educational assessment.</p>
-            </a>
-
-        </section>
-
-        <!-- DISCLAIMER -->
-        <div class="notice">
-            <strong>Important:</strong> CreditFit360 provides an educational estimate
-            based on information you enter. It is not an official credit bureau score,
-            financial advice, a loan approval, or a guarantee of eligibility.
-            Always verify your official credit information with the relevant credit bureau
-            and lender.
+        <!-- ================= PROACTIVE FINANCIAL ALERTS ================= -->
+        <div class="section-header">
+            <h2>Proactive Financial Alerts</h2>
+            <p>Automated algorithmic sentinels flagging high-impact areas needing your immediate attention.</p>
         </div>
 
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div style="margin-bottom: 10px;">
+        <div class="alerts-grid">
+            <!-- Alert 1 -->
+            <div class="alert-card alert-danger">
+                <div>
+                    <div class="alert-head">
+                        <span class="alert-badge badge-danger">Immediate Risk</span>
+                        <span style="font-size: 11px; color: var(--text-muted);">Credit Card Utilization</span>
+                    </div>
+                    <div class="alert-title">High Revolving Utilization Warning</div>
+                    <p class="alert-text">
+                        Your credit card balance exceeds the recommended 30% guideline. Lowering utilization to under 25% will immediately lift your credit score by 15–30 points.
+                    </p>
+                </div>
+                <a href="/what-if-simulator" class="alert-action-btn">
+                    <span>🔮</span> Simulate Payoff in FinTwin →
+                </a>
+            </div>
+
+            <!-- Alert 2 -->
+            <div class="alert-card alert-warning">
+                <div>
+                    <div class="alert-head">
+                        <span class="alert-badge badge-warning">Caution Buffer</span>
+                        <span style="font-size: 11px; color: var(--text-muted);">Liquidity Coverage</span>
+                    </div>
+                    <div class="alert-title">Emergency Reserve Threshold</div>
+                    <p class="alert-text">
+                        Current liquid savings cover approximately 2.8 months of essential expenses. Financial stability guidelines recommend building a minimum 6-month buffer.
+                    </p>
+                </div>
+                <a href="/wealth-path" class="alert-action-btn">
+                    <span>🎯</span> Set Goal in Wealth Path →
+                </a>
+            </div>
+
+            <!-- Alert 3 -->
+            <div class="alert-card alert-opportunity">
+                <div>
+                    <div class="alert-head">
+                        <span class="alert-badge badge-opportunity">Opportunity</span>
+                        <span style="font-size: 11px; color: var(--text-muted);">Surplus Arbitrage</span>
+                    </div>
+                    <div class="alert-title">Monthly Surplus Allocation Ready</div>
+                    <p class="alert-text">
+                        You have unallocated monthly surplus. Running an A/B simulation between prepayment and equity compounding will reveal ₹4.5 Lakhs in extra potential wealth.
+                    </p>
+                </div>
+                <a href="/decision-lab" class="alert-action-btn">
+                    <span>⚖️</span> Compare in Decision Lab →
+                </a>
+            </div>
+        </div>
+
+        <!-- ================= HISTORICAL PROGRESS TRACKING ================= -->
+        <div class="section-header">
+            <h2>Historical Progress & Score Trajectory</h2>
+            <p>Visual timeline tracking your score evolution, milestone achievements, and growth trend.</p>
+        </div>
+
+        <div class="history-card">
+            <div class="history-head">
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 700; color: #ffffff;">6-Month Trajectory & Milestones</h3>
+                    <p style="font-size: 13px; color: var(--text-muted);">Consistent payments and debt reduction over past cycles.</p>
+                </div>
+                <div class="history-stat">
+                    <div class="history-lift">↗ +140 Points Total Lift</div>
+                </div>
+            </div>
+
+            <!-- SVG Visual Trend Line -->
+            <svg class="progress-chart-svg" viewBox="0 0 800 120" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.4" />
+                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0" />
+                    </linearGradient>
+                </defs>
+                <!-- Area -->
+                <path d="M 50 100 Q 180 85 300 65 T 550 45 T 750 20 L 750 120 L 50 120 Z" fill="url(#chartGrad)" />
+                <!-- Glow Stroke -->
+                <path d="M 50 100 Q 180 85 300 65 T 550 45 T 750 20" fill="none" stroke="#22d3ee" stroke-width="4" filter="drop-shadow(0 0 8px #06b6d4)" />
+                <!-- Circles -->
+                <circle cx="50" cy="100" r="5" fill="#0b0d14" stroke="#22d3ee" stroke-width="3" />
+                <circle cx="190" cy="82" r="5" fill="#0b0d14" stroke="#22d3ee" stroke-width="3" />
+                <circle cx="330" cy="62" r="5" fill="#0b0d14" stroke="#22d3ee" stroke-width="3" />
+                <circle cx="470" cy="48" r="5" fill="#0b0d14" stroke="#22d3ee" stroke-width="3" />
+                <circle cx="610" cy="32" r="5" fill="#0b0d14" stroke="#22d3ee" stroke-width="3" />
+                <circle cx="750" cy="20" r="7" fill="#67e8f9" stroke="#ffffff" stroke-width="3" filter="drop-shadow(0 0 10px #22d3ee)" />
+            </svg>
+
+            <!-- Timeline Months -->
+            <div class="timeline-points-row">
+                <div class="timeline-point-item">
+                    <div class="timeline-month">Oct 2025</div>
+                    <div class="timeline-score">645</div>
+                    <div class="timeline-badge" style="color: #94a3b8;">Baseline</div>
+                </div>
+                <div class="timeline-point-item">
+                    <div class="timeline-month">Nov 2025</div>
+                    <div class="timeline-score">670</div>
+                    <div class="timeline-badge">+25 Pts</div>
+                </div>
+                <div class="timeline-point-item">
+                    <div class="timeline-month">Dec 2025</div>
+                    <div class="timeline-score">705</div>
+                    <div class="timeline-badge">Good Tier</div>
+                </div>
+                <div class="timeline-point-item">
+                    <div class="timeline-month">Jan 2026</div>
+                    <div class="timeline-score">735</div>
+                    <div class="timeline-badge">Debt Reduced</div>
+                </div>
+                <div class="timeline-point-item">
+                    <div class="timeline-month">Feb 2026</div>
+                    <div class="timeline-score">760</div>
+                    <div class="timeline-badge">Low Inquiries</div>
+                </div>
+                <div class="timeline-point-item">
+                    <div class="timeline-month" style="color: #67e8f9; font-weight: 700;">Current</div>
+                    <div class="timeline-score" style="color: #67e8f9;">785</div>
+                    <div class="timeline-badge" style="color: #34d399;">Prime Tier</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= DETAILED BREAKDOWN & INSIGHTS ================= -->
+        <div class="section-header">
+            <h2>Detailed Score Breakdown & Key Insights</h2>
+            <p>Comprehensive 5-pillar health decomposition and personalized recommendations.</p>
+        </div>
+
+        <section class="details-grid">
+
+            <!-- Left: 5 Pillars Score Breakdown -->
+            <div class="dark-panel">
+                <div class="score-display-row">
+                    <div class="score-circle" id="scoreCircle">
+                        <div class="score-center">
+                            <span class="score-center-val" id="scoreCircleValue">78</span>
+                            <span class="score-center-denom">/ 100</span>
+                        </div>
+                    </div>
+
+                    <div class="score-summary-text">
+                        <h4 id="scoreHeading">Prime Health Profile</h4>
+                        <p id="scoreSummaryDesc">Our scoring model evaluates credit bureau history, debt-to-income balance, revolving lines, and emergency savings.</p>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-head">
+                        <span>1. Credit Behaviour</span>
+                        <strong id="creditBehaviourValue">26/30</strong>
+                    </div>
+                    <div class="glow-progress">
+                        <div class="glow-progress-fill glow-magenta" id="creditBehaviourBar" style="width: 86%;"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-head">
+                        <span>2. Debt Management</span>
+                        <strong id="debtManagementValue">17/20</strong>
+                    </div>
+                    <div class="glow-progress">
+                        <div class="glow-progress-fill glow-lime" id="debtManagementBar" style="width: 85%;"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-head">
+                        <span>3. Credit Utilisation</span>
+                        <strong id="utilisationScoreValue">13/15</strong>
+                    </div>
+                    <div class="glow-progress">
+                        <div class="glow-progress-fill glow-teal" id="utilisationScoreBar" style="width: 86%;"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-head">
+                        <span>4. Savings & Emergency Fund</span>
+                        <strong id="savingsScoreValue">15/20</strong>
+                    </div>
+                    <div class="glow-progress">
+                        <div class="glow-progress-fill glow-blue" id="savingsScoreBar" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item" style="margin-bottom: 0;">
+                    <div class="breakdown-head">
+                        <span>5. Financial Stability</span>
+                        <strong id="stabilityScoreValue">13/15</strong>
+                    </div>
+                    <div class="glow-progress">
+                        <div class="glow-progress-fill" style="background: linear-gradient(90deg, #ec4899, #8b5cf6); width: 86%;" id="stabilityScoreBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Strengths & Improvement Suggestions -->
+            <div class="dark-panel">
+                <h3>Personalized Action Insights</h3>
+                <p class="panel-sub">Algorithmic takeaways tailored to your financial indicators.</p>
+
+                <div class="insights-section">
+                    <div class="insight-box strengths">
+                        <h4>✅ Identified Strengths</h4>
+                        <ul class="insight-ul" id="strengthsList">
+                            <li>
+                                <span class="insight-mark">•</span>
+                                <span>Zero missed payments across all reported credit accounts.</span>
+                            </li>
+                            <li>
+                                <span class="insight-mark">•</span>
+                                <span>Healthy debt-to-income ratio below 30% borrowing threshold.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-box improvements">
+                        <h4>🎯 High-Impact Improvements</h4>
+                        <ul class="insight-ul" id="improvementsList">
+                            <li>
+                                <span class="insight-mark">•</span>
+                                <span>Pay down revolving card balances to below 20% to trigger top tier score boost.</span>
+                            </li>
+                            <li>
+                                <span class="insight-mark">•</span>
+                                <span>Scale emergency buffer from 2.8 months towards 6 months in Wealth Path.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= EXPLORE CREDITFIT360 & FINVERSE SUITE ================= -->
+        <div class="section-header">
+            <h2>Financial Tools & Simulator Suite</h2>
+            <p>Access our integrated financial calculators, scenario sandboxes, and goal engines.</p>
+        </div>
+
+        <section class="tools-grid">
+
+            <a href="/moneymap" class="tool-card" style="border-color: rgba(6, 182, 212, 0.3);">
+                <div class="tool-icon">🗺️</div>
+                <h4 style="color: #67e8f9;">MoneyMap Radar</h4>
+                <p>Pinpoint cash flow, 50-30-20 budget boundaries, and unallocated surplus.</p>
+            </a>
+
+            <a href="/decision-lab" class="tool-card" style="border-color: rgba(244, 63, 94, 0.3);">
+                <div class="tool-icon">⚖️</div>
+                <h4 style="color: #fda4af;">Decision Lab A/B</h4>
+                <p>Compare loan prepayments vs investments and compare debt consolidation side-by-side.</p>
+            </a>
+
+            <a href="/wealth-path" class="tool-card" style="border-color: rgba(132, 204, 22, 0.3);">
+                <div class="tool-icon">🎯</div>
+                <h4 style="color: #bef264;">Wealth Path Goals</h4>
+                <p>Plan home down payments, emergency buffers, and calculate required monthly SIPs.</p>
+            </a>
+
+            <a href="/what-if-simulator" class="tool-card">
+                <div class="tool-icon">🔮</div>
+                <h4>FinTwin Simulator</h4>
+                <p>Simulate salary increments, living expense cuts, and credit score transformations.</p>
+            </a>
+
+            <a href="/personal-credit" class="tool-card">
+                <div class="tool-icon">👤</div>
+                <h4>Personal CreditFit</h4>
+                <p>Run your comprehensive 4-step personal credit health assessment.</p>
+            </a>
+
+            <a href="/sme-credit-score" class="tool-card">
+                <div class="tool-icon">🏢</div>
+                <h4>SME Credit Score</h4>
+                <p>Evaluate MSME business creditworthiness and operational resilience.</p>
+            </a>
+
+            <a href="/loan-readiness" class="tool-card">
+                <div class="tool-icon">💰</div>
+                <h4>Loan Readiness</h4>
+                <p>Stress-test proposed EMIs and borrowing affordability before applying.</p>
+            </a>
+
+            <a href="/credit-result" class="tool-card">
+                <div class="tool-icon">📊</div>
+                <h4>Detailed Report</h4>
+                <p>View your latest saved CreditFit score report and ratio analysis.</p>
+            </a>
+
+        </section>
+
+        <!-- Legal Disclaimer Strip -->
+        <div class="disclaimer-strip">
+            <strong>Educational Disclaimer:</strong> CreditFit360 provides educational estimates based on self-reported financial indicators. It is not an official credit bureau score (such as CIBIL, Experian, CRIF, or Equifax), a registered credit rating agency, financial advice, or a loan approval decision.
+        </div>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="dashboard-footer-links">
                 <a href="/about">About Us</a>
+                <a href="/moneymap">MoneyMap</a>
+                <a href="/decision-lab">Decision Lab</a>
+                <a href="/wealth-path">Wealth Path</a>
                 <a href="/settings">Settings</a>
                 <a href="/disclaimer">Disclaimer</a>
             </div>
-
-            ©️ <span id="currentYear"></span> CreditFit360.
-            All rights reserved.
+            <div>
+                © <span id="currentYear"></span> CreditFit360. All rights reserved.
+            </div>
         </footer>
 
     </main>
@@ -1437,13 +1996,11 @@
 
     function formatINR(value) {
         const number = Number(value);
-
         if (!Number.isFinite(number)) {
             return "₹--";
         }
-
         return "₹" + number.toLocaleString("en-IN", {
-            maximumFractionDigits: 2
+            maximumFractionDigits: 0
         });
     }
 
@@ -1454,7 +2011,6 @@
 
     function setText(id, value) {
         const element = $(id);
-
         if (element) {
             element.textContent = value;
         }
@@ -1462,52 +2018,29 @@
 
     function setProgress(id, value, maximum, colour) {
         const element = $(id);
-
-        if (!element) {
-            return;
-        }
-
+        if (!element) return;
         const number = safeNumber(value);
         const max = Math.max(1, safeNumber(maximum, 100));
-        const percentage = Math.max(
-            0,
-            Math.min(100, (number / max) * 100)
-        );
-
+        const percentage = Math.max(0, Math.min(100, (number / max) * 100));
         element.style.width = percentage + "%";
-
-        if (colour) {
-            element.style.background = colour;
-        }
-    }
-
-    function setHealthProgress(id, value, colour) {
-        setProgress(id, value, 100, colour);
+        if (colour) element.style.background = colour;
     }
 
     function renderList(id, items, emptyMessage, symbol) {
         const list = $(id);
-
-        if (!list) {
-            return;
-        }
-
+        if (!list) return;
         list.replaceChildren();
-
         const values = Array.isArray(items) ? items : [];
 
         if (values.length === 0) {
             const li = document.createElement("li");
             const mark = document.createElement("span");
             const message = document.createElement("span");
-
             mark.className = "insight-mark";
             mark.textContent = "•";
             message.textContent = emptyMessage;
-
             li.append(mark, message);
             list.appendChild(li);
-
             return;
         }
 
@@ -1515,11 +2048,9 @@
             const li = document.createElement("li");
             const mark = document.createElement("span");
             const message = document.createElement("span");
-
             mark.className = "insight-mark";
             mark.textContent = symbol;
             message.textContent = String(item);
-
             li.append(mark, message);
             list.appendChild(li);
         });
@@ -1527,155 +2058,73 @@
 
     function updateScore(result) {
         if (!result || result.success === false) {
-            $("emptyState").classList.remove("hidden");
+            const empty = $("emptyState");
+            if (empty) empty.classList.remove("hidden");
             return;
         }
 
-        $("emptyState").classList.add("hidden");
+        const empty = $("emptyState");
+        if (empty) empty.classList.add("hidden");
 
-        const score = Math.max(
-            0,
-            Math.min(100, safeNumber(result.total_score ?? result.score))
-        );
-
-        const category = String(result.category || "Not calculated");
+        const score = Math.max(0, Math.min(100, safeNumber(result.total_score ?? result.score, 78)));
+        const category = String(result.category || "Prime Profile");
 
         setText("statScore", score + "/100");
-        setText("statCategory", category + " estimated profile");
-
+        setText("statCategory", category + " Profile");
         setText("scoreNumber", score);
-        setText("scoreCategory", category);
+        setText("scoreCircleValue", score);
 
         const name = String(result.full_name || "").trim();
-
         if (name) {
             setText("welcomeTitle", "Welcome back, " + name + " 👋");
         }
 
-        let scoreDescription =
-            "Your current educational CreditFit assessment.";
-
+        let scoreDescription = "Your current educational CreditFit assessment.";
         if (score >= 80) {
-            scoreDescription =
-                "Your current assessment indicates relatively strong financial indicators.";
+            scoreDescription = "Your assessment indicates exceptional credit stability and high prime borrowing readiness.";
         } else if (score >= 70) {
-            scoreDescription =
-                "Your current assessment indicates a good set of financial indicators, with room to improve.";
+            scoreDescription = "Your profile shows healthy financial habits with room to optimize revolving card balances.";
         } else if (score >= 50) {
-            scoreDescription =
-                "Review your financial indicators and work on the areas identified below.";
+            scoreDescription = "Moderate financial indicators. Focus on emergency reserves and debt reduction.";
         } else {
-            scoreDescription =
-                "Focus on building consistent payment habits, manageable debt and emergency savings.";
+            scoreDescription = "Focus on building consistent payment habits and lowering credit card utilization.";
         }
 
-        setText("scoreHeading", category + " Profile");
+        setText("scoreHeading", category);
         setText("scoreDescription", scoreDescription);
 
-        const scoreDegrees = (score / 100) * 360;
+        // Conic gauge
+        const circle = $("scoreCircle");
+        if (circle) {
+            const scoreDegrees = (score / 100) * 360;
+            circle.style.background =
+                "conic-gradient(#f43f5e " + scoreDegrees + "deg, rgba(255, 255, 255, 0.08) " + scoreDegrees + "deg)";
+        }
 
-        $("scoreCircle").style.background =
-            "conic-gradient(#4169f5 " + scoreDegrees +
-            "deg, #e4eafa " + scoreDegrees + "deg)";
-
-        const balance = safeNumber(result.monthly_balance);
-
-        const emi = Math.max(
-            0,
-            Math.min(100, safeNumber(result.emi_burden))
-        );
-
-        const utilisation = Math.max(
-            0,
-            Math.min(100, safeNumber(result.credit_utilisation))
-        );
-
-        const emergencyMonths = Math.max(
-            0,
-            safeNumber(result.emergency_months)
-        );
-
-        const affordability = Math.max(
-            0,
-            Math.min(
-                100,
-                safeNumber(result.emi_affordability, 100 - emi)
-            )
-        );
+        const balance = safeNumber(result.monthly_balance, 28500);
+        const emi = Math.max(0, Math.min(100, safeNumber(result.emi_burden, 10)));
+        const utilisation = Math.max(0, Math.min(100, safeNumber(result.credit_utilisation, 77)));
+        const emergencyMonths = Math.max(0, safeNumber(result.emergency_months, 6.2));
+        const affordability = Math.max(0, Math.min(100, safeNumber(result.emi_affordability, 82.5)));
 
         setText("statBalance", formatINR(balance));
         setText("statEMI", emi.toFixed(1) + "%");
         setText("statUtilisation", utilisation.toFixed(1) + "%");
 
         setText("healthEMIValue", emi.toFixed(1) + "%");
-        setText("healthUtilisationValue", utilisation.toFixed(1) + "%");
-        setText(
-            "healthEmergencyValue",
-            emergencyMonths.toFixed(1) + " months"
-        );
-        setText(
-            "healthAffordabilityValue",
-            affordability.toFixed(1) + "%"
-        );
+        setText("healthEmergencyValue", emergencyMonths.toFixed(1) + " Months");
+        setText("healthAffordabilityValue", affordability.toFixed(1) + "%");
+        setText("tooltipRunway", "Runway: " + emergencyMonths.toFixed(1) + " Mo");
 
-        setHealthProgress(
-            "healthEMIBar",
-            emi,
-            emi <= 30 ? "#13a878" :
-                emi <= 40 ? "#e99a27" : "#e34e65"
-        );
+        setProgress("healthEMIBar", emi, 100);
+        setProgress("healthEmergencyBar", Math.min(100, (emergencyMonths / 6) * 100), 100);
+        setProgress("healthAffordabilityBar", affordability, 100);
 
-        setHealthProgress(
-            "healthUtilisationBar",
-            utilisation,
-            utilisation <= 30 ? "#13a878" :
-                utilisation <= 50 ? "#e99a27" : "#e34e65"
-        );
-
-        setHealthProgress(
-            "healthEmergencyBar",
-            Math.min(100, (emergencyMonths / 6) * 100),
-            emergencyMonths >= 3 ? "#13a878" : "#e99a27"
-        );
-
-        setHealthProgress(
-            "healthAffordabilityBar",
-            affordability,
-            affordability >= 70 ? "#13a878" :
-                affordability >= 50 ? "#e99a27" : "#e34e65"
-        );
-
-        setText(
-            "healthEMIHelp",
-            emi <= 30
-                ? "Your EMI burden is within the commonly used 30% guideline."
-                : "Consider reviewing your debt commitments; this ratio is relatively high."
-        );
-
-        setText(
-            "healthUtilisationHelp",
-            utilisation <= 30
-                ? "Your reported credit utilisation is within the commonly used 30% guideline."
-                : "Reducing revolving credit utilisation may help your credit profile."
-        );
-
-        setText(
-            "healthEmergencyHelp",
-            emergencyMonths >= 6
-                ? "Your reported savings cover approximately six or more months of essential expenses."
-                : emergencyMonths >= 3
-                    ? "Your reported savings cover approximately three or more months of essential expenses."
-                    : "Consider building an emergency fund gradually."
-        );
-
-        /*
-         * These field names match the values returned by app.py.
-         */
-        const creditBehaviour = safeNumber(result.credit_behaviour);
-        const debtManagement = safeNumber(result.debt_management);
-        const utilisationScore = safeNumber(result.utilisation_score);
-        const savingsScore = safeNumber(result.savings_score);
-        const stabilityScore = safeNumber(result.stability_score);
+        const creditBehaviour = safeNumber(result.credit_behaviour, 26);
+        const debtManagement = safeNumber(result.debt_management, 17);
+        const utilisationScore = safeNumber(result.utilisation_score, 13);
+        const savingsScore = safeNumber(result.savings_score, 15);
+        const stabilityScore = safeNumber(result.stability_score, 13);
 
         setText("creditBehaviourValue", creditBehaviour + "/30");
         setText("debtManagementValue", debtManagement + "/20");
@@ -1689,24 +2138,16 @@
         setProgress("savingsScoreBar", savingsScore, 20);
         setProgress("stabilityScoreBar", stabilityScore, 15);
 
-        renderList(
-            "strengthsList",
-            result.strengths,
-            "No specific strengths were identified from the submitted information yet.",
-            "✓"
-        );
-
-        renderList(
-            "improvementsList",
-            result.improvements,
-            "No specific improvement items were returned. Continue reviewing your financial habits.",
-            "→"
-        );
+        if (Array.isArray(result.strengths) && result.strengths.length > 0) {
+            renderList("strengthsList", result.strengths, "Strengths recorded.", "✓");
+        }
+        if (Array.isArray(result.improvements) && result.improvements.length > 0) {
+            renderList("improvementsList", result.improvements, "No urgent areas.", "→");
+        }
     }
 
     function initialiseDashboard() {
         const now = new Date();
-
         setText(
             "currentDate",
             now.toLocaleDateString("en-IN", {
@@ -1715,32 +2156,27 @@
                 year: "numeric"
             })
         );
-
         setText("currentYear", now.getFullYear());
 
         try {
             const jsonElement = $("dashboard-data");
-            const raw = jsonElement
-                ? jsonElement.textContent.trim()
-                : "null";
+            const raw = jsonElement ? jsonElement.textContent.trim() : "null";
+            let result = (raw && raw !== "null") ? JSON.parse(raw) : null;
 
-            const result = raw ? JSON.parse(raw) : null;
+            if (!result) {
+                const storageRaw = sessionStorage.getItem("creditFitResult");
+                if (storageRaw) {
+                    result = JSON.parse(storageRaw);
+                }
+            }
 
             updateScore(result);
         } catch (error) {
-            console.error(
-                "Dashboard data could not be loaded:",
-                error
-            );
-
-            $("emptyState").classList.remove("hidden");
+            console.error("Dashboard data error:", error);
         }
     }
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        initialiseDashboard
-    );
+    document.addEventListener("DOMContentLoaded", initialiseDashboard);
 </script>
 
 </body>

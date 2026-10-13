@@ -3,161 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>FinTwin What-If Simulator | Expanded CreditFit360</title>
 
-    <title>What-if Simulator | CreditFit360</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #11141d;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-magenta: #f43f5e;
+            --neon-teal: #06b6d4;
+            --neon-lime: #84cc16;
+            --neon-blue: #3b82f6;
         }
 
         body {
-            background: #f4f7fb;
-            color: #172033;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
         }
 
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Sidebar */
         .sidebar {
+            width: 260px;
             position: fixed;
-            inset: 0 auto 0 0;
-            width: 245px;
-            padding: 25px 17px;
-            background: #101827;
-            color: white;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
             overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
         }
 
-        .logo {
-            margin: 0 10px 30px;
-            font-size: 25px;
-            font-weight: bold;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
         }
 
-        .logo span {
-            color: #4385ff;
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
         }
 
         .menu a {
-            display: block;
-            padding: 13px 12px;
-            margin-bottom: 5px;
-            border-radius: 8px;
-            color: #d8deea;
-            text-decoration: none;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
         }
 
         .menu a:hover {
-            background: #202c40;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .menu a.active {
-            background: #367cff;
-            color: white;
-            font-weight: bold;
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
         }
 
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
         .main {
-            margin-left: 245px;
-            padding: 30px;
-            max-width: 1500px;
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 34px 40px;
+            min-height: 100vh;
         }
 
         .header {
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
         .header h1 {
-            margin-bottom: 10px;
-            font-size: 30px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            margin-bottom: 4px;
         }
 
         .header p {
-            color: #687386;
-            line-height: 1.6;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .tag-pill {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            color: #fda4af;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
         }
 
         .notice {
             margin-bottom: 24px;
-            padding: 16px;
-            border-left: 4px solid #367cff;
-            border-radius: 8px;
-            background: #eaf2ff;
+            padding: 18px 22px;
+            border-left: 4px solid var(--neon-teal);
+            border-radius: 14px;
+            background: rgba(6, 182, 212, 0.08);
             line-height: 1.6;
+            color: #67e8f9;
+            font-size: 13px;
         }
 
         .card {
             margin-bottom: 24px;
-            padding: 25px;
-            border: 1px solid #e8edf4;
-            border-radius: 13px;
-            background: white;
-            box-shadow: 0 4px 16px rgba(0,0,0,.04);
+            padding: 28px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            background: var(--bg-card);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
         .card h2 {
-            margin-bottom: 8px;
-            font-size: 21px;
+            margin-bottom: 6px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .subtext {
             margin-bottom: 22px;
-            color: #758094;
-            font-size: 14px;
-            line-height: 1.6;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 22px;
+            gap: 20px;
+        }
+
+        @media(max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .field label {
-            display: block;
-            margin-bottom: 9px;
-            font-size: 14px;
-            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
         }
 
-        .field input {
+        .field input[type="number"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #d7deea;
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 14px;
             outline: none;
+            transition: all 0.2s;
         }
 
-        .field input:focus {
-            border-color: #367cff;
-            box-shadow: 0 0 0 3px rgba(54,124,255,.1);
-        }
-
-        .field small {
-            display: block;
-            margin-top: 6px;
-            color: #758094;
-            line-height: 1.5;
+        .field input[type="number"]:focus {
+            border-color: var(--neon-teal);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.3);
         }
 
         .range-row {
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
-        .range-row input {
+        .range-row input[type="range"] {
             width: 100%;
-            accent-color: #367cff;
+            accent-color: var(--neon-teal);
+            cursor: pointer;
         }
 
         .range-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 5px;
-            color: #758094;
-            font-size: 12px;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 11.5px;
         }
 
         .buttons {
@@ -168,29 +321,38 @@
         }
 
         button {
-            padding: 13px 19px;
+            padding: 12px 26px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
+            border-radius: 999px;
+            font-size: 13.5px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .primary {
-            background: #367cff;
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
             color: white;
+            box-shadow: 0 4px 18px rgba(244, 63, 94, 0.35);
         }
 
         .primary:hover {
-            background: #2869dc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.55);
         }
 
         .secondary {
-            border: 1px solid #d7deea;
-            background: white;
-            color: #172033;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
         }
 
+        .secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        /* Results section */
         .results {
             display: none;
             scroll-margin-top: 20px;
@@ -203,29 +365,42 @@
             margin-bottom: 24px;
         }
 
+        @media(max-width: 900px) {
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .metric {
             padding: 20px;
-            border: 1px solid #e8edf4;
-            border-radius: 12px;
-            background: white;
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            background: var(--bg-card-inner);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .metric p {
-            margin-bottom: 10px;
-            color: #687386;
-            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .metric strong {
             display: block;
-            font-size: 27px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
             overflow-wrap: anywhere;
         }
 
         .metric small {
             display: block;
-            margin-top: 8px;
-            color: #758094;
+            margin-top: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
         }
 
         .comparison {
@@ -234,740 +409,691 @@
             gap: 18px;
         }
 
+        @media(max-width: 700px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .score-box {
-            padding: 24px;
-            border: 1px solid #e4eaf2;
-            border-radius: 12px;
+            padding: 26px;
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
             text-align: center;
+            background: var(--bg-card-inner);
         }
 
         .score-box h3 {
-            margin-bottom: 15px;
-            font-size: 16px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-secondary);
         }
 
         .score {
-            font-size: 48px;
-            font-weight: bold;
-            color: #367cff;
+            font-size: 54px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .score-current {
+            color: #fda4af;
+        }
+
+        .score-scenario {
+            color: #67e8f9;
         }
 
         .outof {
-            color: #758094;
-            font-size: 13px;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-top: 4px;
         }
 
         .category {
             display: inline-block;
             margin-top: 14px;
-            padding: 8px 12px;
-            border-radius: 7px;
-            background: #edf3ff;
-            color: #245dcc;
-            font-size: 13px;
-            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .difference {
             margin-top: 22px;
             padding: 18px;
-            border-radius: 9px;
-            background: #f4f7fb;
+            border-radius: 14px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
             line-height: 1.7;
-        }
-
-        .breakdown-row {
-            margin-top: 21px;
-        }
-
-        .breakdown-head {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .track {
-            height: 10px;
-            overflow: hidden;
-            border-radius: 20px;
-            background: #e8edf4;
-        }
-
-        .fill {
-            width: 0;
-            height: 100%;
-            border-radius: 20px;
-            background: #367cff;
-            transition: width .4s;
+            color: #67e8f9;
+            font-size: 13.5px;
         }
 
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 18px;
+            font-size: 13.5px;
         }
 
         .comparison-table th,
         .comparison-table td {
-            padding: 13px 10px;
-            border-bottom: 1px solid #e8edf4;
+            padding: 13px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             text-align: left;
-            font-size: 14px;
         }
 
         .comparison-table th {
-            background: #f7f9fc;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+        }
+
+        .comparison-table td {
+            color: #cbd5e1;
         }
 
         .suggestions {
-            padding-left: 22px;
+            padding-left: 20px;
             line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 13.5px;
         }
 
         .suggestions li {
             margin-bottom: 8px;
         }
 
-        .disclaimer {
-            margin-top: 20px;
-            color: #758094;
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
         .error {
             display: none;
             margin-top: 16px;
-            padding: 13px;
-            border-radius: 8px;
-            background: #fff0f0;
-            color: #b42318;
+            padding: 13px 18px;
+            border-radius: 12px;
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #fda4af;
             line-height: 1.5;
-        }
-
-        @media(max-width: 1050px) {
-            .sidebar {
-                width: 210px;
-            }
-
-            .main {
-                margin-left: 210px;
-                padding: 20px;
-            }
-
-            .metrics {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media(max-width: 700px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 16px;
-            }
-
-            .grid,
-            .metrics,
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 10px 5px;
-                font-size: 12px;
-            }
+            font-size: 13px;
         }
     </style>
 </head>
 
 <body>
 
-<aside class="sidebar">
-    <div class="logo">CreditFit<span>360</span></div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <nav class="menu">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/personal-credit">Personal CreditFit</a>
-        <a href="/sme-credit-score">SME CreditScore</a>
-        <a href="/loan-readiness">Loan Readiness</a>
-        <a href="/credit-result">Reports</a>
-        <a href="/what-if-simulator" class="active">What-if Simulator</a>
-        <a href="#">Settings</a>
-        <a href="#">About Us</a>
-        <a href="#">Disclaimer</a>
-        <a href="/" style="margin-top:20px;background:#ff572b;color:white;text-align:center">Logout</a>
-    </nav>
-</aside>
-
-<main class="main">
-
-    <header class="header">
-        <h1>What-if Simulator</h1>
-        <p>Change your financial figures and compare an illustrative score before and after those changes.</p>
-    </header>
-
-    <div class="notice">
-        <strong>How it works:</strong>
-        Enter your current financial details, adjust the scenario values, then click
-        <strong>Run Simulation</strong> to compare both profiles.
-        This is a demo model, not a real credit-bureau score.
-    </div>
-
-    <section class="card">
-        <h2>1. Current Financial Profile</h2>
-        <p class="subtext">Enter your current figures. The simulator uses these as the baseline.</p>
-
-        <div class="grid">
-            <div class="field">
-                <label for="currentIncome">Monthly Income (₹)</label>
-                <input id="currentIncome" type="number" min="1" step="any" value="50000">
-            </div>
-
-            <div class="field">
-                <label for="currentExpenses">Monthly Expenses (₹)</label>
-                <input id="currentExpenses" type="number" min="0" step="any" value="20000">
-            </div>
-
-            <div class="field">
-                <label for="currentEMI">Existing Monthly EMI (₹)</label>
-                <input id="currentEMI" type="number" min="0" step="any" value="5000">
-            </div>
-
-            <div class="field">
-                <label for="currentSavings">Current Savings (₹)</label>
-                <input id="currentSavings" type="number" min="0" step="any" value="100000">
-            </div>
-
-            <div class="field">
-                <label for="currentCredit">Credit Score (300–900)</label>
-                <input id="currentCredit" type="number" min="300" max="900" step="1" value="750">
-            </div>
-
-            <div class="field">
-                <label for="essentialExpenses">Essential Monthly Expenses (₹)</label>
-                <input id="essentialExpenses" type="number" min="1" step="any" value="15000">
-            </div>
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
         </div>
-    </section>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
 
-    <section class="card">
-        <h2>2. Change Your Scenario</h2>
-        <p class="subtext">Try a different income, spending, EMI, savings or credit-score value.</p>
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator" class="active">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
 
-        <div class="grid">
-            <div class="field">
-                <label for="scenarioIncome">Scenario Monthly Income (₹)</label>
-                <input id="scenarioIncome" type="number" min="1" step="any" value="60000">
-                <div class="range-row">
-                    <input id="incomeRange" type="range" min="1" max="200000" value="60000">
-                    <div class="range-labels"><span>₹1</span><span>₹2,00,000</span></div>
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="header">
+            <div class="tag-pill">🔮 FinTwin Digital Scenario Sandbox</div>
+            <h1>Expanded What-If Simulator (FinTwin)</h1>
+            <p>Simulate income hikes, expense adjustments, debt reductions, and savings rates with instant score and runway recalculations.</p>
+        </header>
+
+        <div class="notice">
+            <strong>FinTwin Multi-Variable Engine:</strong>
+            Unlike simple calculators that only adjust EMI, FinTwin models your complete financial twin: basic income hikes, lifestyle spending cuts, savings rates, and debt paydowns.
+        </div>
+
+        <!-- 1. Baseline -->
+        <section class="card">
+            <h2>1. Current Financial Baseline</h2>
+            <p class="subtext">Your starting point before applying scenario adjustments.</p>
+
+            <div class="grid">
+                <div class="field">
+                    <label for="currentIncome"><span>Monthly Income (₹)</span><strong id="lblCurIncome">₹50,000</strong></label>
+                    <input id="currentIncome" type="number" min="1" step="500" value="50000">
+                </div>
+
+                <div class="field">
+                    <label for="currentExpenses"><span>Daily & Living Expenses (₹)</span><strong id="lblCurExpenses">₹20,000</strong></label>
+                    <input id="currentExpenses" type="number" min="0" step="500" value="20000">
+                </div>
+
+                <div class="field">
+                    <label for="currentEMI"><span>Existing Loan & Card EMIs (₹)</span><strong id="lblCurEMI">₹8,000</strong></label>
+                    <input id="currentEMI" type="number" min="0" step="500" value="8000">
+                </div>
+
+                <div class="field">
+                    <label for="currentSavings"><span>Liquid Savings Reserve (₹)</span><strong id="lblCurSavings">₹1,20,000</strong></label>
+                    <input id="currentSavings" type="number" min="0" step="5000" value="120000">
+                </div>
+
+                <div class="field">
+                    <label for="currentCredit"><span>Baseline Credit Bureau Score (300–900)</span><strong id="lblCurScore">720</strong></label>
+                    <input id="currentCredit" type="number" min="300" max="900" step="1" value="720">
+                </div>
+
+                <div class="field">
+                    <label for="essentialExpenses"><span>Essential Survival Expenses (₹)</span><strong id="lblCurEss">₹16,000</strong></label>
+                    <input id="essentialExpenses" type="number" min="1" step="500" value="16000">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. FinTwin Multi-Variable Scenario -->
+        <section class="card">
+            <h2>2. FinTwin Simulated Scenario Variables</h2>
+            <p class="subtext">Adjust the sliders to project changes in your income, lifestyle spending, savings rate, and debts.</p>
+
+            <div class="grid">
+                <!-- Variable 1: Income Hike -->
+                <div class="field">
+                    <label for="scenarioIncome"><span>Projected Monthly Income (₹)</span><strong id="lblScenIncome">₹65,000</strong></label>
+                    <input id="scenarioIncome" type="number" min="1" step="1000" value="65000">
+                    <div class="range-row">
+                        <input id="incomeRange" type="range" min="10000" max="250000" step="1000" value="65000">
+                        <div class="range-labels"><span>₹10,000</span><span>₹2,50,000</span></div>
+                    </div>
+                </div>
+
+                <!-- Variable 2: Daily & Monthly Living Expenses -->
+                <div class="field">
+                    <label for="scenarioExpenses"><span>Optimized Living Expenses (₹)</span><strong id="lblScenExpenses">₹17,000</strong></label>
+                    <input id="scenarioExpenses" type="number" min="0" step="500" value="17000">
+                    <div class="range-row">
+                        <input id="expensesRange" type="range" min="5000" max="150000" step="500" value="17000">
+                        <div class="range-labels"><span>₹5,000</span><span>₹1,50,000</span></div>
+                    </div>
+                </div>
+
+                <!-- Variable 3: EMI & Debt Servicing -->
+                <div class="field">
+                    <label for="scenarioEMI"><span>Debt Servicing / Reduced EMI (₹)</span><strong id="lblScenEMI">₹4,000</strong></label>
+                    <input id="scenarioEMI" type="number" min="0" step="500" value="4000">
+                    <div class="range-row">
+                        <input id="emiRange" type="range" min="0" max="100000" step="500" value="4000">
+                        <div class="range-labels"><span>₹0 (Debt-Free)</span><span>₹1,00,000</span></div>
+                    </div>
+                </div>
+
+                <!-- Variable 4: Savings Reserve -->
+                <div class="field">
+                    <label for="scenarioSavings"><span>Accumulated Savings (₹)</span><strong id="lblScenSavings">₹2,00,000</strong></label>
+                    <input id="scenarioSavings" type="number" min="0" step="5000" value="200000">
+                    <div class="range-row">
+                        <input id="savingsRange" type="range" min="0" max="1500000" step="5000" value="200000">
+                        <div class="range-labels"><span>₹0</span><span>₹15,00,000</span></div>
+                    </div>
+                </div>
+
+                <!-- Variable 5: Bureau Score Projection -->
+                <div class="field">
+                    <label for="scenarioCredit"><span>Projected Bureau Score (300–900)</span><strong id="lblScenScore">780</strong></label>
+                    <input id="scenarioCredit" type="number" min="300" max="900" step="1" value="780">
+                    <div class="range-row">
+                        <input id="creditRange" type="range" min="300" max="900" value="780">
+                        <div class="range-labels"><span>300 (Subprime)</span><span>900 (Elite)</span></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="field">
-                <label for="scenarioExpenses">Scenario Monthly Expenses (₹)</label>
-                <input id="scenarioExpenses" type="number" min="0" step="any" value="18000">
-                <div class="range-row">
-                    <input id="expensesRange" type="range" min="0" max="100000" value="18000">
-                    <div class="range-labels"><span>₹0</span><span>₹1,00,000</span></div>
+            <div class="buttons">
+                <button class="primary" id="runButton" type="button">Run FinTwin Simulation →</button>
+                <button class="secondary" id="resetButton" type="button">Reset to Defaults</button>
+            </div>
+
+            <div id="errorMessage" class="error" role="alert"></div>
+        </section>
+
+        <!-- Simulation Results -->
+        <section id="results" class="results">
+
+            <div class="tag-pill" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: #67e8f9;">
+                📊 Live Simulation Outcomes
+            </div>
+            <h2 style="font-size: 24px; margin-bottom: 20px;">FinTwin Impact Analysis</h2>
+
+            <!-- Metric Cards -->
+            <div class="metrics">
+                <div class="metric">
+                    <p>Current Monthly Surplus</p>
+                    <strong id="currentBalance">₹0</strong>
+                    <small>Take-home cash buffer</small>
+                </div>
+
+                <div class="metric">
+                    <p>Simulated Monthly Surplus</p>
+                    <strong id="scenarioBalance" style="color: #67e8f9;">₹0</strong>
+                    <small>Projected extra surplus</small>
+                </div>
+
+                <div class="metric">
+                    <p>CreditFit Score Lift</p>
+                    <strong id="scoreDifference" style="color: #bef264;">+0</strong>
+                    <small>Estimated improvement</small>
+                </div>
+
+                <div class="metric">
+                    <p>Current EMI Burden</p>
+                    <strong id="currentBurden">0%</strong>
+                    <small>Debt-to-income share</small>
+                </div>
+
+                <div class="metric">
+                    <p>Simulated EMI Burden</p>
+                    <strong id="scenarioBurden" style="color: #67e8f9;">0%</strong>
+                    <small>Target debt load</small>
+                </div>
+
+                <div class="metric">
+                    <p>Emergency Runway</p>
+                    <strong id="scenarioCoverage" style="color: #34d399;">0 months</strong>
+                    <small>Savings divided by essentials</small>
                 </div>
             </div>
 
-            <div class="field">
-                <label for="scenarioEMI">Scenario Existing EMI (₹)</label>
-                <input id="scenarioEMI" type="number" min="0" step="any" value="4000">
-                <div class="range-row">
-                    <input id="emiRange" type="range" min="0" max="100000" value="4000">
-                    <div class="range-labels"><span>₹0</span><span>₹1,00,000</span></div>
-                </div>
-            </div>
+            <!-- Before vs After -->
+            <div class="card">
+                <h2>Before vs After Profile Comparison</h2>
+                <p class="subtext">Algorithmic scoring evaluates payment history, utilization, DTI, and emergency coverage.</p>
 
-            <div class="field">
-                <label for="scenarioSavings">Scenario Savings (₹)</label>
-                <input id="scenarioSavings" type="number" min="0" step="any" value="150000">
-                <div class="range-row">
-                    <input id="savingsRange" type="range" min="0" max="1000000" value="150000">
-                    <div class="range-labels"><span>₹0</span><span>₹10,00,000</span></div>
-                </div>
-            </div>
+                <div class="comparison">
+                    <div class="score-box">
+                        <h3>Baseline Score</h3>
+                        <div id="currentScore" class="score score-current">0</div>
+                        <div class="outof">out of 100</div>
+                        <div id="currentCategory" class="category">-</div>
+                    </div>
 
-            <div class="field">
-                <label for="scenarioCredit">Scenario Credit Score (300–900)</label>
-                <input id="scenarioCredit" type="number" min="300" max="900" step="1" value="780">
-                <div class="range-row">
-                    <input id="creditRange" type="range" min="300" max="900" value="780">
-                    <div class="range-labels"><span>300</span><span>900</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="buttons">
-            <button class="primary" id="runButton" type="button">Run Simulation</button>
-            <button class="secondary" id="resetButton" type="button">Reset Example</button>
-        </div>
-
-        <div id="errorMessage" class="error" role="alert"></div>
-    </section>
-
-    <section id="results" class="results">
-
-        <h2 style="margin-bottom:20px">Simulation Results</h2>
-
-        <div class="metrics">
-            <div class="metric">
-                <p>Current Monthly Balance</p>
-                <strong id="currentBalance">₹0</strong>
-                <small>Income minus expenses and EMI</small>
-            </div>
-
-            <div class="metric">
-                <p>Scenario Monthly Balance</p>
-                <strong id="scenarioBalance">₹0</strong>
-                <small>Income minus expenses and EMI</small>
-            </div>
-
-            <div class="metric">
-                <p>Score Difference</p>
-                <strong id="scoreDifference">0</strong>
-                <small>Scenario score minus current score</small>
-            </div>
-
-            <div class="metric">
-                <p>Current EMI Burden</p>
-                <strong id="currentBurden">0%</strong>
-                <small>Existing EMI as a share of income</small>
-            </div>
-
-            <div class="metric">
-                <p>Scenario EMI Burden</p>
-                <strong id="scenarioBurden">0%</strong>
-                <small>Scenario EMI as a share of income</small>
-            </div>
-
-            <div class="metric">
-                <p>Scenario Savings Coverage</p>
-                <strong id="scenarioCoverage">0 months</strong>
-                <small>Savings divided by essential expenses</small>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>Before vs After</h2>
-            <p class="subtext">Scores are calculated using the same illustrative model.</p>
-
-            <div class="comparison">
-                <div class="score-box">
-                    <h3>Current Profile</h3>
-                    <div id="currentScore" class="score">0</div>
-                    <div class="outof">out of 100</div>
-                    <div id="currentCategory" class="category">-</div>
+                    <div class="score-box">
+                        <h3>FinTwin Projected Score</h3>
+                        <div id="scenarioScore" class="score score-scenario">0</div>
+                        <div class="outof">out of 100</div>
+                        <div id="scenarioCategory" class="category" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: #67e8f9;">-</div>
+                    </div>
                 </div>
 
-                <div class="score-box">
-                    <h3>Scenario Profile</h3>
-                    <div id="scenarioScore" class="score">0</div>
-                    <div class="outof">out of 100</div>
-                    <div id="scenarioCategory" class="category">-</div>
-                </div>
+                <div id="differenceMessage" class="difference"></div>
             </div>
 
-            <div id="differenceMessage" class="difference"></div>
-        </div>
+            <!-- Detail Breakdown Table -->
+            <div class="card">
+                <h2>Detailed Metric Transformation Matrix</h2>
+                <div id="breakdown"></div>
 
-        <div class="card">
-            <h2>Score Component Comparison</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Current Baseline</th>
+                            <th>FinTwin Projected</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTable"></tbody>
+                </table>
+            </div>
 
-            <div id="breakdown"></div>
+            <!-- Suggestions -->
+            <div class="card">
+                <h2>FinTwin AI Strategic Recommendations</h2>
+                <ul id="suggestions" class="suggestions"></ul>
+            </div>
 
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Current</th>
-                        <th>Scenario</th>
-                    </tr>
-                </thead>
-                <tbody id="comparisonTable"></tbody>
-            </table>
-        </div>
+        </section>
 
-        <div class="card">
-            <h2>Suggestions</h2>
-            <ul id="suggestions" class="suggestions"></ul>
-        </div>
+    </main>
 
-        <p class="disclaimer">
-            Disclaimer: This feature is an educational demonstration. Its score is not a CIBIL score,
-            lender score or loan approval prediction. Actual lending decisions depend on lender rules,
-            verified information and other factors. Do not use simulated results as a guarantee of credit eligibility.
-        </p>
-    </section>
+    <script id="session-data" type="application/json">{{ result | default(None) | tojson }}</script>
 
-</main>
+    <script>
+        "use strict";
 
-<script>
-"use strict";
+        const $ = id => document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-
-const defaultValues = {
-    currentIncome: 50000,
-    currentExpenses: 20000,
-    currentEMI: 5000,
-    currentSavings: 100000,
-    currentCredit: 750,
-    essentialExpenses: 15000,
-    scenarioIncome: 60000,
-    scenarioExpenses: 18000,
-    scenarioEMI: 4000,
-    scenarioSavings: 150000,
-    scenarioCredit: 780
-};
-
-const pairs = [
-    ["scenarioIncome", "incomeRange"],
-    ["scenarioExpenses", "expensesRange"],
-    ["scenarioEMI", "emiRange"],
-    ["scenarioSavings", "savingsRange"],
-    ["scenarioCredit", "creditRange"]
-];
-
-function currency(value) {
-    return new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 0
-    }).format(value);
-}
-
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
-function category(score) {
-    if (score >= 80) return "Excellent Demo Profile";
-    if (score >= 70) return "Good Demo Profile";
-    if (score >= 50) return "Moderate Demo Profile";
-    return "Needs Improvement";
-}
-
-function numberValue(id) {
-    return Number($(id).value);
-}
-
-function getProfile(prefix) {
-    if (prefix === "current") {
-        return {
-            income: numberValue("currentIncome"),
-            expenses: numberValue("currentExpenses"),
-            emi: numberValue("currentEMI"),
-            savings: numberValue("currentSavings"),
-            credit: numberValue("currentCredit"),
-            essential: numberValue("essentialExpenses")
+        const defaultValues = {
+            currentIncome: 50000,
+            currentExpenses: 20000,
+            currentEMI: 8000,
+            currentSavings: 120000,
+            currentCredit: 720,
+            essentialExpenses: 16000,
+            scenarioIncome: 65000,
+            scenarioExpenses: 17000,
+            scenarioEMI: 4000,
+            scenarioSavings: 200000,
+            scenarioCredit: 780
         };
-    }
 
-    return {
-        income: numberValue("scenarioIncome"),
-        expenses: numberValue("scenarioExpenses"),
-        emi: numberValue("scenarioEMI"),
-        savings: numberValue("scenarioSavings"),
-        credit: numberValue("scenarioCredit"),
-        essential: numberValue("essentialExpenses")
-    };
-}
+        const pairs = [
+            ["scenarioIncome", "incomeRange", "lblScenIncome"],
+            ["scenarioExpenses", "expensesRange", "lblScenExpenses"],
+            ["scenarioEMI", "emiRange", "lblScenEMI"],
+            ["scenarioSavings", "savingsRange", "lblScenSavings"],
+            ["scenarioCredit", "creditRange", "lblScenScore"]
+        ];
 
-function calculateProfile(p) {
-    const balance = p.income - p.expenses - p.emi;
-    const burden = (p.emi / p.income) * 100;
-    const coverage = p.savings / p.essential;
-
-    let creditPoints;
-    if (p.credit >= 800) creditPoints = 25;
-    else if (p.credit >= 750) creditPoints = 23;
-    else if (p.credit >= 700) creditPoints = 19;
-    else if (p.credit >= 650) creditPoints = 14;
-    else if (p.credit >= 600) creditPoints = 9;
-    else creditPoints = 4;
-
-    let emiPoints;
-    if (burden <= 15) emiPoints = 30;
-    else if (burden <= 25) emiPoints = 26;
-    else if (burden <= 35) emiPoints = 20;
-    else if (burden <= 45) emiPoints = 12;
-    else emiPoints = 4;
-
-    const balanceRatio = balance / p.income;
-
-    let cashPoints;
-    if (balanceRatio >= 0.30) cashPoints = 20;
-    else if (balanceRatio >= 0.20) cashPoints = 17;
-    else if (balanceRatio >= 0.10) cashPoints = 13;
-    else if (balanceRatio > 0) cashPoints = 8;
-    else cashPoints = 2;
-
-    let savingsPoints;
-    if (coverage >= 6) savingsPoints = 15;
-    else if (coverage >= 3) savingsPoints = 12;
-    else if (coverage >= 1) savingsPoints = 8;
-    else savingsPoints = 3;
-
-    const total = clamp(
-        creditPoints + emiPoints + cashPoints + savingsPoints + 10,
-        0,
-        100
-    );
-
-    return {
-        balance,
-        burden,
-        coverage,
-        creditPoints,
-        emiPoints,
-        cashPoints,
-        savingsPoints,
-        total,
-        category: category(total)
-    };
-}
-
-function validateInputs() {
-    const values = [
-        "currentIncome", "currentExpenses", "currentEMI",
-        "currentSavings", "currentCredit", "essentialExpenses",
-        "scenarioIncome", "scenarioExpenses", "scenarioEMI",
-        "scenarioSavings", "scenarioCredit"
-    ];
-
-    for (const id of values) {
-        const element = $(id);
-        const value = Number(element.value);
-
-        if (element.value.trim() === "" || !Number.isFinite(value)) {
-            return "Please fill every field with a valid number.";
+        function currency(value) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(value);
         }
 
-        if (value < 0) {
-            return "Financial values cannot be negative.";
+        function category(score) {
+            if (score >= 80) return "Excellent Demo Profile";
+            if (score >= 70) return "Good Demo Profile";
+            if (score >= 50) return "Moderate Demo Profile";
+            return "Needs Improvement";
         }
-    }
 
-    if (
-        numberValue("currentIncome") <= 0 ||
-        numberValue("scenarioIncome") <= 0 ||
-        numberValue("essentialExpenses") <= 0
-    ) {
-        return "Income and essential expenses must be greater than zero.";
-    }
-
-    for (const id of ["currentCredit", "scenarioCredit"]) {
-        const score = numberValue(id);
-        if (!Number.isInteger(score) || score < 300 || score > 900) {
-            return "Credit scores must be whole numbers between 300 and 900.";
+        function numberValue(id) {
+            return Number($(id).value) || 0;
         }
-    }
 
-    return null;
-}
+        function getProfile(prefix) {
+            if (prefix === "current") {
+                return {
+                    income: numberValue("currentIncome"),
+                    expenses: numberValue("currentExpenses"),
+                    emi: numberValue("currentEMI"),
+                    savings: numberValue("currentSavings"),
+                    credit: numberValue("currentCredit"),
+                    essential: numberValue("essentialExpenses")
+                };
+            }
 
-function showBreakdown(name, current, scenario, maximum) {
-    const difference = scenario - current;
-    const percentage = points => (points / maximum) * 100;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "breakdown-row";
-
-    const heading = document.createElement("div");
-    heading.className = "breakdown-head";
-
-    const title = document.createElement("span");
-    title.textContent = name;
-
-    const values = document.createElement("strong");
-    values.textContent =
-        current + "/" + maximum + " → " +
-        scenario + "/" + maximum +
-        " (" + (difference > 0 ? "+" : "") + difference + ")";
-
-    heading.append(title, values);
-
-    const track = document.createElement("div");
-    track.className = "track";
-
-    const fill = document.createElement("div");
-    fill.className = "fill";
-    fill.style.width = percentage(current) + "%";
-
-    track.appendChild(fill);
-
-    const scenarioTrack = document.createElement("div");
-    scenarioTrack.className = "track";
-    scenarioTrack.style.marginTop = "7px";
-
-    const scenarioFill = document.createElement("div");
-    scenarioFill.className = "fill";
-    scenarioFill.style.width = percentage(scenario) + "%";
-    scenarioFill.style.background = "#20a36a";
-
-    scenarioTrack.appendChild(scenarioFill);
-    wrapper.append(heading, track, scenarioTrack);
-    $("breakdown").appendChild(wrapper);
-}
-
-function addTableRow(label, current, scenario) {
-    const row = document.createElement("tr");
-
-    [label, current, scenario].forEach(value => {
-        const cell = document.createElement("td");
-        cell.textContent = value;
-        row.appendChild(cell);
-    });
-
-    $("comparisonTable").appendChild(row);
-}
-
-function addSuggestion(message) {
-    const item = document.createElement("li");
-    item.textContent = message;
-    $("suggestions").appendChild(item);
-}
-
-function runSimulation() {
-    $("errorMessage").style.display = "none";
-
-    const error = validateInputs();
-
-    if (error) {
-        $("errorMessage").textContent = error;
-        $("errorMessage").style.display = "block";
-        return;
-    }
-
-    const current = calculateProfile(getProfile("current"));
-    const scenario = calculateProfile(getProfile("scenario"));
-    const difference = scenario.total - current.total;
-
-    $("currentScore").textContent = current.total;
-    $("scenarioScore").textContent = scenario.total;
-    $("currentCategory").textContent = current.category;
-    $("scenarioCategory").textContent = scenario.category;
-
-    $("currentBalance").textContent = currency(current.balance);
-    $("scenarioBalance").textContent = currency(scenario.balance);
-    $("scoreDifference").textContent =
-        (difference > 0 ? "+" : "") + difference + " points";
-
-    $("currentBurden").textContent = current.burden.toFixed(1) + "%";
-    $("scenarioBurden").textContent = scenario.burden.toFixed(1) + "%";
-    $("scenarioCoverage").textContent =
-        scenario.coverage.toFixed(1) + " months";
-
-    let message;
-
-    if (difference > 0) {
-        message = "The scenario score is " + difference +
-            " point(s) higher than the current score in this demo model.";
-    } else if (difference < 0) {
-        message = "The scenario score is " + Math.abs(difference) +
-            " point(s) lower than the current score in this demo model.";
-    } else {
-        message = "The scenario and current scores are equal in this demo model.";
-    }
-
-    if (scenario.balance < 0) {
-        message += " The scenario has a negative monthly balance; review expenses and obligations.";
-    }
-
-    $("differenceMessage").textContent = message;
-
-    $("breakdown").replaceChildren();
-    showBreakdown("Credit Profile", current.creditPoints, scenario.creditPoints, 25);
-    showBreakdown("EMI Affordability", current.emiPoints, scenario.emiPoints, 30);
-    showBreakdown("Monthly Cash Flow", current.cashPoints, scenario.cashPoints, 20);
-    showBreakdown("Emergency Savings", current.savingsPoints, scenario.savingsPoints, 15);
-
-    $("comparisonTable").replaceChildren();
-
-    addTableRow("Monthly Income", currency(numberValue("currentIncome")), currency(numberValue("scenarioIncome")));
-    addTableRow("Monthly Expenses", currency(numberValue("currentExpenses")), currency(numberValue("scenarioExpenses")));
-    addTableRow("Existing EMI", currency(numberValue("currentEMI")), currency(numberValue("scenarioEMI")));
-    addTableRow("Savings", currency(numberValue("currentSavings")), currency(numberValue("scenarioSavings")));
-    addTableRow("Credit Score", numberValue("currentCredit"), numberValue("scenarioCredit"));
-    addTableRow("Monthly Balance", currency(current.balance), currency(scenario.balance));
-    addTableRow("EMI Burden", current.burden.toFixed(1) + "%", scenario.burden.toFixed(1) + "%");
-
-    $("suggestions").replaceChildren();
-
-    if (scenario.balance < 0) {
-        addSuggestion("Scenario expenses and EMI exceed monthly income. Review the budget before taking on more obligations.");
-    } else if (scenario.balance < scenario.income * 0.1) {
-        addSuggestion("The scenario leaves a relatively small monthly balance. Allow for unexpected expenses.");
-    }
-
-    if (scenario.burden > 35) {
-        addSuggestion("Scenario EMI is a large share of income. Review the affordability of monthly repayments.");
-    }
-
-    if (scenario.coverage < 3) {
-        addSuggestion("Consider whether an emergency fund covering several months of essential expenses is feasible.");
-    }
-
-    if (scenario.credit < current.credit) {
-        addSuggestion("The scenario assumes a lower credit score. Keep credit-report information accurate and review payment history.");
-    }
-
-    if ($("suggestions").children.length === 0) {
-        addSuggestion("No major warning was triggered by this simplified model. Real-life affordability still depends on your full budget and loan terms.");
-    }
-
-    $("results").style.display = "block";
-    $("results").scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-pairs.forEach(([numberId, rangeId]) => {
-    $(rangeId).addEventListener("input", () => {
-        $(numberId).value = $(rangeId).value;
-    });
-
-    $(numberId).addEventListener("input", () => {
-        const value = Number($(numberId).value);
-        const min = Number($(rangeId).min);
-        const max = Number($(rangeId).max);
-
-        if (Number.isFinite(value)) {
-            $(rangeId).value = clamp(value, min, max);
+            return {
+                income: numberValue("scenarioIncome"),
+                expenses: numberValue("scenarioExpenses"),
+                emi: numberValue("scenarioEMI"),
+                savings: numberValue("scenarioSavings"),
+                credit: numberValue("scenarioCredit"),
+                essential: numberValue("essentialExpenses")
+            };
         }
-    });
-});
 
-$("runButton").addEventListener("click", runSimulation);
+        function calculateProfile(p) {
+            const balance = p.income - p.expenses - p.emi;
+            const burden = p.income > 0 ? (p.emi / p.income) * 100 : 0;
+            const coverage = p.essential > 0 ? p.savings / p.essential : 0;
 
-$("resetButton").addEventListener("click", () => {
-    Object.entries(defaultValues).forEach(([id, value]) => {
-        $(id).value = value;
-    });
+            let creditPoints = 4;
+            if (p.credit >= 800) creditPoints = 25;
+            else if (p.credit >= 750) creditPoints = 23;
+            else if (p.credit >= 700) creditPoints = 19;
+            else if (p.credit >= 650) creditPoints = 14;
+            else if (p.credit >= 600) creditPoints = 9;
 
-    pairs.forEach(([numberId, rangeId]) => {
-        $(rangeId).value = $(numberId).value;
-    });
+            let emiPoints = 4;
+            if (burden <= 15) emiPoints = 30;
+            else if (burden <= 25) emiPoints = 26;
+            else if (burden <= 35) emiPoints = 20;
+            else if (burden <= 45) emiPoints = 12;
 
-    $("results").style.display = "none";
-    $("errorMessage").style.display = "none";
-});
+            const balanceRatio = p.income > 0 ? balance / p.income : 0;
+            let balancePoints = 2;
+            if (balanceRatio >= 0.40) balancePoints = 25;
+            else if (balanceRatio >= 0.25) balancePoints = 20;
+            else if (balanceRatio >= 0.15) balancePoints = 15;
+            else if (balanceRatio >= 0.05) balancePoints = 9;
 
-</script>
+            let savingsPoints = 3;
+            if (coverage >= 6) savingsPoints = 20;
+            else if (coverage >= 4) savingsPoints = 16;
+            else if (coverage >= 2) savingsPoints = 12;
+            else if (coverage >= 1) savingsPoints = 7;
 
+            const totalScore = Math.min(100, Math.max(0, creditPoints + emiPoints + balancePoints + savingsPoints));
+
+            return {
+                score: Math.round(totalScore),
+                balance: Math.round(balance),
+                burden: burden,
+                coverage: coverage,
+                creditPoints,
+                emiPoints,
+                balancePoints,
+                savingsPoints
+            };
+        }
+
+        function runSimulation() {
+            const current = calculateProfile(getProfile("current"));
+            const scenario = calculateProfile(getProfile("scenario"));
+
+            $("results").style.display = "block";
+
+            $("currentBalance").textContent = currency(current.balance);
+            $("scenarioBalance").textContent = currency(scenario.balance);
+
+            const scoreDiff = scenario.score - current.score;
+            $("scoreDifference").textContent = (scoreDiff >= 0 ? "+" : "") + scoreDiff + " Pts";
+            $("scoreDifference").style.color = scoreDiff >= 0 ? "#bef264" : "#fda4af";
+
+            $("currentBurden").textContent = current.burden.toFixed(1) + "%";
+            $("scenarioBurden").textContent = scenario.burden.toFixed(1) + "%";
+
+            $("scenarioCoverage").textContent = scenario.coverage.toFixed(1) + " months";
+
+            $("currentScore").textContent = current.score;
+            $("scenarioScore").textContent = scenario.score;
+
+            $("currentCategory").textContent = category(current.score);
+            $("scenarioCategory").textContent = category(scenario.score);
+
+            let msg = "";
+            if (scoreDiff > 0) {
+                msg = "🚀 FinTwin projects a +" + scoreDiff + " point increase in your estimated health index! Lowering EMI obligations and boosting surplus creates direct borrowing headroom.";
+            } else if (scoreDiff < 0) {
+                msg = "⚠️ FinTwin indicates a score decline of " + Math.abs(scoreDiff) + " points. Higher debt burden or diminished emergency reserves constrain your profile.";
+            } else {
+                msg = "⚖️ Both profiles score identically under the model. Consider shifting surplus into savings to trigger an upward milestone.";
+            }
+            $("differenceMessage").textContent = msg;
+
+            // Comparison table rows
+            const table = $("comparisonTable");
+            table.replaceChildren();
+
+            const rows = [
+                ["Monthly Net Income", currency(numberValue("currentIncome")), currency(numberValue("scenarioIncome"))],
+                ["Living Expenses", currency(numberValue("currentExpenses")), currency(numberValue("scenarioExpenses"))],
+                ["Monthly EMI Debt", currency(numberValue("currentEMI")), currency(numberValue("scenarioEMI"))],
+                ["Monthly Surplus Buffer", currency(current.balance), currency(scenario.balance)],
+                ["EMI Burden Ratio", current.burden.toFixed(1) + "%", scenario.burden.toFixed(1) + "%"],
+                ["Emergency Reserve Coverage", current.coverage.toFixed(1) + " Months", scenario.coverage.toFixed(1) + " Months"],
+                ["Credit Bureau Score", numberValue("currentCredit"), numberValue("scenarioCredit")],
+                ["Estimated Total Score", current.score + " / 100", scenario.score + " / 100"]
+            ];
+
+            rows.forEach(([label, cur, scen]) => {
+                const tr = document.createElement("tr");
+                const td1 = document.createElement("td");
+                td1.textContent = label;
+                const td2 = document.createElement("td");
+                td2.textContent = cur;
+                const td3 = document.createElement("td");
+                td3.textContent = scen;
+                td3.style.color = "#67e8f9";
+                td3.style.fontWeight = "600";
+                tr.append(td1, td2, td3);
+                table.appendChild(tr);
+            });
+
+            // Suggestions
+            const suggList = $("suggestions");
+            suggList.replaceChildren();
+
+            const suggestions = [];
+            if (scenario.burden > 35) {
+                suggestions.push("Focus on prepaying high-interest revolving card debts to bring your debt burden ratio under 30%.");
+            } else {
+                suggestions.push("Your simulated debt-to-income ratio is in a healthy, prime lending corridor.");
+            }
+            if (scenario.coverage < 3) {
+                suggestions.push("Aim to build emergency savings towards at least 3-6 months of essential living expenses.");
+            } else {
+                suggestions.push("Your emergency buffer offers solid operational resilience against liquidity shocks.");
+            }
+            suggestions.push("Utilize Wealth Path to establish targeted milestones for long-term compounding.");
+
+            suggestions.forEach(s => {
+                const li = document.createElement("li");
+                li.textContent = s;
+                suggList.appendChild(li);
+            });
+
+            $("results").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function initSync() {
+            pairs.forEach(([numId, rangeId, lblId]) => {
+                const num = $(numId);
+                const range = $(rangeId);
+
+                const sync = (val) => {
+                    num.value = val;
+                    range.value = val;
+                    if (lblId && $(lblId)) {
+                        $(lblId).textContent = numId.includes("Credit") ? val : currency(Number(val));
+                    }
+                };
+
+                num.addEventListener("input", e => sync(e.target.value));
+                range.addEventListener("input", e => sync(e.target.value));
+            });
+
+            $("runButton").addEventListener("click", runSimulation);
+            $("resetButton").addEventListener("click", () => {
+                Object.keys(defaultValues).forEach(k => {
+                    if ($(k)) $(k).value = defaultValues[k];
+                });
+                pairs.forEach(([numId, rangeId, lblId]) => {
+                    $(rangeId).value = $(numId).value;
+                    if (lblId && $(lblId)) {
+                        $(lblId).textContent = numId.includes("Credit") ? $(numId).value : currency(Number($(numId).value));
+                    }
+                });
+                runSimulation();
+            });
+
+            // Hydrate from session
+            try {
+                const raw = $("session-data").textContent.trim();
+                let data = (raw && raw !== "null") ? JSON.parse(raw) : null;
+                if (!data) {
+                    const local = sessionStorage.getItem("creditFitResult");
+                    if (local) data = JSON.parse(local);
+                }
+                if (data) {
+                    if (data.monthly_income) $("currentIncome").value = data.monthly_income;
+                    if (data.existing_emi) $("currentEMI").value = data.existing_emi;
+                    if (data.total_savings) $("currentSavings").value = data.total_savings;
+                    if (data.cibil_score) $("currentCredit").value = data.cibil_score;
+                    if (data.essential_expenses) $("essentialExpenses").value = data.essential_expenses;
+                }
+            } catch(e) {
+                console.error("Hydration error:", e);
+            }
+
+            runSimulation();
+        }
+
+        document.addEventListener("DOMContentLoaded", initSync);
+    </script>
 </body>
 </html>

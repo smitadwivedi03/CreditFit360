@@ -3,166 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
 
     <title>Loan Readiness | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background: #f5f7fb;
-            color: #172033;
+            background: #07080d;
+            color: #f8fafc;
         }
 
         /* SIDEBAR */
 
         .sidebar {
+            width: 260px;
             position: fixed;
             top: 0;
-            bottom: 0;
             left: 0;
-            width: 250px;
-            overflow-y: auto;
-            padding: 25px 17px;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             color: white;
-            background: #101827;
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
         }
 
-        .logo {
-            margin: 0 10px 30px;
-            font-size: 25px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: #64748b;
+            font-size: 10.5px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
         }
 
-        .logo span {
-            color: #4385ff;
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
         }
 
         .menu a {
-            display: block;
-            margin-bottom: 5px;
-            padding: 14px 12px;
-            border-radius: 9px;
-            color: #d8deea;
-            text-decoration: none;
-            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
         }
 
         .menu a:hover {
-            background: #202c40;
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .menu a.active {
-            background: #367cff;
-            color: white;
-            font-weight: bold;
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
         }
 
-        .menu .logout {
-            margin-top: 25px;
-            background: #ff572b;
-            color: white;
-            text-align: center;
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: #f8fafc;
         }
 
         /* MAIN */
 
         .main {
-            margin-left: 250px;
-            padding: 32px;
+            margin-left: 260px;
+            padding: 35px 40px;
             max-width: 1600px;
         }
 
         .page-header {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
         }
 
         .page-header h1 {
-            margin-bottom: 9px;
-            font-size: 31px;
+            margin-bottom: 6px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
         }
 
         .page-header p {
-            color: #697386;
+            color: #94a3b8;
             line-height: 1.6;
+            font-size: 14px;
         }
 
         .notice {
             margin-bottom: 25px;
-            padding: 17px 19px;
-            border-left: 5px solid #367cff;
-            border-radius: 8px;
-            background: #edf4ff;
-            color: #334155;
+            padding: 16px 20px;
+            border-left: 4px solid #84cc16;
+            border-radius: 12px;
+            background: rgba(132, 204, 22, 0.08);
+            color: #ecfccb;
             line-height: 1.6;
+            font-size: 13px;
         }
 
         /* FORM CARD */
 
         .card {
             margin-bottom: 25px;
-            padding: 26px;
-            border: 1px solid #e9edf3;
-            border-radius: 14px;
-            background: white;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            background: #0f121a;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
         .card h2 {
-            margin-bottom: 8px;
-            font-size: 21px;
+            margin-bottom: 6px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .card-description {
-            margin-bottom: 23px;
-            color: #7a8494;
-            font-size: 14px;
+            margin-bottom: 22px;
+            color: #94a3b8;
+            font-size: 13.5px;
             line-height: 1.6;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 21px;
+            gap: 20px;
         }
 
         .field label {
             display: block;
             margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
         }
 
         .field input,
         .field select {
             width: 100%;
             min-height: 46px;
-            padding: 12px;
-            border: 1px solid #d9e0e9;
-            border-radius: 8px;
-            background: white;
-            color: #172033;
-            font-size: 15px;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 14px;
             outline: none;
+            transition: all 0.2s;
         }
 
         .field input:focus,
         .field select:focus {
-            border-color: #367cff;
-            box-shadow: 0 0 0 3px rgba(54, 124, 255, 0.10);
+            border-color: #84cc16;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 16px rgba(132, 204, 22, 0.35);
         }
 
         .field small {
             display: block;
             margin-top: 6px;
-            color: #7a8494;
+            color: #64748b;
             line-height: 1.4;
+            font-size: 12px;
         }
 
         .field.full {
@@ -179,28 +281,36 @@
         }
 
         .btn {
-            min-height: 47px;
-            padding: 13px 20px;
+            min-height: 46px;
+            padding: 12px 24px;
             border: 0;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .btn-primary {
-            background: #367cff;
+            background: linear-gradient(135deg, #84cc16 0%, #10b981 100%);
             color: white;
+            box-shadow: 0 4px 18px rgba(132, 204, 22, 0.35);
         }
 
         .btn-primary:hover {
-            background: #2869df;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 204, 22, 0.55);
         }
 
         .btn-secondary {
-            border: 1px solid #d9e0e9;
-            background: white;
-            color: #263449;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
         }
 
         /* RESULTS */
@@ -415,20 +525,96 @@
     <!-- SIDEBAR -->
 
     <aside class="sidebar">
-        <div class="logo">CreditFit<span>360</span></div>
 
-        <nav class="menu">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/personal-credit">Personal CreditFit</a>
-            <a href="/sme-credit-score">SME CreditScore</a>
-            <a href="/loan-readiness" class="active">Loan Readiness</a>
-            <a href="/credit-result">Reports</a>
-            <a href="/what-if-simulator">What-if Simulator</a>
-            <a href="#">Settings</a>
-            <a href="#">About Us</a>
-            <a href="#">Disclaimer</a>
-            <a href="/" class="logout">Logout</a>
-        </nav>
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness" class="active">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
     </aside>
 
     <!-- MAIN CONTENT -->

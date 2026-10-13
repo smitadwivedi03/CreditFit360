@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>Decision Lab | A/B Scenario Comparisons | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #12151f;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-magenta: #f43f5e;
+            --neon-teal: #06b6d4;
+            --neon-lime: #84cc16;
+            --neon-blue: #3b82f6;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu a.active {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 34px 40px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .topbar p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .tag-pill {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            color: #fda4af;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Preset Scenario Buttons */
+        .presets-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 26px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 12px 18px;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .preset-btn.active {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(6, 182, 212, 0.2));
+            border-color: var(--neon-teal);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+        }
+
+        /* A vs B Comparison Layout */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 26px;
+        }
+
+        @media (max-width: 950px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .decision-card {
+            border-radius: 24px;
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decision-card.card-a {
+            border-top: 4px solid var(--neon-magenta);
+        }
+
+        .decision-card.card-b {
+            border-top: 4px solid var(--neon-teal);
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .badge-a { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
+        .badge-b { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+
+        .decision-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .decision-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 13.5px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Outcome Metric Boxes */
+        .metrics-stack {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 18px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .metric-row span {
+            color: var(--text-secondary);
+        }
+
+        .metric-row strong {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Verdict Banner */
+        .verdict-card {
+            background: radial-gradient(circle at 10% 20%, rgba(132, 204, 22, 0.15) 0%, transparent 50%),
+                        linear-gradient(135deg, #0d121c 0%, #080a10 100%);
+            border: 1px solid rgba(132, 204, 22, 0.35);
+            border-radius: 22px;
+            padding: 26px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 40px rgba(132, 204, 22, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .verdict-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .verdict-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #84cc16;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        .verdict-head h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #bef264;
+        }
+
+        .verdict-desc {
+            font-size: 14px;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* Matrix Table */
+        .matrix-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 26px;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        .matrix-table th {
+            text-align: left;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .matrix-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+        }
+
+        .matrix-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .winner-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab" class="active">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <div class="tag-pill">⚖️ FINVERSE Decision Lab</div>
+                <h1 style="margin-top: 8px;">Direct A/B Financial Scenario Comparison</h1>
+                <p>Simulate two distinct paths side-by-side to discover the exact mathematical winner for your wealth.</p>
+            </div>
+            <a href="/wealth-path" style="background: linear-gradient(135deg, #f43f5e, #ec4899); color: white; padding: 10px 20px; border-radius: 999px; font-size: 13px; font-weight: 700;">Explore Wealth Path →</a>
+        </header>
+
+        <!-- Scenario Presets -->
+        <div class="presets-row">
+            <button class="preset-btn active" id="btnPresetPrepay" onclick="loadPreset('prepay')">
+                <span>🏡</span> Loan Prepayment vs. Equity SIP
+            </button>
+            <button class="preset-btn" id="btnPresetConsolidate" onclick="loadPreset('consolidate')">
+                <span>💳</span> Credit Card Rollover vs. Personal Loan
+            </button>
+            <button class="preset-btn" id="btnPresetTenure" onclick="loadPreset('tenure')">
+                <span>⏳</span> 15-Year Loan vs. 25-Year Loan
+            </button>
+            <button class="preset-btn" id="btnPresetCustom" onclick="loadPreset('custom')">
+                <span>🛠️</span> Custom Sandbox
+            </button>
+        </div>
+
+        <!-- Side-by-Side Comparison -->
+        <div class="comparison-grid">
+
+            <!-- OPTION A -->
+            <div class="decision-card card-a">
+                <span class="card-badge badge-a">Choice Option A</span>
+                <h2 class="decision-title" id="titleA">Prepay Home Loan</h2>
+                <p class="decision-desc" id="descA">Allocate monthly surplus of ₹15,000 directly towards principal loan reduction at 8.75% interest.</p>
+
+                <div class="input-group">
+                    <label><span>Monthly Commitment (₹)</span><strong id="lblVal1A">₹15,000</strong></label>
+                    <input type="number" id="inpVal1A" value="15000" step="500">
+                </div>
+
+                <div class="input-group">
+                    <label><span id="lblField2A">Annual Interest Saved (%)</span><strong id="lblVal2A">8.75%</strong></label>
+                    <input type="number" id="inpVal2A" value="8.75" step="0.25">
+                </div>
+
+                <div class="input-group">
+                    <label><span>Duration Horizon (Years)</span><strong id="lblVal3A">10 Years</strong></label>
+                    <input type="number" id="inpVal3A" value="10" min="1" max="30">
+                </div>
+
+                <!-- Computed Outcome Stack -->
+                <div class="metrics-stack">
+                    <div class="metric-row">
+                        <span>Total Cash Outflow:</span>
+                        <strong id="resOutflowA">₹18,00,000</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Total Guaranteed Value / Saved:</span>
+                        <strong id="resTotalGainA" style="color: #fda4af;">₹10,24,000 Interest Saved</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Net Effective Wealth Created:</span>
+                        <strong id="resNetWealthA" style="font-size: 17px; color: #ffffff;">₹28,24,000</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Debt Elimination Time:</span>
+                        <strong id="resTimeA">Saves 4.8 Years</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Credit Score Impact:</span>
+                        <strong style="color: #34d399;">+35 Pts (DTI Drops)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPTION B -->
+            <div class="decision-card card-b">
+                <span class="card-badge badge-b">Choice Option B</span>
+                <h2 class="decision-title" id="titleB">Invest in Diversified Equity SIP</h2>
+                <p class="decision-desc" id="descB">Keep existing EMI running and invest the ₹15,000 monthly surplus into a 12% CAGR equity index fund.</p>
+
+                <div class="input-group">
+                    <label><span>Monthly Commitment (₹)</span><strong id="lblVal1B">₹15,000</strong></label>
+                    <input type="number" id="inpVal1B" value="15000" step="500">
+                </div>
+
+                <div class="input-group">
+                    <label><span id="lblField2B">Expected Return Rate (%)</span><strong id="lblVal2B">12.00%</strong></label>
+                    <input type="number" id="inpVal2B" value="12.0" step="0.25">
+                </div>
+
+                <div class="input-group">
+                    <label><span>Duration Horizon (Years)</span><strong id="lblVal3B">10 Years</strong></label>
+                    <input type="number" id="inpVal3B" value="10" min="1" max="30">
+                </div>
+
+                <!-- Computed Outcome Stack -->
+                <div class="metrics-stack">
+                    <div class="metric-row">
+                        <span>Total Cash Invested:</span>
+                        <strong id="resOutflowB">₹18,00,000</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Estimated Capital Gains:</span>
+                        <strong id="resTotalGainB" style="color: #67e8f9;">₹16,85,000 Growth</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Final Accumulated Corpus:</span>
+                        <strong id="resNetWealthB" style="font-size: 17px; color: #67e8f9;">₹34,85,000</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Liquidity Access:</span>
+                        <strong id="resTimeB">Instant Liquid Access</strong>
+                    </div>
+                    <div class="metric-row">
+                        <span>Credit Score Impact:</span>
+                        <strong style="color: #60a5fa;">Neutral (EMI Active)</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Verdict Banner -->
+        <div class="verdict-card">
+            <div class="verdict-head">
+                <div class="verdict-icon">★</div>
+                <h3 id="verdictTitle">Algorithmic Recommendation: Option B Generates ₹6,61,000 More Wealth</h3>
+            </div>
+            <p class="verdict-desc" id="verdictText">
+                Because your expected investment return (12.0%) outpaces the borrowing cost (8.75%) by 3.25%, investing surplus cash into an equity index accumulates significantly higher net wealth over 10 years, while maintaining emergency liquidity. However, if your risk tolerance is conservative or your Debt-to-Income is already above 40%, Option A provides guaranteed peace of mind.
+            </p>
+        </div>
+
+        <!-- Comparison Matrix -->
+        <div class="matrix-card">
+            <h3 style="font-size: 18px; margin-bottom: 18px; color: #ffffff;">Executive Comparison Matrix</h3>
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Decision Metric</th>
+                        <th>Option A</th>
+                        <th>Option B</th>
+                        <th>Winner & Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10-Year Net Wealth Created</td>
+                        <td id="tblNetA">₹28,24,000</td>
+                        <td id="tblNetB">₹34,85,000</td>
+                        <td><strong style="color: #67e8f9;">Option B</strong> <span class="winner-tag">+₹6.61 Lakhs</span></td>
+                    </tr>
+                    <tr>
+                        <td>Guaranteed Risk-Free Nature</td>
+                        <td>100% Guaranteed (No Market Risk)</td>
+                        <td>Subject to Market Volatility</td>
+                        <td><strong style="color: #fda4af;">Option A</strong> <span class="winner-tag">Zero Risk</span></td>
+                    </tr>
+                    <tr>
+                        <td>Liquidity & Emergency Access</td>
+                        <td>Locked inside home equity</td>
+                        <td>Fully Liquid at any point</td>
+                        <td><strong style="color: #67e8f9;">Option B</strong> <span class="winner-tag">High Liquidity</span></td>
+                    </tr>
+                    <tr>
+                        <td>Credit Score & Debt Health</td>
+                        <td>Improves Debt Utilization rapidly</td>
+                        <td>Existing Debt burden remains active</td>
+                        <td><strong style="color: #fda4af;">Option A</strong> <span class="winner-tag">Boosts Score</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script>
+        "use strict";
+
+        const $ = (id) => document.getElementById(id);
+        const formatINR = (val) => "₹" + Math.round(val || 0).toLocaleString("en-IN");
+
+        function calculateSIP(p, r, n) {
+            // Future value of SIP: P * [ (1 + i)^n - 1 ] / i * (1 + i)
+            const i = (r / 100) / 12;
+            const months = n * 12;
+            if (i <= 0) return p * months;
+            return p * ((Math.pow(1 + i, months) - 1) / i) * (1 + i);
+        }
+
+        function calculatePrepaymentGain(p, r, n) {
+            // Total principal + interest compounding avoided
+            const invested = p * n * 12;
+            const i = (r / 100) / 12;
+            const months = n * 12;
+            const fv = p * ((Math.pow(1 + i, months) - 1) / i);
+            const savedInterest = Math.max(0, fv - invested);
+            return { invested, savedInterest, totalWealth: invested + savedInterest };
+        }
+
+        function recompute() {
+            const val1A = Math.max(0, Number($("inpVal1A").value) || 0);
+            const val2A = Math.max(0, Number($("inpVal2A").value) || 0);
+            const val3A = Math.max(1, Number($("inpVal3A").value) || 1);
+
+            const val1B = Math.max(0, Number($("inpVal1B").value) || 0);
+            const val2B = Math.max(0, Number($("inpVal2B").value) || 0);
+            const val3B = Math.max(1, Number($("inpVal3B").value) || 1);
+
+            $("lblVal1A").textContent = formatINR(val1A);
+            $("lblVal2A").textContent = val2A.toFixed(2) + "%";
+            $("lblVal3A").textContent = val3A + " Years";
+
+            $("lblVal1B").textContent = formatINR(val1B);
+            $("lblVal2B").textContent = val2B.toFixed(2) + "%";
+            $("lblVal3B").textContent = val3B + " Years";
+
+            const prepayRes = calculatePrepaymentGain(val1A, val2A, val3A);
+            const sipTotal = calculateSIP(val1B, val2B, val3B);
+            const sipInvested = val1B * val3B * 12;
+            const sipGain = Math.max(0, sipTotal - sipInvested);
+
+            $("resOutflowA").textContent = formatINR(prepayRes.invested);
+            $("resTotalGainA").textContent = formatINR(prepayRes.savedInterest) + " Interest Saved";
+            $("resNetWealthA").textContent = formatINR(prepayRes.totalWealth);
+
+            $("resOutflowB").textContent = formatINR(sipInvested);
+            $("resTotalGainB").textContent = formatINR(sipGain) + " Growth";
+            $("resNetWealthB").textContent = formatINR(sipTotal);
+
+            $("tblNetA").textContent = formatINR(prepayRes.totalWealth);
+            $("tblNetB").textContent = formatINR(sipTotal);
+
+            const diff = sipTotal - prepayRes.totalWealth;
+            if (diff > 0) {
+                $("verdictTitle").textContent = "Algorithmic Recommendation: Option B Creates " + formatINR(diff) + " More Wealth";
+                $("verdictText").textContent = "Because your investment return (" + val2B + "%) exceeds your loan interest (" + val2A + "%), allocating surplus towards SIP compounding generates a significant financial edge of " + formatINR(diff) + " while giving you emergency access to liquid cash.";
+            } else {
+                $("verdictTitle").textContent = "Algorithmic Recommendation: Option A Saves " + formatINR(Math.abs(diff)) + " More in Cost";
+                $("verdictText").textContent = "Because your debt rate (" + val2A + "%) is equal to or higher than the expected yield (" + val2B + "%), extinguishing debt guarantees the highest risk-free return, lowers your Debt-To-Income, and rapidly improves your CreditFit score.";
+            }
+        }
+
+        function loadPreset(key) {
+            document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
+
+            if (key === 'prepay') {
+                $("btnPresetPrepay").classList.add("active");
+                $("titleA").textContent = "Prepay Home Loan";
+                $("descA").textContent = "Allocate monthly surplus of ₹15,000 directly towards principal loan reduction at 8.75% interest.";
+                $("inpVal1A").value = 15000;
+                $("lblField2A").textContent = "Annual Loan Interest Rate (%)";
+                $("inpVal2A").value = 8.75;
+                $("inpVal3A").value = 10;
+
+                $("titleB").textContent = "Invest in Diversified Equity SIP";
+                $("descB").textContent = "Keep existing EMI running and invest the ₹15,000 monthly surplus into a 12% CAGR equity index fund.";
+                $("inpVal1B").value = 15000;
+                $("lblField2B").textContent = "Expected Return Rate (%)";
+                $("inpVal2B").value = 12.0;
+                $("inpVal3B").value = 10;
+            } else if (key === 'consolidate') {
+                $("btnPresetConsolidate").classList.add("active");
+                $("titleA").textContent = "Minimum Credit Card Rollover";
+                $("descA").textContent = "Pay only minimum revolving card balance while paying exorbitant 42% APR finance charges.";
+                $("inpVal1A").value = 12000;
+                $("lblField2A").textContent = "Revolving Credit Card APR (%)";
+                $("inpVal2A").value = 42.0;
+                $("inpVal3A").value = 3;
+
+                $("titleB").textContent = "Consolidate via Personal Loan";
+                $("descB").textContent = "Take a structured fixed personal loan at 13.5% APR to clear card balances instantly.";
+                $("inpVal1B").value = 9500;
+                $("lblField2B").textContent = "Consolidated Loan Rate (%)";
+                $("inpVal2B").value = 13.5;
+                $("inpVal3B").value = 3;
+            } else if (key === 'tenure') {
+                $("btnPresetTenure").classList.add("active");
+                $("titleA").textContent = "15-Year Shorter Tenure";
+                $("descA").textContent = "Higher monthly EMI but drastically lower total interest outflow over the loan lifespan.";
+                $("inpVal1A").value = 35000;
+                $("lblField2A").textContent = "Loan Interest Rate (%)";
+                $("inpVal2A").value = 8.5;
+                $("inpVal3A").value = 15;
+
+                $("titleB").textContent = "25-Year Extended Tenure";
+                $("descB").textContent = "Lower monthly EMI to ease immediate cash flow, but incurs massive cumulative interest costs.";
+                $("inpVal1B").value = 27000;
+                $("lblField2B").textContent = "Loan Interest Rate (%)";
+                $("inpVal2B").value = 8.5;
+                $("inpVal3B").value = 25;
+            } else {
+                $("btnPresetCustom").classList.add("active");
+                $("titleA").textContent = "Custom Scenario A";
+                $("descA").textContent = "Test your own parameters for Strategy A.";
+                $("titleB").textContent = "Custom Scenario B";
+                $("descB").textContent = "Test your own parameters for Strategy B.";
+            }
+
+            recompute();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            ["inpVal1A", "inpVal2A", "inpVal3A", "inpVal1B", "inpVal2B", "inpVal3B"].forEach(id => {
+                $(id).addEventListener("input", recompute);
+            });
+            recompute();
+        });
+    </script>
+</body>
+</html>

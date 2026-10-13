@@ -6,66 +6,167 @@
 
     <title>About Us | CreditFit360</title>
 
+    <meta name="theme-color" content="#07080d">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        body {
-            background: #f4f6fb;
-            color: #1f2937;
-        }
-
-        .layout {
-            display: flex;
+                body {
+            background: #07080d;
+            color: #f8fafc;
             min-height: 100vh;
+            display: flex;
         }
 
+        /* Sidebar */
         .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #17243d, #273b60);
-            color: white;
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             padding: 28px 18px;
-            flex-shrink: 0;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
         }
 
         .brand {
-            font-size: 25px;
-            font-weight: bold;
-            margin: 0 0 32px 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
         }
 
         .brand span {
-            color: #60a5fa;
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .nav a {
-            display: block;
-            padding: 13px 12px;
-            color: #e5e7eb;
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: #64748b;
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
             text-decoration: none;
-            border-radius: 9px;
-            margin-bottom: 7px;
-            font-size: 14px;
         }
 
-        .nav a:hover,
-        .nav a.active {
-            background: #3977ed;
-            color: white;
-        }
-
-        .nav .logout {
-            margin-top: 25px;
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
             text-align: center;
-            background: #ef4444;
+            opacity: 0.85;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu a.active {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: #f8fafc;
         }
 
         .main {
-            flex: 1;
+            margin-left: 260px;
+            width: calc(100% - 260px);
             padding: 35px;
             min-width: 0;
         }
@@ -154,30 +255,16 @@
         }
 
         @media (max-width: 760px) {
-            .layout {
-                flex-direction: column;
-            }
-
             .sidebar {
+                position: relative;
                 width: 100%;
+                height: auto;
                 padding: 20px 15px;
             }
 
-            .brand {
-                margin-bottom: 15px;
-            }
-
-            .nav {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 4px;
-            }
-
-            .nav a {
-                margin: 0;
-            }
-
             .main {
+                margin-left: 0;
+                width: 100%;
                 padding: 22px 15px;
             }
 
@@ -197,23 +284,99 @@
 </head>
 
 <body>
-<div class="layout">
 
+    <!-- Sidebar -->
     <aside class="sidebar">
-        <div class="brand">CreditFit<span>360</span></div>
 
-        <nav class="nav">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/personal-credit">Personal CreditFit</a>
-            <a href="/sme-credit-score">SME CreditScore</a>
-            <a href="/loan-readiness">Loan Readiness</a>
-            <a href="/reports">Reports</a>
-            <a href="/what-if-simulator">What-if Simulator</a>
-            <a href="/settings">Settings</a>
-            <a href="/about" class="active">About Us</a>
-            <a href="/disclaimer">Disclaimer</a>
-            <a href="/logout" class="logout">Logout</a>
-        </nav>
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about" class="active">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
     </aside>
 
     <main class="main">
@@ -317,6 +480,5 @@
         </footer>
 
     </main>
-</div>
 </body>
 </html>

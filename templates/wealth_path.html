@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>Wealth Path | Goal Planning & Milestone Roadmap | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #12151f;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-magenta: #f43f5e;
+            --neon-teal: #06b6d4;
+            --neon-lime: #84cc16;
+            --neon-blue: #3b82f6;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu a.active {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 34px 40px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .topbar p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .tag-pill {
+            background: rgba(132, 204, 22, 0.15);
+            border: 1px solid rgba(132, 204, 22, 0.35);
+            color: #bef264;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Goal Picker Cards */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 1200px) {
+            .goals-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 700px) {
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .goal-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .goal-btn:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: #121622;
+        }
+
+        .goal-btn.active {
+            background: linear-gradient(135deg, rgba(132, 204, 22, 0.15), rgba(6, 182, 212, 0.15));
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 25px rgba(132, 204, 22, 0.25);
+        }
+
+        .goal-icon {
+            font-size: 28px;
+        }
+
+        .goal-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .goal-target {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        /* Layout Grid */
+        .bento-split {
+            display: grid;
+            grid-template-columns: 1.15fr 1.85fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 1050px) {
+            .bento-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-head h2 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 16px rgba(132, 204, 22, 0.3);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        /* KPI Result Banner */
+        .result-kpi-banner {
+            background: radial-gradient(circle at 90% 10%, rgba(132, 204, 22, 0.25) 0%, transparent 60%),
+                        var(--bg-card-inner);
+            border: 1px solid rgba(132, 204, 22, 0.35);
+            border-radius: 20px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .kpi-main-lbl {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .kpi-main-val {
+            font-size: 34px;
+            font-weight: 800;
+            color: #bef264;
+            letter-spacing: -0.5px;
+            margin: 4px 0;
+        }
+
+        .kpi-main-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        /* Timeline Milestones */
+        .timeline-milestones {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .milestone-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .milestone-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .milestone-stage {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stage-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            background: rgba(132, 204, 22, 0.15);
+            color: #bef264;
+            border: 1px solid rgba(132, 204, 22, 0.3);
+        }
+
+        .stage-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .stage-info p {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        .stage-amount {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f8fafc;
+            text-align: right;
+        }
+
+        /* Progress Bar */
+        .progress-bar-wrap {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 18px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #84cc16, #06b6d4);
+            box-shadow: 0 0 12px rgba(132, 204, 22, 0.6);
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+
+        /* Action strip */
+        .wealth-bottom {
+            background: linear-gradient(135deg, rgba(132, 204, 22, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(132, 204, 22, 0.25);
+            border-radius: 20px;
+            padding: 24px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-wealth {
+            background: linear-gradient(135deg, #84cc16, #10b981);
+            color: #07080d;
+            font-weight: 800;
+            font-size: 13.5px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(132, 204, 22, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-wealth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 204, 22, 0.55);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path" class="active">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <div class="tag-pill">🎯 Wealth Path Goal Planning</div>
+                <h1 style="margin-top: 8px;">Target Goal Architecture & Monthly Savings Engine</h1>
+                <p>Define your life milestones and let Wealth Path calculate the exact monthly savings path and compound timeline.</p>
+            </div>
+            <a href="/what-if-simulator" class="btn-wealth">Test in FinTwin →</a>
+        </header>
+
+        <!-- Goal Selection Cards -->
+        <div class="goals-grid">
+            <div class="goal-btn active" id="btnGoalEmergency" onclick="selectGoal('emergency')">
+                <span class="goal-icon">🛡️</span>
+                <span class="goal-title">Emergency Buffer</span>
+                <span class="goal-target">₹3,00,000 (12 Mo)</span>
+            </div>
+            <div class="goal-btn" id="btnGoalHome" onclick="selectGoal('home')">
+                <span class="goal-icon">🏡</span>
+                <span class="goal-title">Home Down Payment</span>
+                <span class="goal-target">₹15,00,000 (5 Yrs)</span>
+            </div>
+            <div class="goal-btn" id="btnGoalEdu" onclick="selectGoal('edu')">
+                <span class="goal-icon">🎓</span>
+                <span class="goal-title">Higher Education</span>
+                <span class="goal-target">₹6,00,000 (2 Yrs)</span>
+            </div>
+            <div class="goal-btn" id="btnGoalVehicle" onclick="selectGoal('vehicle')">
+                <span class="goal-icon">🚗</span>
+                <span class="goal-title">Vehicle Purchase</span>
+                <span class="goal-target">₹5,00,000 (3 Yrs)</span>
+            </div>
+            <div class="goal-btn" id="btnGoalRetire" onclick="selectGoal('retire')">
+                <span class="goal-icon">🏖️</span>
+                <span class="goal-title">Financial Freedom</span>
+                <span class="goal-target">₹50,00,000 (15 Yrs)</span>
+            </div>
+        </div>
+
+        <!-- Split Grid: Calculator + Milestones Roadmap -->
+        <div class="bento-split">
+
+            <!-- Left: Inputs -->
+            <div class="bento-card">
+                <div class="card-head">
+                    <h2 id="goalHeading">Emergency Fund Setup</h2>
+                    <span style="font-size: 11px; color: #bef264;">Active Goal</span>
+                </div>
+
+                <div class="input-group">
+                    <label><span>Target Corpus Goal (₹)</span><strong id="lblTarget">₹3,00,000</strong></label>
+                    <input type="number" id="inpTarget" value="300000" step="10000">
+                </div>
+
+                <div class="input-group">
+                    <label><span>Timeline to Achieve (Months)</span><strong id="lblMonths">12 Months (1.0 Yr)</strong></label>
+                    <input type="number" id="inpMonths" value="12" min="1" max="360" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label><span>Already Saved Today (₹)</span><strong id="lblSaved">₹50,000</strong></label>
+                    <input type="number" id="inpSaved" value="50000" step="5000">
+                </div>
+
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label><span>Expected Annual Return Rate (%)</span><strong id="lblRate">7.00% (Liquid/FD)</strong></label>
+                    <input type="number" id="inpRate" value="7.0" step="0.5">
+                </div>
+            </div>
+
+            <!-- Right: Roadmap & Required Monthly Savings Output -->
+            <div class="bento-card">
+                <div class="card-head">
+                    <h2>Compound Roadmap & Monthly Requirement</h2>
+                    <span style="font-size: 11px; color: var(--text-muted);">Real-Time Projection</span>
+                </div>
+
+                <!-- KPI Banner -->
+                <div class="result-kpi-banner">
+                    <div>
+                        <div class="kpi-main-lbl">Required Monthly Allocation</div>
+                        <div class="kpi-main-val" id="resMonthlySIP">₹20,150 / mo</div>
+                        <div class="kpi-main-desc" id="resSIPDesc">
+                            Save ₹20,150 every month for 12 months at 7.0% return to reach your ₹3,00,000 goal.
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Estimated Interest Earned</div>
+                        <div style="font-size: 20px; font-weight: 800; color: #67e8f9; margin-top: 4px;" id="resInterestEarned">+₹8,200</div>
+                    </div>
+                </div>
+
+                <!-- Overall Progress Bar -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12.5px;">
+                        <span>Current Seed Capital: <strong id="progSavedVal">₹50,000</strong></span>
+                        <span>Target: <strong id="progTargetVal">₹3,00,000</strong></span>
+                    </div>
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar-fill" id="progBar" style="width: 16.7%;"></div>
+                    </div>
+                </div>
+
+                <!-- 4 Stage Milestone Checklist -->
+                <div class="timeline-milestones">
+                    <div class="milestone-item">
+                        <div class="milestone-stage">
+                            <div class="stage-badge">25%</div>
+                            <div class="stage-info">
+                                <h4>Seed Buffer Milestone</h4>
+                                <p id="m1Date">Achieved in Month 2</p>
+                            </div>
+                        </div>
+                        <div class="stage-amount" id="m1Amount">₹75,000</div>
+                    </div>
+
+                    <div class="milestone-item">
+                        <div class="milestone-stage">
+                            <div class="stage-badge">50%</div>
+                            <div class="stage-info">
+                                <h4>Halfway Safety Milestone</h4>
+                                <p id="m2Date">Achieved in Month 6</p>
+                            </div>
+                        </div>
+                        <div class="stage-amount" id="m2Amount">₹1,50,000</div>
+                    </div>
+
+                    <div class="milestone-item">
+                        <div class="milestone-stage">
+                            <div class="stage-badge">75%</div>
+                            <div class="stage-info">
+                                <h4>Growth Acceleration</h4>
+                                <p id="m3Date">Achieved in Month 9</p>
+                            </div>
+                        </div>
+                        <div class="stage-amount" id="m3Amount">₹2,25,000</div>
+                    </div>
+
+                    <div class="milestone-item" style="border-color: rgba(132, 204, 22, 0.4); background: rgba(132, 204, 22, 0.05);">
+                        <div class="milestone-stage">
+                            <div class="stage-badge" style="background: #84cc16; color: #000;">100%</div>
+                            <div class="stage-info">
+                                <h4 style="color: #bef264;">Goal Complete & Secured</h4>
+                                <p id="m4Date">Achieved on Target Date</p>
+                            </div>
+                        </div>
+                        <div class="stage-amount" style="color: #bef264;" id="m4Amount">₹3,00,000</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Bottom Guidance Strip -->
+        <div class="wealth-bottom">
+            <div>
+                <h3 style="font-size: 17px; font-weight: 700; color: #bef264; margin-bottom: 4px;">Automate Your Wealth Path Strategy</h3>
+                <p style="font-size: 13.5px; color: #cbd5e1;">
+                    Combine your calculated monthly savings with our What-If Simulator (FinTwin) to see how reaching this goal directly elevates your credit resilience and borrowing power.
+                </p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="/moneymap" class="btn-wealth" style="background: rgba(255,255,255,0.08); color: white; box-shadow: none; border: 1px solid rgba(255,255,255,0.15);">Check MoneyMap Surplus</a>
+                <a href="/what-if-simulator" class="btn-wealth">Simulate in FinTwin →</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        "use strict";
+
+        const $ = (id) => document.getElementById(id);
+        const formatINR = (val) => "₹" + Math.round(val || 0).toLocaleString("en-IN");
+
+        function calculateRequiredSavings(target, months, saved, annualRate) {
+            const r = (annualRate / 100) / 12;
+            const n = months;
+
+            // Future value of existing savings:
+            const fvSaved = saved * Math.pow(1 + r, n);
+            const deficit = Math.max(0, target - fvSaved);
+
+            if (n <= 0) return 0;
+            if (r <= 0) return deficit / n;
+
+            // Monthly SIP needed: P = Deficit / [ ((1+r)^n - 1) / r * (1+r) ]
+            const factor = ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+            const monthly = deficit / factor;
+            return Math.max(0, monthly);
+        }
+
+        function recompute() {
+            const target = Math.max(1000, Number($("inpTarget").value) || 0);
+            const months = Math.max(1, Number($("inpMonths").value) || 1);
+            const saved = Math.max(0, Number($("inpSaved").value) || 0);
+            const rate = Math.max(0, Number($("inpRate").value) || 0);
+
+            $("lblTarget").textContent = formatINR(target);
+            $("lblMonths").textContent = months + " Months (" + (months / 12).toFixed(1) + " Yrs)";
+            $("lblSaved").textContent = formatINR(saved);
+            $("lblRate").textContent = rate.toFixed(2) + "% p.a.";
+
+            const monthlySIP = calculateRequiredSavings(target, months, saved, rate);
+            const totalContributed = saved + (monthlySIP * months);
+            const interestEarned = Math.max(0, target - totalContributed);
+
+            $("resMonthlySIP").textContent = formatINR(monthlySIP) + " / mo";
+            $("resSIPDesc").textContent = "Save " + formatINR(monthlySIP) + " each month for " + months + " months at " + rate.toFixed(1) + "% expected return to achieve " + formatINR(target) + ".";
+            $("resInterestEarned").textContent = "+" + formatINR(interestEarned);
+
+            // Progress bar
+            const progPct = Math.min(100, (saved / target) * 100);
+            $("progSavedVal").textContent = formatINR(saved);
+            $("progTargetVal").textContent = formatINR(target);
+            $("progBar").style.width = progPct.toFixed(1) + "%";
+
+            // Milestones
+            $("m1Amount").textContent = formatINR(target * 0.25);
+            $("m2Amount").textContent = formatINR(target * 0.50);
+            $("m3Amount").textContent = formatINR(target * 0.75);
+            $("m4Amount").textContent = formatINR(target);
+
+            $("m1Date").textContent = "Month " + Math.max(1, Math.round(months * 0.25));
+            $("m2Date").textContent = "Month " + Math.max(2, Math.round(months * 0.50));
+            $("m3Date").textContent = "Month " + Math.max(3, Math.round(months * 0.75));
+            $("m4Date").textContent = "Month " + months + " (Target Date)";
+        }
+
+        function selectGoal(type) {
+            document.querySelectorAll(".goal-btn").forEach(b => b.classList.remove("active"));
+
+            if (type === 'emergency') {
+                $("btnGoalEmergency").classList.add("active");
+                $("goalHeading").textContent = "Emergency Buffer Setup";
+                $("inpTarget").value = 300000;
+                $("inpMonths").value = 12;
+                $("inpSaved").value = 50000;
+                $("inpRate").value = 7.0;
+            } else if (type === 'home') {
+                $("btnGoalHome").classList.add("active");
+                $("goalHeading").textContent = "Home Down Payment Fund";
+                $("inpTarget").value = 1500000;
+                $("inpMonths").value = 60;
+                $("inpSaved").value = 200000;
+                $("inpRate").value = 11.0;
+            } else if (type === 'edu') {
+                $("btnGoalEdu").classList.add("active");
+                $("goalHeading").textContent = "Higher Education & Certifications";
+                $("inpTarget").value = 600000;
+                $("inpMonths").value = 24;
+                $("inpSaved").value = 80000;
+                $("inpRate").value = 8.5;
+            } else if (type === 'vehicle') {
+                $("btnGoalVehicle").classList.add("active");
+                $("goalHeading").textContent = "Vehicle Purchase Fund";
+                $("inpTarget").value = 500000;
+                $("inpMonths").value = 36;
+                $("inpSaved").value = 60000;
+                $("inpRate").value = 9.0;
+            } else if (type === 'retire') {
+                $("btnGoalRetire").classList.add("active");
+                $("goalHeading").textContent = "Financial Independence Corpus";
+                $("inpTarget").value = 5000000;
+                $("inpMonths").value = 180;
+                $("inpSaved").value = 350000;
+                $("inpRate").value = 12.0;
+            }
+
+            recompute();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            ["inpTarget", "inpMonths", "inpSaved", "inpRate"].forEach(id => {
+                $(id).addEventListener("input", recompute);
+            });
+            recompute();
+        });
+    </script>
+</body>
+</html>

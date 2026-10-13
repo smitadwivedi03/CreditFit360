@@ -3,138 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CreditFit360 - Result</title>
+<meta name="theme-color" content="#07080d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body{
-    background:#f5f7fb;
-    color:#17213c;
+    background:#07080d;
+    color:#f8fafc;
 }
 
 /* SIDEBAR */
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:210px;
-    height:100vh;
-    background:#071536;
-    color:white;
-    padding:18px 12px;
+.sidebar {
+    width: 260px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px 18px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
 }
 
-.logo{
-    text-align:center;
-    font-size:19px;
-    font-weight:700;
-    margin-bottom:28px;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    padding: 0 8px;
+    margin-bottom: 4px;
 }
 
-.logo span{
-    color:#19c58b;
+.brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #f43f5e, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
 }
 
-.menu{
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+.brand span {
+    background: linear-gradient(135deg, #f43f5e, #38bdf8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.menu a{
-    text-decoration:none;
-    color:#d8def0;
-    padding:12px 10px;
-    border-radius:6px;
-    font-size:12px;
+.brand-subtitle {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #64748b;
+    padding: 0 8px;
+    margin-bottom: 26px;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
-.menu a:hover,
-.menu a.active{
-    background:#1649d8;
-    color:white;
+.menu-label {
+    color: #64748b;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    padding: 0 10px;
+    margin-bottom: 8px;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: #94a3b8;
+    font-size: 13.5px;
+    font-weight: 550;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.menu a span {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    opacity: 0.85;
+}
+
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #f8fafc;
+    transform: translateX(3px);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu a.active {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+    border-color: rgba(244, 63, 94, 0.4);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+}
+
+.menu a .nav-tag {
+    margin-left: auto;
+    font-size: 9.5px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(6, 182, 212, 0.15);
+    color: #67e8f9;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.sidebar-footer strong {
+    color: #f8fafc;
 }
 
 /* MAIN */
-.main{
-    margin-left:210px;
-    padding:20px 25px;
+.main {
+    margin-left: 260px;
+    padding: 28px 36px;
 }
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:18px;
+    margin-bottom:22px;
 }
 
 .header h1{
-    font-size:22px;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-0.5px;
+    color:#ffffff;
 }
 
 .user{
     font-size:12px;
-    color:#667085;
+    color:#94a3b8;
+    background:rgba(255, 255, 255, 0.04);
+    border:1px solid rgba(255, 255, 255, 0.08);
+    padding:6px 14px;
+    border-radius:999px;
 }
 
 /* TOP CARDS */
 .top-cards{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin-bottom:18px;
+    gap:16px;
+    margin-bottom:22px;
 }
 
 .top-card{
-    background:white;
-    border-radius:8px;
-    padding:16px;
-    border:1px solid #e9edf4;
-    box-shadow:0 2px 8px rgba(0,0,0,.04);
+    background:#0f121a;
+    border-radius:18px;
+    padding:18px;
+    border:1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .top-card-title{
-    font-size:11px;
-    color:#6b7280;
+    font-size:11.5px;
+    color:#94a3b8;
     margin-bottom:8px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    font-weight:600;
 }
 
 .top-card-value{
-    font-size:25px;
-    font-weight:700;
+    font-size:26px;
+    font-weight:800;
+    color:#ffffff;
+    letter-spacing:-0.5px;
 }
 
 .top-card-status{
-    font-size:11px;
-    margin-top:5px;
-    color:#159447;
+    font-size:11.5px;
+    margin-top:6px;
+    color:#34d399;
+    font-weight:600;
 }
 
 /* MAIN CONTENT */
 .content{
     display:grid;
     grid-template-columns:1fr 1.25fr 1fr;
-    gap:15px;
+    gap:18px;
 }
 
 /* CARD */
 .card{
-    background:white;
-    border:1px solid #e9edf4;
-    border-radius:8px;
-    padding:18px;
-    box-shadow:0 2px 8px rgba(0,0,0,.04);
+    background:#0f121a;
+    border:1px solid rgba(255, 255, 255, 0.08);
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .title{
-    font-size:13px;
+    font-size:14px;
     font-weight:700;
+    color:#ffffff;
     margin-bottom:18px;
 }
 
@@ -144,28 +256,29 @@ body{
 }
 
 .circle{
-    width:175px;
-    height:175px;
-    margin:10px auto 15px;
+    width:160px;
+    height:160px;
+    margin:10px auto 16px;
     border-radius:50%;
     background:conic-gradient(
-        #16a34a 0deg,
-        #16a34a 280deg,
-        #e8edf0 280deg,
-        #e8edf0 360deg
+        #f43f5e 0deg,
+        #f43f5e 280deg,
+        rgba(255, 255, 255, 0.08) 280deg,
+        rgba(255, 255, 255, 0.08) 360deg
     );
     display:flex;
     align-items:center;
     justify-content:center;
     position:relative;
+    box-shadow:0 0 24px rgba(244, 63, 94, 0.25);
 }
 
 .circle:after{
     content:"";
     position:absolute;
-    width:140px;
-    height:140px;
-    background:white;
+    width:124px;
+    height:124px;
+    background:#0f121a;
     border-radius:50%;
 }
 
@@ -175,106 +288,126 @@ body{
 }
 
 .circle-content h2{
-    font-size:40px;
+    font-size:38px;
+    font-weight:800;
+    color:#ffffff;
+    letter-spacing:-1px;
 }
 
 .circle-content span{
-    font-size:12px;
-    color:#777;
+    font-size:11px;
+    color:#94a3b8;
+    font-weight:600;
+    text-transform:uppercase;
 }
 
 .good{
-    color:#159447;
+    color:#34d399;
     font-weight:700;
-    font-size:16px;
+    font-size:15px;
 }
 
 .description{
-    font-size:11px;
-    color:#777;
-    line-height:1.6;
-    margin-top:8px;
+    font-size:12px;
+    color:#94a3b8;
+    line-height:1.55;
+    margin-top:10px;
 }
 
 /* BREAKDOWN */
 .breakdown-item{
-    margin-bottom:17px;
+    margin-bottom:16px;
 }
 
 .breakdown-label{
     display:flex;
     justify-content:space-between;
-    font-size:11px;
+    font-size:12px;
     margin-bottom:6px;
+    color:#cbd5e1;
+}
+
+.breakdown-label strong{
+    color:#ffffff;
 }
 
 .bar{
     height:7px;
-    background:#edf0f3;
+    background:rgba(255, 255, 255, 0.06);
     border-radius:10px;
+    overflow:hidden;
 }
 
 .fill{
     height:100%;
     width:0%;
     border-radius:10px;
-    background:#19a052;
+    background:linear-gradient(90deg, #f43f5e, #ec4899);
+    box-shadow:0 0 10px rgba(244, 63, 94, 0.6);
     transition:width .8s ease;
 }
 
 .yellow{
-    background:#e9a72b;
+    background:linear-gradient(90deg, #84cc16, #a3e635);
+    box-shadow:0 0 10px rgba(132, 204, 22, 0.6);
 }
 
 .orange{
-    background:#ef5b22;
+    background:linear-gradient(90deg, #06b6d4, #22d3ee);
+    box-shadow:0 0 10px rgba(6, 182, 212, 0.6);
 }
 
 /* INSIGHTS */
 .tag{
     display:inline-block;
-    padding:5px 9px;
-    border-radius:12px;
-    font-size:10px;
-    font-weight:bold;
-    margin-bottom:8px;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:700;
+    margin-bottom:10px;
 }
 
 .green-tag{
-    background:#dff7e8;
-    color:#15803d;
+    background:rgba(16, 185, 129, 0.15);
+    border:1px solid rgba(16, 185, 129, 0.35);
+    color:#34d399;
 }
 
 .orange-tag{
-    background:#fff0df;
-    color:#d65b09;
+    background:rgba(245, 158, 11, 0.15);
+    border:1px solid rgba(245, 158, 11, 0.35);
+    color:#fbbf24;
 }
 
 .insights ul{
-    padding-left:17px;
-    margin-bottom:18px;
+    padding-left:16px;
+    margin-bottom:20px;
 }
 
 .insights li{
-    font-size:11px;
-    color:#596174;
-    margin-bottom:7px;
+    font-size:12px;
+    color:#cbd5e1;
+    margin-bottom:8px;
+    line-height:1.45;
 }
 
 .report-btn{
     width:100%;
     border:none;
-    background:#1850d8;
+    background:linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
     color:white;
     padding:12px;
-    border-radius:5px;
-    font-size:12px;
-    font-weight:bold;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
     cursor:pointer;
+    transition:all 0.2s;
+    box-shadow:0 4px 16px rgba(244, 63, 94, 0.35);
 }
 
 .report-btn:hover{
-    background:#103da9;
+    transform:translateY(-1px);
+    box-shadow:0 6px 22px rgba(244, 63, 94, 0.5);
 }
 
 /* BOTTOM METRICS */
@@ -351,31 +484,94 @@ body{
 <!-- SIDEBAR -->
 <aside class="sidebar">
 
-    <div class="logo">
-        CREDITFIT <span>360</span>
+    <div class="brand">
+        <div class="brand-icon">✓</div>
+        <div>CreditFit<span>360</span></div>
     </div>
+    <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
 
-    <nav class="menu">
+    <div class="menu-label">Main Suite</div>
+    <ul class="menu">
+        <li>
+            <a href="/dashboard">
+                <span>📈</span> Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="/moneymap">
+                <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+            </a>
+        </li>
+        <li>
+            <a href="/decision-lab">
+                <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+            </a>
+        </li>
+        <li>
+            <a href="/wealth-path">
+                <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+            </a>
+        </li>
+        <li>
+            <a href="/what-if-simulator">
+                <span>🔮</span> What-If (FinTwin)
+            </a>
+        </li>
+    </ul>
 
-        <a href="/dashboard">🏠 Dashboard</a>
+    <div class="menu-label">Assessment Core</div>
+    <ul class="menu">
+        <li>
+            <a href="/personal-credit">
+                <span>👤</span> Personal CreditFit
+            </a>
+        </li>
+        <li>
+            <a href="/sme-credit-score">
+                <span>🏢</span> SME Credit Score
+            </a>
+        </li>
+        <li>
+            <a href="/loan-readiness">
+                <span>💰</span> Loan Readiness
+            </a>
+        </li>
+        <li>
+            <a href="/credit-result" class="active">
+                <span>📊</span> Reports & Results
+            </a>
+        </li>
+    </ul>
 
-        <a href="/personal-credit" class="active">
-            👤 Personal CreditFit
-        </a>
+    <div class="menu-label">System</div>
+    <ul class="menu">
+        <li>
+            <a href="/settings">
+                <span>⚙️</span> Settings
+            </a>
+        </li>
+        <li>
+            <a href="/about">
+                <span>ℹ️</span> About Platform
+            </a>
+        </li>
+        <li>
+            <a href="/disclaimer">
+                <span>📋</span> Disclaimer
+            </a>
+        </li>
+        <li>
+            <a href="/logout" style="color: #f87171;">
+                <span>🚪</span> Sign Out
+            </a>
+        </li>
+    </ul>
 
-        <a href="#">🏢 SME CreditScore</a>
-
-        <a href="#">💳 Loan Readiness</a>
-
-        <a href="#">📊 What-if Simulator</a>
-
-        <a href="#">📄 Reports</a>
-
-        <a href="#">⚙️ Settings</a>
-
-        <a href="#">ℹ️ About Us</a>
-
-    </nav>
+    <div class="sidebar-footer">
+        <strong>CreditFit360</strong><br>
+        Powered by FINVERSE Core Engine<br>
+        Version 2.5 (Neon Bento Edition)
+    </div>
 
 </aside>
 
@@ -707,41 +903,42 @@ body{
 </main>
 
 
+<!-- Server-passed result fallback -->
+<script id="server-result" type="application/json">{{ result | default(None) | tojson }}</script>
+
 <script>
 
 /* ==========================================
    GET SAVED RESULT
 ========================================== */
 
-const savedResult =
-    sessionStorage.getItem("creditFitResult");
+let activeResult = null;
 
-
-if (!savedResult) {
-
-    alert("No CreditFit result found.");
-
-    window.location.href =
-        "/personal-credit";
-
-} else {
-
-    try {
-
-        const result =
-            JSON.parse(savedResult);
-
-        loadResult(result);
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert("Unable to load result.");
-
-        window.location.href =
-            "/personal-credit";
+try {
+    const serverRaw = document.getElementById("server-result")?.textContent?.trim();
+    if (serverRaw && serverRaw !== "null") {
+        activeResult = JSON.parse(serverRaw);
     }
+} catch (e) {
+    console.warn("Could not parse server result", e);
+}
+
+if (!activeResult) {
+    try {
+        const savedRaw = sessionStorage.getItem("creditFitResult");
+        if (savedRaw) {
+            activeResult = JSON.parse(savedRaw);
+        }
+    } catch (error) {
+        console.error("Could not parse sessionStorage result", error);
+    }
+}
+
+if (!activeResult) {
+    alert("No CreditFit assessment found. Please complete the assessment form.");
+    window.location.href = "/personal-credit";
+} else {
+    loadResult(activeResult);
 }
 
 
@@ -752,19 +949,33 @@ if (!savedResult) {
 function loadResult(result){
 
     const score =
-        Number(result.score || 0);
+        Number(result.score ?? result.total_score ?? 0);
 
     const category =
         result.category || "Needs Improvement";
 
     const breakdown =
-        result.breakdown || {};
+        result.breakdown || {
+            creditBehaviour: result.credit_behaviour,
+            debtManagement: result.debt_management,
+            creditUtilisation: result.utilisation_score,
+            savingsEmergency: result.savings_score,
+            financialStability: result.stability_score
+        };
 
     const metrics =
-        result.metrics || {};
+        result.metrics || {
+            emiBurden: result.emi_burden,
+            creditUtilisation: result.credit_utilisation,
+            emergencyMonths: result.emergency_months,
+            monthlyBalance: result.monthly_balance
+        };
 
     const insights =
-        result.insights || {};
+        result.insights || {
+            strengths: result.strengths || [],
+            improvements: result.improvements || []
+        };
 
 
     /* SCORE */

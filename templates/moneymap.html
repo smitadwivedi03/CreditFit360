@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>MoneyMap | Cash Flow & Budget Tracker | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #11141d;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-magenta: #f43f5e;
+            --neon-teal: #06b6d4;
+            --neon-lime: #84cc16;
+            --neon-blue: #3b82f6;
+            --neon-amber: #f59e0b;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu a.active {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(59, 130, 246, 0.18));
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 34px 40px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .topbar p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .tag-pill {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            color: #67e8f9;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1.85fr;
+            gap: 22px;
+            margin-bottom: 26px;
+        }
+
+        @media (max-width: 1100px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--neon-teal);
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.3);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        /* KPI Banner */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-box {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-box::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .kpi-income::after { background: #10b981; }
+        .kpi-spent::after { background: #f43f5e; }
+        .kpi-surplus::after { background: #06b6d4; }
+
+        .kpi-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .kpi-val {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .kpi-sub {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Chart & Breakdown */
+        .chart-split {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        @media (max-width: 750px) {
+            .chart-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* SVG Donut */
+        .donut-wrap {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center-pct {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .donut-center-lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+
+        /* Breakdown items */
+        .cat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cat-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 14px;
+        }
+
+        .cat-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .cat-head span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cat-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+        .cat-bar-bg {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .cat-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+
+        /* 50-30-20 Diagnostic */
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .rule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .rule-card {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .rule-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .rule-status {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-top: 10px;
+        }
+
+        .status-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .status-danger { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
+
+        /* Surplus action bar */
+        .surplus-actions {
+            margin-top: 26px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.12));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            padding: 24px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .surplus-actions h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #67e8f9;
+            margin-bottom: 4px;
+        }
+
+        .surplus-actions p {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            max-width: 700px;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            font-weight: 700;
+            font-size: 13.5px;
+            padding: 12px 22px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(6, 182, 212, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.55);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap" class="active">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FINVERSE Core Engine<br>
+            Version 2.5 (Neon Bento Edition)
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <div class="tag-pill">💰 MoneyMap Cash Flow Tracking</div>
+                <h1 style="margin-top: 8px;">Monthly Spending & Surplus Radar</h1>
+                <p>Pinpoint exactly where every rupee flows, evaluate budget boundaries, and unlock extra surplus.</p>
+            </div>
+            <a href="/decision-lab" class="btn-action">Run Decision Lab →</a>
+        </header>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-row">
+            <div class="kpi-box kpi-income">
+                <div class="kpi-label">Net Inflow (Income)</div>
+                <div class="kpi-val" id="dispIncome">₹75,000</div>
+                <div class="kpi-sub">Monthly take-home cash</div>
+            </div>
+            <div class="kpi-box kpi-spent">
+                <div class="kpi-label">Total Outflow (Expenses + EMI)</div>
+                <div class="kpi-val" id="dispOutflow">₹51,500</div>
+                <div class="kpi-sub" id="dispOutflowPct">68.7% of income</div>
+            </div>
+            <div class="kpi-box kpi-surplus">
+                <div class="kpi-label">Monthly Surplus Remaining</div>
+                <div class="kpi-val" id="dispSurplus" style="color: #67e8f9;">₹23,500</div>
+                <div class="kpi-sub" id="dispSurplusPct">31.3% savings potential</div>
+            </div>
+        </div>
+
+        <!-- Bento Grid: Editor + Visual Radar -->
+        <div class="bento-grid">
+            <!-- Left: Cash Flow Input Panel -->
+            <div class="bento-card">
+                <div class="card-header">
+                    <h2>Cash Flow Blueprint</h2>
+                    <span style="font-size: 11px; color: var(--text-muted);">Live Sync</span>
+                </div>
+
+                <div class="form-group">
+                    <label><span>Monthly Net Income (₹)</span><strong id="lblIncome">₹75,000</strong></label>
+                    <input type="number" id="inpIncome" value="75000" min="1000" step="1000">
+                </div>
+
+                <div class="form-group">
+                    <label><span>Housing & Utilities (Rent/Electricity)</span><strong id="lblHousing">₹20,000</strong></label>
+                    <input type="number" id="inpHousing" value="20000" min="0" step="500">
+                </div>
+
+                <div class="form-group">
+                    <label><span>Monthly Debt & Loan EMIs</span><strong id="lblEMI">₹15,000</strong></label>
+                    <input type="number" id="inpEMI" value="15000" min="0" step="500">
+                </div>
+
+                <div class="form-group">
+                    <label><span>Food, Groceries & Healthcare</span><strong id="lblEssentials">₹10,000</strong></label>
+                    <input type="number" id="inpEssentials" value="10000" min="0" step="500">
+                </div>
+
+                <div class="form-group">
+                    <label><span>Lifestyle, Dining & Discretionary</span><strong id="lblLifestyle">₹6,500</strong></label>
+                    <input type="number" id="inpLifestyle" value="6500" min="0" step="500">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label><span>Active Investments & SIPs</span><strong id="lblInvestments">₹8,000</strong></label>
+                    <input type="number" id="inpInvestments" value="8000" min="0" step="500">
+                </div>
+            </div>
+
+            <!-- Right: Interactive Category-Wise Donut & Distribution -->
+            <div class="bento-card">
+                <div class="card-header">
+                    <h2>Spending Distribution Radar</h2>
+                    <span style="font-size: 11px; color: #34d399;">● Real-Time Allocation</span>
+                </div>
+
+                <div class="chart-split">
+                    <!-- SVG Circular Donut Chart -->
+                    <div class="donut-wrap">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <!-- Background Track -->
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14" />
+                            <!-- Segment: Housing (Coral/Orange) -->
+                            <circle id="segHousing" cx="50" cy="50" r="38" fill="none" stroke="#f97316" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            <!-- Segment: Debt / EMI (Magenta) -->
+                            <circle id="segEMI" cx="50" cy="50" r="38" fill="none" stroke="#f43f5e" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            <!-- Segment: Essentials (Amber) -->
+                            <circle id="segEssentials" cx="50" cy="50" r="38" fill="none" stroke="#fbbf24" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            <!-- Segment: Lifestyle (Purple) -->
+                            <circle id="segLifestyle" cx="50" cy="50" r="38" fill="none" stroke="#a855f7" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            <!-- Segment: Investments (Lime) -->
+                            <circle id="segInvestments" cx="50" cy="50" r="38" fill="none" stroke="#84cc16" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            <!-- Segment: Net Surplus (Cyan Glowing) -->
+                            <circle id="segSurplus" cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="14"
+                                stroke-dasharray="0 238.76" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                        </svg>
+                        <div class="donut-center">
+                            <div class="donut-center-pct" id="donutSurplusVal">31%</div>
+                            <div class="donut-center-lbl">Net Surplus</div>
+                        </div>
+                    </div>
+
+                    <!-- Category Legend & Progress Bars -->
+                    <div class="cat-list">
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #f97316;"></span> Housing & Rent</span>
+                                <strong id="pctHousing">26.7% (₹20,000)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barHousing" style="background: #f97316; width: 26.7%;"></div></div>
+                        </div>
+
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #f43f5e;"></span> Debt & EMIs</span>
+                                <strong id="pctEMI">20.0% (₹15,000)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barEMI" style="background: #f43f5e; width: 20%;"></div></div>
+                        </div>
+
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #fbbf24;"></span> Food & Essentials</span>
+                                <strong id="pctEssentials">13.3% (₹10,000)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barEssentials" style="background: #fbbf24; width: 13.3%;"></div></div>
+                        </div>
+
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #a855f7;"></span> Lifestyle & Discretionary</span>
+                                <strong id="pctLifestyle">8.7% (₹6,500)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barLifestyle" style="background: #a855f7; width: 8.7%;"></div></div>
+                        </div>
+
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #84cc16;"></span> Existing Investments</span>
+                                <strong id="pctInvestments">10.7% (₹8,000)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barInvestments" style="background: #84cc16; width: 10.7%;"></div></div>
+                        </div>
+
+                        <div class="cat-item">
+                            <div class="cat-head">
+                                <span><span class="cat-dot" style="background: #06b6d4;"></span> Unallocated Surplus</span>
+                                <strong id="pctSurplus" style="color: #67e8f9;">20.7% (₹15,500)</strong>
+                            </div>
+                            <div class="cat-bar-bg"><div class="cat-bar-fill" id="barSurplus" style="background: #06b6d4; width: 20.7%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 50-30-20 Rule Budget Health Benchmark -->
+        <div class="bento-card" style="margin-bottom: 26px;">
+            <div class="card-header">
+                <h2>50 / 30 / 20 Budget Health Benchmark</h2>
+                <span class="tag-pill">Global Standard</span>
+            </div>
+
+            <div class="rule-grid">
+                <div class="rule-card">
+                    <h3>Needs & Commitments (Target: ≤50%)</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Housing, EMIs, Utilities & Food Essentials</p>
+                    <div style="font-size: 24px; font-weight: 800; color: #ffffff; margin-top: 10px;" id="dispNeedsVal">60.0%</div>
+                    <div class="rule-status" id="dispNeedsStatus">Review: Over 50%</div>
+                </div>
+
+                <div class="rule-card">
+                    <h3>Wants & Lifestyle (Target: ≤30%)</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Dining, Shopping, Entertainment & Subscriptions</p>
+                    <div style="font-size: 24px; font-weight: 800; color: #ffffff; margin-top: 10px;" id="dispWantsVal">8.7%</div>
+                    <div class="rule-status status-ok" id="dispWantsStatus">Healthy: Well within 30%</div>
+                </div>
+
+                <div class="rule-card">
+                    <h3>Savings & Surplus (Target: ≥20%)</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Investments, Emergency Buffer & Surplus</p>
+                    <div style="font-size: 24px; font-weight: 800; color: #67e8f9; margin-top: 10px;" id="dispSavingsVal">31.3%</div>
+                    <div class="rule-status status-ok" id="dispSavingsStatus">Superb: Exceeds 20%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Surplus Optimization Action Banner -->
+        <div class="surplus-actions">
+            <div>
+                <h3>💡 Surplus Optimization Recommendation</h3>
+                <p id="surplusAdviceText">
+                    You have <strong id="adviseSurplusVal" style="color: #67e8f9;">₹15,500/month</strong> unallocated surplus. Routing ₹5,000 to high-interest loan prepayment and ₹10,500 into a SIP will accelerate your Wealth Path goals by 3.8 years!
+                </p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="/wealth-path" class="btn-action">Set Goals in Wealth Path →</a>
+                <a href="/decision-lab" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid rgba(255,255,255,0.15);">Compare Scenarios</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Hydration script -->
+    <script id="session-data" type="application/json">{{ result | default(None) | tojson }}</script>
+
+    <script>
+        "use strict";
+
+        const $ = (id) => document.getElementById(id);
+        const formatINR = (val) => "₹" + Math.round(val || 0).toLocaleString("en-IN");
+
+        function recalculate() {
+            const income = Math.max(1, Number($("inpIncome").value) || 0);
+            const housing = Math.max(0, Number($("inpHousing").value) || 0);
+            const emi = Math.max(0, Number($("inpEMI").value) || 0);
+            const essentials = Math.max(0, Number($("inpEssentials").value) || 0);
+            const lifestyle = Math.max(0, Number($("inpLifestyle").value) || 0);
+            const investments = Math.max(0, Number($("inpInvestments").value) || 0);
+
+            const totalExpenses = housing + emi + essentials + lifestyle;
+            const totalOutflow = totalExpenses + investments;
+            const surplus = Math.max(0, income - totalOutflow);
+
+            // Update Labels
+            $("lblIncome").textContent = formatINR(income);
+            $("lblHousing").textContent = formatINR(housing);
+            $("lblEMI").textContent = formatINR(emi);
+            $("lblEssentials").textContent = formatINR(essentials);
+            $("lblLifestyle").textContent = formatINR(lifestyle);
+            $("lblInvestments").textContent = formatINR(investments);
+
+            // KPI Box
+            $("dispIncome").textContent = formatINR(income);
+            $("dispOutflow").textContent = formatINR(totalOutflow);
+            $("dispOutflowPct").textContent = ((totalOutflow / income) * 100).toFixed(1) + "% of income";
+            $("dispSurplus").textContent = formatINR(surplus);
+            $("dispSurplusPct").textContent = ((surplus / income) * 100).toFixed(1) + "% surplus potential";
+
+            // Percentages
+            const p = (v) => Math.min(100, (v / income) * 100);
+            const pHousing = p(housing);
+            const pEMI = p(emi);
+            const pEssentials = p(essentials);
+            const pLifestyle = p(lifestyle);
+            const pInvest = p(investments);
+            const pSurplus = p(surplus);
+
+            $("pctHousing").textContent = pHousing.toFixed(1) + "% (" + formatINR(housing) + ")";
+            $("pctEMI").textContent = pEMI.toFixed(1) + "% (" + formatINR(emi) + ")";
+            $("pctEssentials").textContent = pEssentials.toFixed(1) + "% (" + formatINR(essentials) + ")";
+            $("pctLifestyle").textContent = pLifestyle.toFixed(1) + "% (" + formatINR(lifestyle) + ")";
+            $("pctInvestments").textContent = pInvest.toFixed(1) + "% (" + formatINR(investments) + ")";
+            $("pctSurplus").textContent = pSurplus.toFixed(1) + "% (" + formatINR(surplus) + ")";
+
+            $("barHousing").style.width = Math.min(100, pHousing) + "%";
+            $("barEMI").style.width = Math.min(100, pEMI) + "%";
+            $("barEssentials").style.width = Math.min(100, pEssentials) + "%";
+            $("barLifestyle").style.width = Math.min(100, pLifestyle) + "%";
+            $("barInvestments").style.width = Math.min(100, pInvest) + "%";
+            $("barSurplus").style.width = Math.min(100, pSurplus) + "%";
+
+            $("donutSurplusVal").textContent = Math.round(pSurplus) + "%";
+
+            // SVG Donut calculation
+            // Circumference of radius 38 is 2 * PI * 38 = 238.76
+            const C = 238.76;
+            let currentOffset = 0;
+
+            const setArc = (id, pct) => {
+                const arcLen = (pct / 100) * C;
+                const el = $(id);
+                el.setAttribute("stroke-dasharray", arcLen + " " + (C - arcLen));
+                el.setAttribute("stroke-dashoffset", -currentOffset);
+                currentOffset += arcLen;
+            };
+
+            setArc("segHousing", pHousing);
+            setArc("segEMI", pEMI);
+            setArc("segEssentials", pEssentials);
+            setArc("segLifestyle", pLifestyle);
+            setArc("segInvestments", pInvest);
+            setArc("segSurplus", pSurplus);
+
+            // 50-30-20 Breakdown
+            const needsPct = pHousing + pEMI + pEssentials;
+            const wantsPct = pLifestyle;
+            const savingsPct = pInvest + pSurplus;
+
+            $("dispNeedsVal").textContent = needsPct.toFixed(1) + "%";
+            const needsStatus = $("dispNeedsStatus");
+            if (needsPct <= 50) {
+                needsStatus.className = "rule-status status-ok";
+                needsStatus.textContent = "Optimal: Under 50%";
+            } else if (needsPct <= 60) {
+                needsStatus.className = "rule-status status-warn";
+                needsStatus.textContent = "Moderate: Slightly high (50-60%)";
+            } else {
+                needsStatus.className = "rule-status status-danger";
+                needsStatus.textContent = "High Strain: Above 60%";
+            }
+
+            $("dispWantsVal").textContent = wantsPct.toFixed(1) + "%";
+            const wantsStatus = $("dispWantsStatus");
+            if (wantsPct <= 30) {
+                wantsStatus.className = "rule-status status-ok";
+                wantsStatus.textContent = "Disciplined: Well within 30%";
+            } else {
+                wantsStatus.className = "rule-status status-danger";
+                wantsStatus.textContent = "Over-budget: Exceeds 30%";
+            }
+
+            $("dispSavingsVal").textContent = savingsPct.toFixed(1) + "%";
+            const savingsStatus = $("dispSavingsStatus");
+            if (savingsPct >= 20) {
+                savingsStatus.className = "rule-status status-ok";
+                savingsStatus.textContent = "Superb: Exceeds 20% Goal";
+            } else if (savingsPct >= 10) {
+                savingsStatus.className = "rule-status status-warn";
+                savingsStatus.textContent = "Moderate: Aim to scale to 20%";
+            } else {
+                savingsStatus.className = "rule-status status-danger";
+                savingsStatus.textContent = "Critical: Below 10% target";
+            }
+
+            // Recommendation advice text
+            $("adviseSurplusVal").textContent = formatINR(surplus) + "/month";
+        }
+
+        // Hydrate from session or session storage if present
+        function init() {
+            try {
+                const s = $("session-data");
+                let data = (s && s.textContent.trim() !== "null") ? JSON.parse(s.textContent) : null;
+                if (!data) {
+                    const local = sessionStorage.getItem("creditFitResult");
+                    if (local) data = JSON.parse(local);
+                }
+
+                if (data) {
+                    if (data.monthly_income && Number(data.monthly_income) > 0) {
+                        $("inpIncome").value = data.monthly_income;
+                    }
+                    if (data.existing_emi && Number(data.existing_emi) >= 0) {
+                        $("inpEMI").value = data.existing_emi;
+                    }
+                    if (data.monthly_balance && Number(data.monthly_balance) > 0) {
+                        // Estimate lifestyle/housing
+                        const estHousing = Math.round(Number(data.monthly_income) * 0.25);
+                        $("inpHousing").value = estHousing;
+                    }
+                }
+            } catch (e) {
+                console.error("Hydration error:", e);
+            }
+
+            ["inpIncome", "inpHousing", "inpEMI", "inpEssentials", "inpLifestyle", "inpInvestments"].forEach(id => {
+                $(id).addEventListener("input", recalculate);
+            });
+
+            recalculate();
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</body>
+</html>
