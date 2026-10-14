@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
+from ai_engine import process_assistant_query
 
 app = Flask(__name__)
 app.secret_key = "creditfit360-secret-key"
+
 
 
 # =========================================================
@@ -138,6 +140,77 @@ def disclaimer():
 def logout():
     session.clear()
     return redirect("/")
+
+
+# =========================================================
+# FITAI FINANCIAL CO-PILOT / ASSISTANT
+# =========================================================
+
+@app.route("/assistant")
+@app.route("/ai-copilot")
+def assistant():
+    result = session.get("creditFitResult")
+    return render_template("assistant.html", result=result)
+
+
+@app.route("/api/assistant-chat", methods=["POST"])
+def assistant_chat():
+    try:
+        data = request.get_json(silent=True) or {}
+        message = str(data.get("message", "")).strip()
+        
+        if not message:
+            return jsonify({
+                "success": False,
+                "reply": "Please provide a question or select an action chip."
+            }), 400
+
+        # Context can be passed explicitly from client, or pulled from Flask session
+        context = data.get("context")
+        if not context or not isinstance(context, dict):
+            context = session.get("creditFitResult") or {}
+
+        history = data.get("history") or []
+
+        response_data = process_assistant_query(
+            query=message,
+            session_data=context,
+            history=history
+        )
+
+        return jsonify({
+            "success": True,
+            **response_data
+        })
+
+    except Exception as e:
+        app.logger.exception("Error processing assistant chat")
+        return jsonify({
+            "success": False,
+            "reply": "⚠️ An error occurred while analyzing financial data. Please try again."
+        }), 500
+
+
+@app.route("/api/assistant-quick-actions", methods=["GET"])
+def assistant_quick_actions():
+    result = session.get("creditFitResult") or {}
+    score = result.get("score") or result.get("total_score") or 0
+    foir = result.get("emi_burden") or 0
+    
+    prompts = [
+        "How can I raise my credit score by 50 points in 90 days?",
+        "Can I afford a new loan? Calculate my safe borrowing capacity.",
+        "How do I reduce my credit card utilization below 30%?",
+        "Draft an official dispute letter for an erroneous CIBIL entry.",
+        "Explain the Snowball vs Avalanche debt payoff method."
+    ]
+    
+    return jsonify({
+        "success": True,
+        "score": score,
+        "foir": foir,
+        "prompts": prompts
+    })
 
 
 # =========================================================

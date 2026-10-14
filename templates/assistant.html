@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>FitAI Co-Pilot | Intelligent Financial Assistant | CreditFit360</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #12151f;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --neon-magenta: #f43f5e;
+            --neon-magenta-glow: rgba(244, 63, 94, 0.35);
+            --neon-teal: #06b6d4;
+            --neon-teal-glow: rgba(6, 182, 212, 0.35);
+            --neon-lime: #84cc16;
+            --neon-blue: #3b82f6;
+            --neon-purple: #a855f7;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu a:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.05);
+            transform: translateX(3px);
+        }
+
+        .menu a.active {
+            color: #ffffff;
+            background: linear-gradient(90deg, rgba(244, 63, 94, 0.14) 0%, rgba(59, 130, 246, 0.08) 100%);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            box-shadow: 0 4px 16px rgba(244, 63, 94, 0.15);
+        }
+
+        .nav-tag {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 700;
+            margin-left: auto;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 28px 36px 40px;
+            max-width: 1540px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Bar */
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .header-title-wrap h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title-wrap h1 .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .header-subtitle {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Two-Column App Layout */
+        .assistant-container {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            flex: 1;
+            min-height: 650px;
+        }
+
+        /* Chat Panel */
+        .chat-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        /* Live Profile Banner at top of chat */
+        .profile-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 20px;
+            font-size: 12px;
+        }
+
+        .profile-strip-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .strip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+
+        .strip-badge strong {
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Chat Messages Container */
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: calc(100vh - 330px);
+            scroll-behavior: smooth;
+        }
+
+        /* Message Bubbles */
+        .message-row {
+            display: flex;
+            gap: 14px;
+            max-width: 92%;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-row.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-row.assistant {
+            align-self: flex-start;
+        }
+
+        .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .msg-avatar.assistant {
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+            color: #ffffff;
+        }
+
+        .msg-avatar.user {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+        }
+
+        .msg-content {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: var(--text-primary);
+        }
+
+        .message-row.user .msg-content {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border-color: rgba(244, 63, 94, 0.35);
+            color: #ffffff;
+        }
+
+        .msg-content h3 {
+            font-size: 15.5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .msg-content h4 {
+            font-size: 13.5px;
+            font-weight: 700;
+            margin: 12px 0 6px;
+            color: #e2e8f0;
+        }
+
+        .msg-content p {
+            margin-bottom: 10px;
+        }
+
+        .msg-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .msg-content ul, .msg-content ol {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .msg-content li {
+            margin-bottom: 4px;
+        }
+
+        .msg-content hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 12px 0;
+        }
+
+        .msg-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 12.5px;
+        }
+
+        .msg-content th, .msg-content td {
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+
+        .msg-content th {
+            background: rgba(255, 255, 255, 0.04);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .msg-content blockquote {
+            border-left: 3px solid var(--neon-teal);
+            padding: 6px 12px;
+            margin: 10px 0;
+            background: rgba(6, 182, 212, 0.05);
+            border-radius: 0 8px 8px 0;
+            color: #cbd5e1;
+        }
+
+        .msg-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Copy Button in message for templates */
+        .msg-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .msg-action-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .msg-action-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 18px;
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            width: fit-content;
+            margin-left: 50px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--neon-magenta);
+            border-radius: 50%;
+            animation: bounce-dot 1.2s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; background: var(--neon-teal); }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; background: var(--neon-blue); }
+
+        @keyframes bounce-dot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Quick Prompt Chips */
+        .quick-chips-wrapper {
+            padding: 12px 20px 8px;
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.01);
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+
+        .quick-chips-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chip-btn:hover {
+            background: rgba(244, 63, 94, 0.12);
+            border-color: rgba(244, 63, 94, 0.35);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Chat Input Form */
+        .chat-input-area {
+            padding: 14px 20px 20px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .input-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 6px 8px 6px 18px;
+            transition: all 0.2s ease;
+        }
+
+        .input-bar:focus-within {
+            border-color: var(--neon-magenta);
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.2);
+        }
+
+        .input-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+
+        .input-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            border: none;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(244, 63, 94, 0.5);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================= RIGHT METRICS PANEL ================= */
+        .metrics-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Score Dial Badge */
+        .score-display-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .score-big {
+            font-size: 32px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .score-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--neon-lime);
+            text-transform: uppercase;
+        }
+
+        .score-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Metric Mini Rows */
+        .metric-mini-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12.5px;
+        }
+
+        .metric-mini-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-mini-label {
+            color: var(--text-secondary);
+        }
+
+        .metric-mini-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* One-Click Action Cards */
+        .quick-action-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(244, 63, 94, 0.3);
+            transform: translateX(3px);
+        }
+
+        .quick-action-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-card-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .action-card-desc {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1080px) {
+            .assistant-container {
+                grid-template-columns: 1fr;
+            }
+            .metrics-panel {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/assistant" class="active">
+                    <span>🤖</span> FitAI Co-Pilot <span class="nav-tag" style="background: rgba(244,63,94,0.2); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3);">AI</span>
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360</strong><br>
+            Powered by FitAI Core Intelligence<br>
+            Financial Intelligence Edition
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+
+        <!-- Top Header -->
+        <header class="assistant-header">
+            <div class="header-title-wrap">
+                <h1>
+                    <span>🤖</span> FitAI Financial Co-Pilot
+                    <span class="status-pill">
+                        <span class="status-dot"></span>
+                        Active & Synced
+                    </span>
+                </h1>
+                <p class="header-subtitle">
+                    Context-aware advisory for credit score boosting, loan affordability math, and dispute management.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <button class="action-btn" id="refreshContextBtn" onclick="syncSessionContext()">
+                    <span>🔄</span> Refresh Metrics
+                </button>
+                <button class="action-btn" onclick="clearChat()">
+                    <span>🗑️</span> Clear Chat
+                </button>
+            </div>
+        </header>
+
+        <!-- Container Grid -->
+        <div class="assistant-container">
+
+            <!-- Left: Chat Panel -->
+            <div class="chat-panel">
+
+                <!-- Profile Synchronization Strip -->
+                <div class="profile-strip">
+                    <div class="profile-strip-items">
+                        <span class="strip-badge">
+                            👤 Profile: <strong id="stripUserName">{{ result.full_name if result and result.full_name else 'Active Member' }}</strong>
+                        </span>
+                        <span class="strip-badge">
+                            📊 Score: <strong id="stripScore">{{ result.score if result and result.score else '720' }}</strong>
+                        </span>
+                        <span class="strip-badge">
+                            ⚖️ EMI Burden: <strong id="stripFoir">{{ result.emi_burden if result and result.emi_burden else '22' }}%</strong>
+                        </span>
+                        <span class="strip-badge">
+                            💳 Utilization: <strong id="stripUtil">{{ result.metrics.creditUtilisation if result and result.metrics else '28' }}%</strong>
+                        </span>
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-muted);">
+                        ⚡ Real-time Session Linked
+                    </span>
+                </div>
+
+                <!-- Chat Stream -->
+                <div class="chat-messages" id="chatStream">
+
+                    <!-- Initial Assistant Greeting -->
+                    <div class="message-row assistant">
+                        <div class="msg-avatar assistant">🤖</div>
+                        <div class="msg-content">
+                            <h3>👋 Welcome to FitAI Financial Co-Pilot!</h3>
+                            <p>
+                                I have synchronized with your current CreditFit 360 session. I can help you mathematically diagnose your credit health, calculate your exact loan approval capacity, and generate official dispute letters.
+                            </p>
+                            <blockquote>
+                                <strong>💡 Quick Start:</strong> Tap any prompt chip below or type your question directly.
+                            </blockquote>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <span style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">FitAI is analyzing financial data...</span>
+                </div>
+
+                <!-- Quick Action Chips -->
+                <div class="quick-chips-wrapper" id="chipsWrapper">
+                    <button class="chip-btn" onclick="sendPrompt('How can I raise my credit score by 50 points in 90 days?')">
+                        🚀 90-Day Score Booster
+                    </button>
+                    <button class="chip-btn" onclick="sendPrompt('Can I afford a new loan? Calculate my safe borrowing capacity.')">
+                        🏦 Calculate Loan Capacity
+                    </button>
+                    <button class="chip-btn" onclick="sendPrompt('How do I reduce my credit card utilization below 30%?')">
+                        💳 Optimize Card Utilization
+                    </button>
+                    <button class="chip-btn" onclick="sendPrompt('Draft an official dispute letter for an erroneous CIBIL entry.')">
+                        📝 Draft CIBIL Dispute Notice
+                    </button>
+                    <button class="chip-btn" onclick="sendPrompt('Explain the Snowball vs Avalanche debt payoff method.')">
+                        ⚖️ Snowball vs Avalanche
+                    </button>
+                    <button class="chip-btn" onclick="sendPrompt('How much should I have in my emergency reserve fund?')">
+                        🛡️ Emergency Cushion Math
+                    </button>
+                </div>
+
+                <!-- Input Box -->
+                <div class="chat-input-area">
+                    <form class="input-bar" id="chatForm" onsubmit="handleFormSubmit(event)">
+                        <input
+                            type="text"
+                            id="queryInput"
+                            placeholder="Ask FitAI anything (e.g. 'Can I afford a 15 Lakh home loan?' or 'Draft a dispute letter')..."
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="send-btn" id="sendBtn" title="Send message">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Right: Vitals & Quick Tools Panel -->
+            <div class="metrics-panel">
+
+                <!-- Financial Vitals Card -->
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Your Financial Vitals</span>
+                        <span style="color: var(--neon-teal); font-size: 11px;">Active Sync</span>
+                    </div>
+
+                    <div class="score-display-box">
+                        <div class="score-big" id="sideScore">
+                            {{ result.score if result and result.score else '720' }}
+                        </div>
+                        <div>
+                            <div class="score-tag" id="sideCategory">
+                                {{ result.category if result and result.category else 'Good Standing' }}
+                            </div>
+                            <div class="score-desc">CreditFit Diagnostic</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-mini-row">
+                        <span class="metric-mini-label">Monthly Income</span>
+                        <span class="metric-mini-value" id="sideIncome">
+                            ₹{{ '{:,.0f}'.format(result.monthly_income) if result and result.monthly_income else '75,000' }}
+                        </span>
+                    </div>
+                    <div class="metric-mini-row">
+                        <span class="metric-mini-label">Existing EMIs</span>
+                        <span class="metric-mini-value" id="sideEmi">
+                            ₹{{ '{:,.0f}'.format(result.existing_emi) if result and result.existing_emi else '16,500' }}
+                        </span>
+                    </div>
+                    <div class="metric-mini-row">
+                        <span class="metric-mini-label">EMI / Income (FOIR)</span>
+                        <span class="metric-mini-value" id="sideFoir">
+                            {{ result.emi_burden if result and result.emi_burden else '22.0' }}%
+                        </span>
+                    </div>
+                    <div class="metric-mini-row">
+                        <span class="metric-mini-label">Credit Card Outstanding</span>
+                        <span class="metric-mini-value" id="sideCreditOut">
+                            ₹{{ '{:,.0f}'.format(result.credit_outstanding) if result and result.credit_outstanding else '28,000' }}
+                        </span>
+                    </div>
+                    <div class="metric-mini-row">
+                        <span class="metric-mini-label">Emergency Cushion</span>
+                        <span class="metric-mini-value" id="sideEmergency">
+                            {{ result.metrics.emergencyMonths if result and result.metrics else '4.2' }} Mo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Instant Advisory Tools -->
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <span>Instant AI Actions</span>
+                        <span>⚡</span>
+                    </div>
+
+                    <div class="quick-action-card" onclick="sendPrompt('Draft an official CIBIL dispute letter for an erroneous late mark.')">
+                        <div class="action-card-header">
+                            <span>📝</span> CIBIL Dispute Generator
+                        </div>
+                        <div class="action-card-desc">
+                            Instantly drafts a statutory CICRA-compliant dispute notice with KYC placeholders.
+                        </div>
+                    </div>
+
+                    <div class="quick-action-card" onclick="sendPrompt('Calculate my safe loan borrowing limit and monthly EMI headroom.')">
+                        <div class="action-card-header">
+                            <span>🏦</span> Safe EMI Capacity Math
+                        </div>
+                        <div class="action-card-desc">
+                            Applies bank 50% FOIR rules to calculate how much you can borrow safely.
+                        </div>
+                    </div>
+
+                    <div class="quick-action-card" onclick="sendPrompt('Give me a step-by-step Snowball debt payoff plan.')">
+                        <div class="action-card-header">
+                            <span>🔥</span> Debt Payoff Strategizer
+                        </div>
+                        <div class="action-card-desc">
+                            Orders your loans by balance or interest rate to accelerate becoming debt-free.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Hidden Raw Session Data Element -->
+    <script id="sessionResultData" type="application/json">
+        {{ result | tojson if result else '{}' }}
+    </script>
+
+    <!-- Assistant Core Script -->
+    <script>
+        let conversationHistory = [];
+        let sessionMetrics = {};
+
+        // Parse initial session metrics if present
+        try {
+            const raw = document.getElementById("sessionResultData")?.textContent;
+            if (raw && raw.trim() !== "{}") {
+                sessionMetrics = JSON.parse(raw);
+            } else {
+                const stored = sessionStorage.getItem("creditFitResult");
+                if (stored) {
+                    sessionMetrics = JSON.parse(stored);
+                }
+            }
+        } catch (e) {
+            console.warn("Could not load session metrics", e);
+        }
+
+        function formatMarkdown(text) {
+            if (!text) return "";
+            let html = text
+                // Headers
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
+                // Bold & Italic
+                .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                // Code blocks
+                .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
+                .replace(/`([^`]+)`/gim, '<code>$1</code>')
+                // Blockquotes
+                .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+                // Tables
+                .replace(/\|(.+)\|/gim, function(match) {
+                    const cells = match.split('|').filter(c => c.trim() !== '');
+                    const isHeader = cells.some(c => c.includes('---'));
+                    if (isHeader) return '';
+                    return '<tr>' + cells.map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
+                })
+                // Line breaks
+                .replace(/\n\n/gim, '<p></p>')
+                .replace(/\n/gim, '<br>');
+
+            // Wrap tables if tr exists
+            if (html.includes('<tr>')) {
+                html = html.replace(/(<tr>.*?<\/tr>)+/gims, '<table>$1</table>');
+            }
+            return html;
+        }
+
+        function appendMessage(role, content, actions = false) {
+            const stream = document.getElementById("chatStream");
+            const row = document.createElement("div");
+            row.className = `message-row ${role}`;
+
+            const avatar = document.createElement("div");
+            avatar.className = `msg-avatar ${role}`;
+            avatar.innerHTML = role === "assistant" ? "🤖" : "👤";
+
+            const msgContent = document.createElement("div");
+            msgContent.className = "msg-content";
+            msgContent.innerHTML = formatMarkdown(content);
+
+            if (role === "assistant" && actions) {
+                const actionsDiv = document.createElement("div");
+                actionsDiv.className = "msg-actions";
+                actionsDiv.innerHTML = `
+                    <button class="msg-action-btn" onclick="copyMessage(this)">📋 Copy Advice</button>
+                `;
+                msgContent.appendChild(actionsDiv);
+            }
+
+            row.appendChild(avatar);
+            row.appendChild(msgContent);
+            stream.appendChild(row);
+
+            // Auto-scroll to bottom
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        function copyMessage(button) {
+            const content = button.closest(".msg-content").innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                const original = button.innerText;
+                button.innerText = "✓ Copied!";
+                setTimeout(() => button.innerText = original, 2000);
+            });
+        }
+
+        async function sendPrompt(queryText) {
+            const query = (queryText || "").trim();
+            if (!query) return;
+
+            // Render user bubble
+            appendMessage("user", query);
+
+            // Save in history
+            conversationHistory.push({ role: "user", content: query });
+
+            // Show typing indicator
+            const typing = document.getElementById("typingIndicator");
+            const sendBtn = document.getElementById("sendBtn");
+            const input = document.getElementById("queryInput");
+
+            typing.style.display = "flex";
+            sendBtn.disabled = true;
+            input.value = "";
+            document.getElementById("chatStream").scrollTop = document.getElementById("chatStream").scrollHeight;
+
+            try {
+                const res = await fetch("/api/assistant-chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: query,
+                        context: sessionMetrics,
+                        history: conversationHistory
+                    })
+                });
+
+                const data = await res.json();
+                typing.style.display = "none";
+                sendBtn.disabled = false;
+
+                if (data && data.reply) {
+                    appendMessage("assistant", data.reply, true);
+                    conversationHistory.push({ role: "assistant", content: data.reply });
+
+                    // Update chips if suggested prompts provided
+                    if (Array.isArray(data.suggested_prompts) && data.suggested_prompts.length > 0) {
+                        updatePromptChips(data.suggested_prompts);
+                    }
+                } else {
+                    appendMessage("assistant", "I could not retrieve an answer right now. Please verify your connection.");
+                }
+            } catch (err) {
+                console.error("Assistant chat error:", err);
+                typing.style.display = "none";
+                sendBtn.disabled = false;
+                appendMessage("assistant", "⚠️ Unable to connect to the assistant server. Please ensure the CreditFit server is active.");
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById("queryInput");
+            sendPrompt(input.value);
+        }
+
+        function updatePromptChips(prompts) {
+            const wrapper = document.getElementById("chipsWrapper");
+            if (!wrapper) return;
+            wrapper.innerHTML = "";
+            prompts.forEach(p => {
+                const btn = document.createElement("button");
+                btn.className = "chip-btn";
+                btn.innerText = p;
+                btn.onclick = () => sendPrompt(p);
+                wrapper.appendChild(btn);
+            });
+        }
+
+        function clearChat() {
+            conversationHistory = [];
+            const stream = document.getElementById("chatStream");
+            stream.innerHTML = `
+                <div class="message-row assistant">
+                    <div class="msg-avatar assistant">🤖</div>
+                    <div class="msg-content">
+                        <h3>Chat History Cleared</h3>
+                        <p>Conversation history has been reset. How can I assist you with your credit or financial strategy today?</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function syncSessionContext() {
+            const btn = document.getElementById("refreshContextBtn");
+            const original = btn.innerHTML;
+            btn.innerHTML = "<span>⏳</span> Syncing...";
+
+            try {
+                const stored = sessionStorage.getItem("creditFitResult");
+                if (stored) {
+                    sessionMetrics = JSON.parse(stored);
+                }
+                setTimeout(() => {
+                    btn.innerHTML = "<span>✓</span> Synced!";
+                    setTimeout(() => btn.innerHTML = original, 1800);
+                }, 400);
+            } catch (err) {
+                btn.innerHTML = original;
+            }
+        }
+    </script>
+
+</body>
+</html>
