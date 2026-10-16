@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
-from ai_engine import process_assistant_query
+from ai_engine import (
+    process_assistant_query,
+    simulate_reverse_underwriting,
+    generate_rbi_statutory_notice,
+    calculate_rbi_statutory_penalty
+)
 
 app = Flask(__name__)
 app.secret_key = "creditfit360-secret-key"
@@ -102,6 +107,82 @@ def wealth_path():
     result = session.get("creditFitResult")
     return render_template("wealth_path.html", result=result)
 
+
+# =========================================================
+# DEFENSE & APPROVAL SUITE (REVERSE UNDERWRITER + RBI ENFORCER)
+# =========================================================
+
+@app.route("/defense-suite")
+@app.route("/financial-defense")
+def defense_suite():
+    result = session.get("creditFitResult")
+    return render_template("defense_suite.html", result=result)
+
+
+@app.route("/api/reverse-underwrite", methods=["POST"])
+def api_reverse_underwrite():
+    try:
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        session_result = session.get("creditFitResult") or {}
+        
+        # Merge session profile as default if not supplied in form
+        if not data.get("monthly_income") and session_result.get("monthly_income"):
+            data["monthly_income"] = session_result.get("monthly_income")
+        if not data.get("existing_emi") and session_result.get("existing_emi"):
+            data["existing_emi"] = session_result.get("existing_emi")
+        if not data.get("credit_score") and session_result.get("credit_score"):
+            data["credit_score"] = session_result.get("credit_score")
+        if not data.get("credit_limit") and session_result.get("credit_limit"):
+            data["credit_limit"] = session_result.get("credit_limit")
+        if not data.get("credit_outstanding") and session_result.get("credit_outstanding"):
+            data["credit_outstanding"] = session_result.get("credit_outstanding")
+        if not data.get("missed_payments") and session_result.get("missed_payments"):
+            data["missed_payments"] = session_result.get("missed_payments")
+            
+        underwrite_result = simulate_reverse_underwriting(data)
+        return jsonify(underwrite_result)
+    except Exception as e:
+        app.logger.exception("Error in reverse underwriting API")
+        return jsonify({
+            "success": False,
+            "message": f"Simulation failed: {str(e)}"
+        }), 500
+
+
+@app.route("/api/generate-statutory-notice", methods=["POST"])
+def api_generate_statutory_notice():
+    try:
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        session_result = session.get("creditFitResult") or {}
+        
+        if not data.get("full_name") and session_result.get("full_name"):
+            data["full_name"] = session_result.get("full_name")
+            
+        notice_result = generate_rbi_statutory_notice(data)
+        return jsonify(notice_result)
+    except Exception as e:
+        app.logger.exception("Error generating statutory notice")
+        return jsonify({
+            "success": False,
+            "message": f"Notice generation failed: {str(e)}"
+        }), 500
+
+
+@app.route("/api/calculate-rbi-penalty", methods=["POST"])
+def api_calculate_rbi_penalty():
+    try:
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        sub_date = data.get("submission_date") or ""
+        resolved_date = data.get("resolved_date") or None
+        
+        penalty_result = calculate_rbi_statutory_penalty(sub_date, resolved_date)
+        return jsonify(penalty_result)
+    except Exception as e:
+        app.logger.exception("Error calculating RBI penalty")
+        return jsonify({
+            "success": False,
+            "message": f"Penalty calculation failed: {str(e)}"
+        }), 500
 
 
 # =========================================================

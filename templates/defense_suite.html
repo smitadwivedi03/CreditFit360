@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>Financial Defense & Approval Suite | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg-base: #07080d;
+            --bg-sidebar: #0b0d14;
+            --bg-card: #0f121a;
+            --bg-card-inner: #12151f;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-magenta: #f43f5e;
+            --neon-teal: #06b6d4;
+            --neon-lime: #10b981;
+            --neon-amber: #f59e0b;
+            --neon-blue: #3b82f6;
+            --neon-purple: #8b5cf6;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0b0d14 0%, #07080d 100%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 28px 18px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 13.5px;
+            font-weight: 550;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .menu a span {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transform: translateX(3px);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu a.active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+        }
+
+        .menu a .nav-tag {
+            margin-left: auto;
+            font-size: 9.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 34px 40px;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .topbar-left h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .badge-exclusive {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Master Suite Tab Switcher */
+        .suite-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 6px;
+            margin-bottom: 30px;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .suite-tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 13px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .suite-tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .suite-tab-btn.active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.25));
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .tab-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        /* Tab Content Containers */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bento Grid Layouts */
+        .grid-split {
+            display: grid;
+            grid-template-columns: 1.15fr 1.85fr;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 1100px) {
+            .grid-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 26px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        .bento-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bento-card-title {
+            font-size: 18px;
+            font-weight: 750;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .bento-subtitle {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .label-val {
+            font-family: 'JetBrains Mono', monospace;
+            color: #67e8f9;
+            font-weight: 700;
+        }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 13.5px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-field:focus, .select-field:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+        }
+
+        .slider-control {
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: #1e293b;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .slider-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Preset Pills */
+        .presets-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .preset-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-pill:hover, .preset-pill.active {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.4);
+            color: #67e8f9;
+        }
+
+        /* Primary Action Button */
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: #ffffff;
+            font-size: 14.5px;
+            font-weight: 750;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Overall Verdict Panoramic Banner */
+        .verdict-hero {
+            background: linear-gradient(135deg, #09131f 0%, #0c1a2e 50%, #0a2540 100%);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 22px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .verdict-hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .odds-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0f172a 60%, #1e293b 100%);
+            border: 4px solid #10b981;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.35);
+        }
+
+        .odds-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .odds-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .verdict-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .verdict-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .verdict-desc {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* Metric Mini-Grid */
+        .metric-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .metric-mini-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .metric-mini-card {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .metric-mini-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .metric-mini-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 750;
+            color: #ffffff;
+        }
+
+        .metric-mini-status {
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* Institutional Bank Comparison Grid */
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        @media (max-width: 900px) {
+            .bank-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bank-card {
+            background: var(--bg-card-inner);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .bank-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .bank-name-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bank-logo {
+            font-size: 24px;
+        }
+
+        .bank-name {
+            font-size: 14.5px;
+            font-weight: 750;
+            color: #ffffff;
+        }
+
+        .bank-risk-tag {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .bank-odds-tag {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 750;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bank-stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+
+        .bank-stat-item {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        .bank-stat-item strong {
+            display: block;
+            font-size: 14px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 2px;
+        }
+
+        .bank-triggers {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .trigger-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            color: #f87171;
+            line-height: 1.4;
+        }
+
+        .strength-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            color: #34d399;
+            line-height: 1.4;
+        }
+
+        /* Prescriptive Delta Action Plan */
+        .actions-box {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-left: 4px solid #06b6d4;
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .action-card.urgent {
+            border-left-color: #f43f5e;
+            background: rgba(244, 63, 94, 0.03);
+        }
+
+        .action-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .action-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .action-badge {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: #67e8f9;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ================= TAB 2: RBI STATUTORY DEFENSE STYLES ================= */
+        .rbi-statutory-banner {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            border-radius: 20px;
+            padding: 22px 26px;
+            margin-bottom: 28px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .rbi-seal {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+        }
+
+        .rbi-banner-text h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .rbi-banner-text p {
+            font-size: 13px;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .rbi-banner-text strong {
+            color: #38bdf8;
+        }
+
+        /* Penalty Ticker Bento */
+        .penalty-card {
+            background: linear-gradient(155deg, #180d15 0%, #10121d 100%);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 24px;
+            padding: 26px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 28px;
+        }
+
+        .penalty-ticker-row {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 24px;
+            align-items: center;
+            margin-top: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 850px) {
+            .penalty-ticker-row {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .penalty-days-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #240a12 60%, #15060b 100%);
+            border: 4px solid #f43f5e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.4);
+        }
+
+        .penalty-days-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 800;
+            color: #f43f5e;
+            line-height: 1;
+        }
+
+        .penalty-amount-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .penalty-amount-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .penalty-amount-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 800;
+            color: #34d399;
+        }
+
+        .penalty-amount-sub {
+            font-size: 11.5px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* Legal Notice Preview Box */
+        .notice-preview-box {
+            background: #090b10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            max-height: 380px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            user-select: text;
+            margin-bottom: 18px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .action-btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.35);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.5);
+        }
+
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10b981;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 9999;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>CreditFit<span>360</span></div>
+        </div>
+        <div class="brand-subtitle">Smart Credit & Wealth Platform</div>
+
+        <div class="menu-label">Main Suite</div>
+        <ul class="menu">
+            <li>
+                <a href="/dashboard">
+                    <span>📈</span> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/defense-suite" class="active">
+                    <span>🛡️</span> Defense & Approval <span class="nav-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);">NEW</span>
+                </a>
+            </li>
+            <li>
+                <a href="/assistant">
+                    <span>🤖</span> FitAI Co-Pilot <span class="nav-tag" style="background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3);">AI</span>
+                </a>
+            </li>
+            <li>
+                <a href="/moneymap">
+                    <span>🗺️</span> MoneyMap <span class="nav-tag">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/decision-lab">
+                    <span>⚖️</span> Decision Lab <span class="nav-tag">A/B</span>
+                </a>
+            </li>
+            <li>
+                <a href="/wealth-path">
+                    <span>🎯</span> Wealth Path <span class="nav-tag">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="/what-if-simulator">
+                    <span>🔮</span> What-If (FinTwin)
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">Assessment Core</div>
+        <ul class="menu">
+            <li>
+                <a href="/personal-credit">
+                    <span>👤</span> Personal CreditFit
+                </a>
+            </li>
+            <li>
+                <a href="/sme-credit-score">
+                    <span>🏢</span> SME Credit Score
+                </a>
+            </li>
+            <li>
+                <a href="/loan-readiness">
+                    <span>💰</span> Loan Readiness
+                </a>
+            </li>
+            <li>
+                <a href="/credit-result">
+                    <span>📊</span> Reports & Results
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-label">System</div>
+        <ul class="menu">
+            <li>
+                <a href="/settings">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+            <li>
+                <a href="/about">
+                    <span>ℹ️</span> About Platform
+                </a>
+            </li>
+            <li>
+                <a href="/disclaimer">
+                    <span>📋</span> Disclaimer
+                </a>
+            </li>
+            <li>
+                <a href="/logout" style="color: #f87171;">
+                    <span>🚪</span> Sign Out
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <strong>CreditFit360 Defense Suite</strong><br>
+            Institutional Underwriting & RBI CICRA 2005 Enforcement Engine
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1>
+                    <span>🛡️</span> Financial Defense & Approval Suite
+                    <span class="badge-exclusive">Category-First Innovation</span>
+                </h1>
+                <p>Pre-test loan approvals against bank algorithms with zero credit dings, and enforce statutory credit bureau rights under RBI law.</p>
+            </div>
+        </header>
+
+        <!-- Suite Master Navigation Tabs -->
+        <nav class="suite-tabs">
+            <button class="suite-tab-btn active" id="tabBtnUnderwrite" onclick="switchSuiteTab('underwrite')">
+                <span>👁️</span> Reverse Underwriter ("Lender's Eye")
+                <span class="tab-badge">Pre-Flight Approval</span>
+            </button>
+            <button class="suite-tab-btn" id="tabBtnDefense" onclick="switchSuiteTab('defense')">
+                <span>⚖️</span> RBI Statutory Credit Defense
+                <span class="tab-badge" style="background: rgba(244, 63, 94, 0.25); color: #fda4af;">₹100/Day Penalty</span>
+            </button>
+        </nav>
+
+        <!-- ================================================================= -->
+        <!-- TAB 1: REVERSE UNDERWRITER ("LENDER'S EYE" SIMULATOR) -->
+        <!-- ================================================================= -->
+        <div id="panelUnderwrite" class="tab-panel active">
+            
+            <div class="grid-split">
+                <!-- Left: Application Parameters Input Bento -->
+                <div class="bento-card">
+                    <div class="bento-card-header">
+                        <div>
+                            <div class="bento-card-title"><span>🎛️</span> Loan Pre-Flight Control</div>
+                            <div class="bento-subtitle">Simulate approval without triggering hard inquiries</div>
+                        </div>
+                    </div>
+
+                    <!-- Presets -->
+                    <div class="form-group">
+                        <label>Quick Product Preset:</label>
+                        <div class="presets-box">
+                            <button type="button" class="preset-pill active" onclick="applyPreset('home_25')">₹25L Home Loan</button>
+                            <button type="button" class="preset-pill" onclick="applyPreset('personal_5')">₹5L Personal Loan</button>
+                            <button type="button" class="preset-pill" onclick="applyPreset('auto_10')">₹10L Auto Loan</button>
+                            <button type="button" class="preset-pill" onclick="applyPreset('business_20')">₹20L MSME Loan</button>
+                        </div>
+                    </div>
+
+                    <form id="underwriteForm" onsubmit="runUnderwriteSimulation(event)">
+                        <div class="form-group">
+                            <label>Loan Product Type:</label>
+                            <select id="uLoanType" class="select-field" onchange="triggerAutoSimulate()">
+                                <option value="home">Home Loan (Benchmark ~8.50%)</option>
+                                <option value="personal">Personal Loan (Benchmark ~10.75%)</option>
+                                <option value="auto">Auto / Car Loan (Benchmark ~9.10%)</option>
+                                <option value="business">Business / MSME Loan (Benchmark ~12.25%)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Requested Amount:
+                                <span class="label-val" id="lblLoanAmount">₹ 25,00,000</span>
+                            </label>
+                            <input type="range" id="uLoanAmount" class="slider-control" min="100000" max="15000000" step="50000" value="2500000" oninput="updateLoanAmount(this.value)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Loan Tenure (Years):
+                                <span class="label-val" id="lblTenure">15 Years</span>
+                            </label>
+                            <input type="range" id="uTenure" class="slider-control" min="1" max="30" step="1" value="15" oninput="updateTenure(this.value)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Monthly Net Take-Home Salary (₹):</label>
+                            <input type="number" id="uIncome" class="input-field" value="{{ result.monthly_income if result and result.monthly_income else 95000 }}" oninput="triggerAutoSimulate()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Existing Monthly EMIs (₹):</label>
+                            <input type="number" id="uExistingEmi" class="input-field" value="{{ result.existing_emi if result and result.existing_emi else 15000 }}" oninput="triggerAutoSimulate()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Bureau Score (CIBIL / Experian):
+                                <span class="label-val" id="lblScore">745</span>
+                            </label>
+                            <input type="range" id="uScore" class="slider-control" min="300" max="900" step="5" value="{{ result.credit_score if result and result.credit_score else 745 }}" oninput="updateScore(this.value)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Credit Card Limit & Outstanding (₹):</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <input type="number" id="uLimit" class="input-field" placeholder="Total Limit" value="{{ result.credit_limit if result and result.credit_limit else 200000 }}" oninput="triggerAutoSimulate()">
+                                <input type="number" id="uOutstanding" class="input-field" placeholder="Outstanding Balance" value="{{ result.credit_outstanding if result and result.credit_outstanding else 60000 }}" oninput="triggerAutoSimulate()">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hard Inquiries in Last 90 Days:</label>
+                            <select id="uInquiries" class="select-field" onchange="triggerAutoSimulate()">
+                                <option value="0">0 Inquiries (Spotless - Zero Credit Hunger)</option>
+                                <option value="1" selected>1 Inquiry (Safe - Standard Check)</option>
+                                <option value="2">2 Inquiries (Mild Caution Threshold)</option>
+                                <option value="3">3 Inquiries (Elevated Risk Indicator)</option>
+                                <option value="5">5+ Inquiries (High Credit Hunger / Rejection Trigger)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Employer / Applicant Classification:</label>
+                            <select id="uEmployment" class="select-field" onchange="triggerAutoSimulate()">
+                                <option value="super_cat_a">Super Cat-A MNC / Central Govt / PSU (Prime Rate Preference)</option>
+                                <option value="cat_b">Cat-B Private Limited Company</option>
+                                <option value="self_employed">Self-Employed Professional (Doctor / CA / Architect)</option>
+                                <option value="freelance">Freelance / Gig Economy (Bank Surrogate Policy)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-action">
+                            <span>⚡</span> Recalculate Lender's Eye Simulation
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Simulation Results, Bank Matrix, & Prescriptive Fixes -->
+                <div>
+                    <!-- Panoramic Verdict Banner -->
+                    <div class="verdict-hero">
+                        <div class="odds-circle" id="oddsCircle">
+                            <div class="odds-number" id="displayAvgOdds">82%</div>
+                            <div class="odds-label">Sanction Odds</div>
+                        </div>
+                        <div>
+                            <div class="verdict-badge" id="displayVerdictBadge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);">
+                                🟢 Strong Pre-Approval Odds (Tier 1 Prime)
+                            </div>
+                            <div class="verdict-title" id="displayVerdictTitle">High Institutional Sanction Probability</div>
+                            <div class="verdict-desc" id="displayVerdictSummary">
+                                Your profile passes primary bank underwriting filters. You can comfortably negotiate prime interest rates without risk of algorithmic rejection.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric Strip -->
+                    <div class="metric-mini-grid">
+                        <div class="metric-mini-card">
+                            <div class="metric-mini-title">New Loan EMI</div>
+                            <div class="metric-mini-val" id="metricNewEmi">₹ 24,628</div>
+                            <div class="metric-mini-status" style="color: #67e8f9;">@ Benchmark Rate</div>
+                        </div>
+                        <div class="metric-mini-card">
+                            <div class="metric-mini-title">Projected Total FOIR</div>
+                            <div class="metric-mini-val" id="metricFoir">41.7%</div>
+                            <div class="metric-mini-status" style="color: #34d399;" id="metricFoirStatus">🟢 Within Safe 50% Limit</div>
+                        </div>
+                        <div class="metric-mini-card">
+                            <div class="metric-mini-title">Net Take-Home Surplus</div>
+                            <div class="metric-mini-val" id="metricNth">₹ 55,372</div>
+                            <div class="metric-mini-status" style="color: #34d399;">Safe Disposable Cash</div>
+                        </div>
+                        <div class="metric-mini-card">
+                            <div class="metric-mini-title">Card Utilization</div>
+                            <div class="metric-mini-val" id="metricUtil">30.0%</div>
+                            <div class="metric-mini-status" style="color: #38bdf8;">Optimal Ceiling</div>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side Bank Comparison Grid -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="font-size: 16px; font-weight: 750; color: #ffffff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                            <span>🏛️</span> Institutional Underwriting Matrix (Zero Enquiry Simulated)
+                        </div>
+                        <div class="bank-grid" id="bankGridContainer">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Prescriptive Delta Action Plan -->
+                    <div class="bento-card">
+                        <div class="bento-card-header">
+                            <div>
+                                <div class="bento-card-title"><span>🎯</span> Prescriptive Delta Action Plan</div>
+                                <div class="bento-subtitle">Exact actions to take before applying to eliminate rejection risk and save on interest</div>
+                            </div>
+                        </div>
+
+                        <div class="actions-box" id="actionPlanContainer">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 2: RBI STATUTORY LEGAL CREDIT DEFENSE & PENALTY ENFORCER -->
+        <!-- ================================================================= -->
+        <div id="panelDefense" class="tab-panel">
+
+            <!-- Statutory Rights Banner -->
+            <div class="rbi-statutory-banner">
+                <div class="rbi-seal">⚖️</div>
+                <div class="rbi-banner-text">
+                    <h3>Reserve Bank of India (RBI) Statutory Consumer Protection Framework</h3>
+                    <p>
+                        Under <strong>Section 21(3) of CICRA 2005</strong> and <strong>RBI Circular RBI/2023-24/72</strong>, credit bureaus (CIBIL, Experian, Equifax, CRIF) and lenders must rectify disputed records within <strong>30 calendar days</strong>. 
+                        If they fail to resolve the dispute within 30 days, they are legally mandated to pay you compensation of <strong>₹100 per calendar day of delay</strong> without requiring court proceedings.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 30-Day Penalty Tracker Bento -->
+            <div class="penalty-card">
+                <div class="bento-card-header">
+                    <div>
+                        <div class="bento-card-title" style="color: #f43f5e;">
+                            <span>⏱️</span> Live 30-Day Statutory Countdown & Penalty Accumulator
+                        </div>
+                        <div class="bento-subtitle">Track unresolved disputes and calculate legal compensation owed to you</div>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span style="font-size: 12px; color: var(--text-muted);">Dispute Filing Date:</span>
+                        <input type="date" id="pSubmissionDate" class="input-field" style="width: auto; padding: 6px 12px; font-size: 12px;" onchange="updatePenaltyTracker()">
+                    </div>
+                </div>
+
+                <div class="penalty-ticker-row">
+                    <div class="penalty-days-circle" id="penaltyCircle">
+                        <div class="penalty-days-num" id="pDaysDisplay">35</div>
+                        <div style="font-size: 9px; text-transform: uppercase; color: #fda4af; letter-spacing: 0.5px;">Days Elapsed</div>
+                    </div>
+
+                    <div class="penalty-amount-box">
+                        <div class="penalty-amount-label">Statutory Status</div>
+                        <div id="pStatusBadge" style="font-size: 16px; font-weight: 800; color: #f43f5e; margin: 4px 0;">
+                            🔴 Statutory Deadline Breached
+                        </div>
+                        <div style="font-size: 12.5px; color: #cbd5e1;" id="pStatusSub">
+                            30-day statutory window expired 5 day(s) ago.
+                        </div>
+                    </div>
+
+                    <div class="penalty-amount-box">
+                        <div class="penalty-amount-label">Accrued Legal Compensation</div>
+                        <div class="penalty-amount-val" id="pCompDisplay">₹ 500</div>
+                        <div class="penalty-amount-sub">Mandated by RBI Clause 4 (@ ₹100/day)</div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div style="font-size: 13px; color: #fecdd3;">
+                        <strong>Next Legal Action:</strong> <span id="pActionText">File an immediate petition with the RBI Banking Ombudsman to claim your ₹500 compensation and expedite record purging.</span>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-secondary btn-danger" onclick="copyOmbudsmanPetition()">
+                            <span>📋</span> Copy RBI Ombudsman Dossier
+                        </button>
+                        <a href="https://cms.rbi.org.in" target="_blank" class="btn-secondary" style="background: #3b82f6; border-color: #3b82f6;">
+                            <span>↗️</span> Open RBI CMS Portal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dispute Packet Generator Grid -->
+            <div class="grid-split">
+                <!-- Left: Dispute Notice Parameters -->
+                <div class="bento-card">
+                    <div class="bento-card-header">
+                        <div>
+                            <div class="bento-card-title"><span>📝</span> Statutory Dispute Packet Generator</div>
+                            <div class="bento-subtitle">Draft a legally fortified notice citing Section 21(3) CICRA 2005</div>
+                        </div>
+                    </div>
+
+                    <form id="disputeForm" onsubmit="generateNotice(event)">
+                        <div class="form-group">
+                            <label>Complainant Full Legal Name:</label>
+                            <input type="text" id="dFullName" class="input-field" value="{{ result.full_name if result and result.full_name else 'Account Holder' }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Permanent Account Number (PAN):</label>
+                            <input type="text" id="dPan" class="input-field" placeholder="ABCDE1234F" value="ABCDE1234F" style="text-transform: uppercase;" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Coordinates (Mobile / Email):</label>
+                            <input type="text" id="dContact" class="input-field" placeholder="+91 98765 43210 / your.email@example.com" value="+91 98765 43210" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Target Credit Information Company (CIC):</label>
+                            <select id="dBureau" class="select-field">
+                                <option value="TransUnion CIBIL Limited">TransUnion CIBIL Limited</option>
+                                <option value="Experian Credit Information Services of India">Experian Credit Information Services of India</option>
+                                <option value="Equifax Credit Information Services">Equifax Credit Information Services</option>
+                                <option value="CRIF High Mark Credit Information Services">CRIF High Mark</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Reporting Creditor / Bank Name:</label>
+                            <input type="text" id="dLender" class="input-field" placeholder="e.g. HDFC Bank Ltd / SBI Cards" value="HDFC Bank Limited" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Disputed Account / Loan Number:</label>
+                            <input type="text" id="dAccountNo" class="input-field" placeholder="e.g. 5421-XXXX-XXXX-9812" value="PL-98234-2023" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Classification of Disputed Error:</label>
+                            <select id="dCategory" class="select-field">
+                                <option value="erroneous_dpd">Erroneous Late Mark / DPD (Paid on Time)</option>
+                                <option value="written_off_error">Settled / Closed Loan Marked as 'Written Off'</option>
+                                <option value="identity_theft">Ghost Account / Identity Theft Mark (Never Availed)</option>
+                                <option value="closed_showing_active">Closed Loan Still Showing as Active Liability</option>
+                                <option value="delay_in_noc">Delay in Issuance of No Dues Certificate (NDC)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Supporting Evidence Enclosures:</label>
+                            <input type="text" id="dEvidence" class="input-field" value="Bank Statement showing timely auto-debit clearance and No Objection Certificate">
+                        </div>
+
+                        <button type="submit" class="btn-action" style="background: linear-gradient(135deg, #f43f5e 0%, #8b5cf6 100%); box-shadow: 0 4px 20px rgba(244, 63, 94, 0.35);">
+                            <span>⚖️</span> Generate Statutory Demand Notice
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Generated Formal Legal Notice Preview -->
+                <div class="bento-card">
+                    <div class="bento-card-header">
+                        <div>
+                            <div class="bento-card-title"><span>📜</span> Legal Notice Document</div>
+                            <div class="bento-subtitle">CICRA 2005 & RBI Clause 4 Mandatory Compensation Notice</div>
+                        </div>
+                    </div>
+
+                    <div class="notice-preview-box" id="noticeBox">
+Click "Generate Statutory Demand Notice" to produce your formal, legally structured dispute notice.
+                    </div>
+
+                    <div class="action-btn-row">
+                        <button type="button" class="btn-secondary" onclick="copyNoticeText()">
+                            <span>📋</span> Copy Notice Text
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="printNotice()">
+                            <span>🖨️</span> Print / Save PDF
+                        </button>
+                        <a href="https://www.cibil.com/consumer-dispute-resolution" target="_blank" class="btn-secondary">
+                            <span>🌐</span> CIBIL Portal
+                        </a>
+                        <a href="https://www.experian.in/consumer-disputes" target="_blank" class="btn-secondary">
+                            <span>🌐</span> Experian Portal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Global State for Ombudsman Draft
+        let currentOmbudsmanDraft = "";
+
+        // Tab Switching Logic
+        function switchSuiteTab(tab) {
+            const btnUnderwrite = document.getElementById("tabBtnUnderwrite");
+            const btnDefense = document.getElementById("tabBtnDefense");
+            const panelUnderwrite = document.getElementById("panelUnderwrite");
+            const panelDefense = document.getElementById("panelDefense");
+
+            if (tab === 'underwrite') {
+                btnUnderwrite.classList.add("active");
+                btnDefense.classList.remove("active");
+                panelUnderwrite.classList.add("active");
+                panelDefense.classList.remove("active");
+            } else {
+                btnDefense.classList.add("active");
+                btnUnderwrite.classList.remove("active");
+                panelDefense.classList.add("active");
+                panelUnderwrite.classList.remove("active");
+            }
+        }
+
+        // Helper: Format Currency (INR)
+        function formatINR(val) {
+            return "₹ " + Number(val).toLocaleString('en-IN');
+        }
+
+        // Slider value updates
+        function updateLoanAmount(val) {
+            document.getElementById("lblLoanAmount").textContent = formatINR(val);
+            triggerAutoSimulate();
+        }
+
+        function updateTenure(val) {
+            document.getElementById("lblTenure").textContent = val + " Years";
+            triggerAutoSimulate();
+        }
+
+        function updateScore(val) {
+            document.getElementById("lblScore").textContent = val;
+            triggerAutoSimulate();
+        }
+
+        // Presets handler
+        function applyPreset(preset) {
+            document.querySelectorAll(".preset-pill").forEach(p => p.classList.remove("active"));
+            event.target.classList.add("active");
+
+            if (preset === 'home_25') {
+                document.getElementById("uLoanType").value = "home";
+                document.getElementById("uLoanAmount").value = 2500000;
+                document.getElementById("uTenure").value = 15;
+            } else if (preset === 'personal_5') {
+                document.getElementById("uLoanType").value = "personal";
+                document.getElementById("uLoanAmount").value = 500000;
+                document.getElementById("uTenure").value = 3;
+            } else if (preset === 'auto_10') {
+                document.getElementById("uLoanType").value = "auto";
+                document.getElementById("uLoanAmount").value = 1000000;
+                document.getElementById("uTenure").value = 5;
+            } else if (preset === 'business_20') {
+                document.getElementById("uLoanType").value = "business";
+                document.getElementById("uLoanAmount").value = 2000000;
+                document.getElementById("uTenure").value = 4;
+            }
+
+            document.getElementById("lblLoanAmount").textContent = formatINR(document.getElementById("uLoanAmount").value);
+            document.getElementById("lblTenure").textContent = document.getElementById("uTenure").value + " Years";
+            triggerAutoSimulate();
+        }
+
+        // Debounced Auto-Simulate
+        let autoSimTimer = null;
+        function triggerAutoSimulate() {
+            clearTimeout(autoSimTimer);
+            autoSimTimer = setTimeout(() => {
+                runUnderwriteSimulation();
+            }, 250);
+        }
+
+        // Run Reverse Underwriting Simulation
+        async function runUnderwriteSimulation(e) {
+            if (e) e.preventDefault();
+
+            const payload = {
+                loan_type: document.getElementById("uLoanType").value,
+                loan_amount: parseFloat(document.getElementById("uLoanAmount").value),
+                tenure_years: parseInt(document.getElementById("uTenure").value),
+                monthly_income: parseFloat(document.getElementById("uIncome").value) || 95000,
+                existing_emi: parseFloat(document.getElementById("uExistingEmi").value) || 0,
+                credit_score: parseFloat(document.getElementById("uScore").value) || 745,
+                credit_limit: parseFloat(document.getElementById("uLimit").value) || 200000,
+                credit_outstanding: parseFloat(document.getElementById("uOutstanding").value) || 0,
+                hard_inquiries_90d: parseInt(document.getElementById("uInquiries").value) || 1,
+                employment_cat: document.getElementById("uEmployment").value
+            };
+
+            try {
+                const res = await fetch("/api/reverse-underwrite", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    renderUnderwriteResults(data);
+                }
+            } catch (err) {
+                console.error("Simulation request error:", err);
+            }
+        }
+
+        // Render Results in DOM
+        function renderUnderwriteResults(data) {
+            // Overall Probability & Verdict
+            document.getElementById("displayAvgOdds").textContent = data.avg_approval_odds + "%";
+            document.getElementById("displayVerdictTitle").textContent = data.overall_verdict;
+            document.getElementById("displayVerdictSummary").textContent = data.verdict_summary;
+            
+            const badge = document.getElementById("displayVerdictBadge");
+            const circle = document.getElementById("oddsCircle");
+
+            badge.textContent = data.overall_verdict;
+            badge.style.color = data.verdict_color;
+            badge.style.borderColor = data.verdict_color;
+            badge.style.background = data.verdict_color + "22";
+
+            circle.style.borderColor = data.verdict_color;
+            circle.style.boxShadow = `0 0 30px ${data.verdict_color}55`;
+
+            // Metrics
+            document.getElementById("metricNewEmi").textContent = formatINR(data.projected_new_emi);
+            document.getElementById("metricFoir").textContent = data.projected_foir + "%";
+            document.getElementById("metricNth").textContent = formatINR(data.net_take_home);
+            document.getElementById("metricUtil").textContent = data.credit_utilization + "%";
+
+            const foirStatus = document.getElementById("metricFoirStatus");
+            if (data.projected_foir <= 50) {
+                foirStatus.textContent = "🟢 Within Safe 50% Limit";
+                foirStatus.style.color = "#34d399";
+            } else {
+                foirStatus.textContent = "🔴 Breaches Bank 50% Limit";
+                foirStatus.style.color = "#f43f5e";
+            }
+
+            // Bank Matrix Cards
+            const bankContainer = document.getElementById("bankGridContainer");
+            bankContainer.innerHTML = "";
+
+            data.bank_results.forEach(bank => {
+                const card = document.createElement("div");
+                card.className = "bank-card";
+
+                let triggersHtml = "";
+                if (bank.triggers && bank.triggers.length > 0) {
+                    bank.triggers.forEach(t => {
+                        triggersHtml += `<li class="trigger-item"><span>⚠️</span> ${t}</li>`;
+                    });
+                }
+                if (bank.strengths && bank.strengths.length > 0) {
+                    bank.strengths.forEach(s => {
+                        triggersHtml += `<li class="strength-item"><span>✓</span> ${s}</li>`;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="bank-header">
+                        <div class="bank-name-box">
+                            <span class="bank-logo">${bank.logo}</span>
+                            <div>
+                                <div class="bank-name">${bank.name}</div>
+                                <div class="bank-risk-tag">${bank.processing_speed}</div>
+                            </div>
+                        </div>
+                        <div class="bank-odds-tag" style="background: ${bank.status_color}22; color: ${bank.status_color}; border: 1px solid ${bank.status_color}55;">
+                            ${bank.approval_odds}% Odds
+                        </div>
+                    </div>
+                    <div class="bank-stats-row">
+                        <div class="bank-stat-item">
+                            Estimated Rate
+                            <strong>${bank.estimated_rate_pa}% p.a.</strong>
+                        </div>
+                        <div class="bank-stat-item">
+                            Projected EMI
+                            <strong>${formatINR(bank.projected_emi)}</strong>
+                        </div>
+                    </div>
+                    <ul class="bank-triggers">
+                        ${triggersHtml}
+                    </ul>
+                `;
+                bankContainer.appendChild(card);
+            });
+
+            // Action Plan
+            const actionContainer = document.getElementById("actionPlanContainer");
+            actionContainer.innerHTML = "";
+
+            if (data.action_plan && data.action_plan.length > 0) {
+                data.action_plan.forEach(item => {
+                    const actCard = document.createElement("div");
+                    actCard.className = `action-card ${item.urgency.includes("High") ? "urgent" : ""}`;
+
+                    actCard.innerHTML = `
+                        <div class="action-info">
+                            <h4>${item.action}</h4>
+                            <p>${item.impact}</p>
+                        </div>
+                        <div class="action-badge">${item.urgency}</div>
+                    `;
+                    actionContainer.appendChild(actCard);
+                });
+            }
+        }
+
+        // =================================================================
+        // RBI STATUTORY NOTICE & PENALTY ENGINE
+        // =================================================================
+
+        // Generate Legal Notice
+        async function generateNotice(e) {
+            if (e) e.preventDefault();
+
+            const payload = {
+                full_name: document.getElementById("dFullName").value,
+                pan_number: document.getElementById("dPan").value,
+                mobile_email: document.getElementById("dContact").value,
+                bureau_name: document.getElementById("dBureau").value,
+                lender_name: document.getElementById("dLender").value,
+                account_no: document.getElementById("dAccountNo").value,
+                dispute_category: document.getElementById("dCategory").value,
+                evidence_docs: document.getElementById("dEvidence").value
+            };
+
+            try {
+                const res = await fetch("/api/generate-statutory-notice", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById("noticeBox").textContent = data.notice_text;
+                    showToast("Statutory Notice Generated Successfully!");
+                }
+            } catch (err) {
+                console.error("Notice generation error:", err);
+            }
+        }
+
+        // Live Penalty Tracker
+        async function updatePenaltyTracker() {
+            const dateVal = document.getElementById("pSubmissionDate").value;
+            if (!dateVal) return;
+
+            try {
+                const res = await fetch("/api/calculate-rbi-penalty", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ submission_date: dateVal })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    currentOmbudsmanDraft = data.ombudsman_petition;
+
+                    document.getElementById("pDaysDisplay").textContent = data.days_elapsed;
+                    document.getElementById("pCompDisplay").textContent = "₹ " + Number(data.accrued_compensation_inr).toLocaleString('en-IN');
+                    document.getElementById("pActionText").textContent = data.action_required;
+
+                    const statusBadge = document.getElementById("pStatusBadge");
+                    const statusSub = document.getElementById("pStatusSub");
+                    const circle = document.getElementById("penaltyCircle");
+
+                    statusBadge.textContent = data.status_label;
+                    statusBadge.style.color = data.status_color;
+
+                    circle.style.borderColor = data.status_color;
+                    circle.style.boxShadow = `0 0 30px ${data.status_color}55`;
+                    document.getElementById("pDaysDisplay").style.color = data.status_color;
+
+                    if (data.days_delayed > 0) {
+                        statusSub.textContent = `30-day statutory window expired ${data.days_delayed} day(s) ago.`;
+                    } else {
+                        statusSub.textContent = `${data.days_remaining} day(s) remaining for bureau verification.`;
+                    }
+                }
+            } catch (err) {
+                console.error("Penalty tracking error:", err);
+            }
+        }
+
+        // Copy Notice to Clipboard
+        function copyNoticeText() {
+            const text = document.getElementById("noticeBox").textContent;
+            navigator.clipboard.writeText(text);
+            showToast("Formal Notice copied to clipboard!");
+        }
+
+        // Copy Ombudsman Dossier
+        function copyOmbudsmanPetition() {
+            if (!currentOmbudsmanDraft) {
+                currentOmbudsmanDraft = `GRIEVANCE FOR LODGEMENT ON RBI COMPLAINT MANAGEMENT SYSTEM (CMS):\nCategory: Credit Information Companies / Banking Operations\nGround: Non-rectification within statutory 30 days under Circular RBI/2023-24/72.\nDemanding compensation @ ₹100/day.`;
+            }
+            navigator.clipboard.writeText(currentOmbudsmanDraft);
+            showToast("RBI Ombudsman Petition Dossier copied!");
+        }
+
+        // Print Notice
+        function printNotice() {
+            const printContent = document.getElementById("noticeBox").textContent;
+            const printWin = window.open('', '', 'width=800,height=600');
+            printWin.document.write('<pre style="font-family: monospace; white-space: pre-wrap; padding: 20px;">' + printContent + '</pre>');
+            printWin.document.close();
+            printWin.print();
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            toast.textContent = msg;
+            toast.style.display = "block";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 3000);
+        }
+
+        // Initialize on load
+        window.addEventListener("DOMContentLoaded", () => {
+            // Set default date to 35 days ago to demonstrate live statutory violation ticker
+            const d = new Date();
+            d.setDate(d.getDate() - 35);
+            document.getElementById("pSubmissionDate").value = d.toISOString().split('T')[0];
+
+            // Run initial simulations
+            runUnderwriteSimulation();
+            generateNotice();
+            updatePenaltyTracker();
+        });
+    </script>
+</body>
+</html>
