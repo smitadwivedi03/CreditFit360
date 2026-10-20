@@ -13,7 +13,23 @@ import os
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database.db")
+import os
+import shutil
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Vercel Serverless compatibility: Root directory on Vercel is read-only
+if os.environ.get("VERCEL") or not os.access(BASE_DIR, os.W_OK):
+    DB_PATH = os.path.join("/tmp", "database.db")
+    orig_db = os.path.join(BASE_DIR, "database.db")
+    if os.path.exists(orig_db) and not os.path.exists(DB_PATH):
+        try:
+            shutil.copy2(orig_db, DB_PATH)
+        except Exception:
+            pass
+else:
+    DB_PATH = os.path.join(BASE_DIR, "database.db")
+
 
 
 def get_db_connection():
