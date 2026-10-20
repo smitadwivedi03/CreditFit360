@@ -29,6 +29,8 @@ db.init_db()
 # =========================================================
 
 @app.route("/")
+@app.route("/api/index")
+@app.route("/api/index.py")
 def login():
     return render_template("login.html")
 
