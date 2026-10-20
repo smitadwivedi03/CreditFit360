@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, send_file, Response
+from flask import Flask, render_template, request, jsonify, session, redirect, send_file, Response, send_from_directory
 from datetime import datetime
 import os
 import json
@@ -19,6 +19,18 @@ app = Flask(
     static_folder=os.path.join(BASE_DIR, "static")
 )
 app.secret_key = os.environ.get("SECRET_KEY", "creditfit360-secret-key")
+
+# Static files route fallback for Vercel and local environments
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    for folder in [
+        os.path.join(BASE_DIR, "public", "static"),
+        os.path.join(BASE_DIR, "static")
+    ]:
+        target = os.path.join(folder, filename)
+        if os.path.exists(target):
+            return send_from_directory(folder, filename)
+    return send_from_directory(os.path.join(BASE_DIR, "static"), filename)
 
 # Initialize SQLite database schema
 db.init_db()
