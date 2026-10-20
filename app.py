@@ -491,6 +491,7 @@ def aa_verify_and_fetch():
 # =========================================================
 
 @app.route("/privacy-consent-center")
+@app.route("/privacy-center")
 def privacy_consent_center():
     user = session.get("user")
     consent_logs = []
