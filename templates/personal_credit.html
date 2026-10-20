@@ -564,8 +564,18 @@
             </li>
         </ul>
 
-        <div class="menu-label">System</div>
+        <div class="menu-label">System & Defense</div>
         <ul class="menu">
+            <li>
+                <a href="/dossier">
+                    <span>📑</span> Loan Dossier (PDF) <span class="nav-tag" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa;">NEW</span>
+                </a>
+            </li>
+            <li>
+                <a href="/privacy-consent-center">
+                    <span>🛡️</span> DPDP Privacy Center
+                </a>
+            </li>
             <li>
                 <a href="/settings">
                     <span>⚙️</span> Settings
@@ -618,11 +628,81 @@
 
         </div>
 
-
-
         <!-- ================================================= -->
-        <!-- STEPS -->
+        <!-- RBI ACCOUNT AGGREGATOR FAST-TRACK BANNER -->
         <!-- ================================================= -->
+        <div class="aa-banner" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(6, 182, 212, 0.08)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 18px 22px; margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #38bdf8; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+                    <span>⚡</span> RBI Account Aggregator (AA) Integration
+                </div>
+                <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-top: 4px;">
+                    Auto-Fill Verified Bank Financials via OTP
+                </div>
+                <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
+                    Connect directly with your bank to pull verified salary, active loan EMIs, and liquid balances without manual typing.
+                </div>
+            </div>
+            <button type="button" onclick="openAAModal()" style="background: linear-gradient(135deg, #2563eb, #06b6d4); color: white; border: none; padding: 10px 18px; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);">
+                <span>🏦</span> Connect Bank via AA
+            </button>
+        </div>
+
+        <!-- AA Modal Dialog -->
+        <div id="aaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+            <div style="background:#0f121a; border:1px solid rgba(255,255,255,0.15); border-radius:18px; max-width:480px; width:90%; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.8); position:relative;">
+                <button type="button" onclick="closeAAModal()" style="position:absolute; top:18px; right:18px; background:transparent; border:none; color:#94a3b8; font-size:20px; cursor:pointer;">✕</button>
+                
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                    <div style="width:34px; height:34px; border-radius:8px; background:linear-gradient(135deg, #2563eb, #06b6d4); display:flex; align-items:center; justify-content:center; font-size:18px;">🏦</div>
+                    <div>
+                        <h3 style="font-size:17px; font-weight:800; color:#fff;">RBI Account Aggregator</h3>
+                        <p style="font-size:11px; color:#38bdf8; font-weight:600;">Regulated Financial Information Provider (FIP)</p>
+                    </div>
+                </div>
+
+                <div id="aaStep1">
+                    <p style="font-size:12.5px; color:#94a3b8; margin-bottom:18px; line-height:1.5;">
+                        Select your primary salary/operating bank. An encrypted consent artifact will be generated under RBI guidelines.
+                    </p>
+
+                    <label style="font-size:12px; color:#cbd5e1; font-weight:600; display:block; margin-bottom:6px;">Select Banking Entity</label>
+                    <select id="aaBankSelect" style="width:100%; padding:11px; background:#151926; border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-size:13px; margin-bottom:16px;">
+                        <option value="HDFC Bank">HDFC Bank (@onemoney)</option>
+                        <option value="State Bank of India">State Bank of India (@setu)</option>
+                        <option value="ICICI Bank">ICICI Bank (@finvu)</option>
+                        <option value="Axis Bank">Axis Bank (@saafe)</option>
+                        <option value="Kotak Mahindra">Kotak Mahindra Bank (@onemoney)</option>
+                    </select>
+
+                    <label style="font-size:12px; color:#cbd5e1; font-weight:600; display:block; margin-bottom:6px;">Linked Mobile Number</label>
+                    <input type="tel" id="aaPhoneInput" value="9876543210" style="width:100%; padding:11px; background:#151926; border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-size:13px; margin-bottom:20px;">
+
+                    <button type="button" onclick="requestAAOtp()" id="aaSendOtpBtn" style="width:100%; padding:12px; border-radius:8px; background:linear-gradient(135deg, #2563eb, #06b6d4); color:#fff; font-weight:700; border:none; cursor:pointer;">
+                        Request OTP from Bank →
+                    </button>
+                </div>
+
+                <div id="aaStep2" style="display:none;">
+                    <p style="font-size:12.5px; color:#94a3b8; margin-bottom:14px; line-height:1.5;">
+                        Simulated OTP sent to your linked phone (<span id="aaPhoneMasked" style="color:#38bdf8;">+91 ******3210</span>).
+                    </p>
+
+                    <div style="background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.25); border-radius:8px; padding:10px 14px; font-size:12px; color:#38bdf8; margin-bottom:16px;">
+                        💡 <strong>Demo Simulation:</strong> Enter <strong>123456</strong> to verify and ingest bank financials.
+                    </div>
+
+                    <label style="font-size:12px; color:#cbd5e1; font-weight:600; display:block; margin-bottom:6px;">Enter 6-Digit OTP</label>
+                    <input type="text" id="aaOtpInput" value="123456" maxlength="6" style="width:100%; padding:11px; background:#151926; border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-size:16px; font-family:'JetBrains Mono', monospace; text-align:center; letter-spacing:4px; margin-bottom:20px;">
+
+                    <button type="button" onclick="verifyAndFetchAA()" id="aaVerifyBtn" style="width:100%; padding:12px; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; border:none; cursor:pointer;">
+                        ✓ Authorize Consent & Ingest Financials
+                    </button>
+                </div>
+
+                <div id="aaStatusMsg" style="margin-top:14px; font-size:12px; text-align:center; display:none;"></div>
+            </div>
+        </div>
 
         <div class="steps">
 
@@ -2275,6 +2355,115 @@ async function calculateScore() {
 
 }
 
+
+
+/* ========================================================= */
+/* RBI ACCOUNT AGGREGATOR (AA) SCRIPT */
+/* ========================================================= */
+
+function openAAModal() {
+    document.getElementById("aaModal").style.display = "flex";
+    document.getElementById("aaStep1").style.display = "block";
+    document.getElementById("aaStep2").style.display = "none";
+    document.getElementById("aaStatusMsg").style.display = "none";
+}
+
+function closeAAModal() {
+    document.getElementById("aaModal").style.display = "none";
+}
+
+async function requestAAOtp() {
+    const phone = document.getElementById("aaPhoneInput").value.trim() || "9876543210";
+    const bank = document.getElementById("aaBankSelect").value;
+    const btn = document.getElementById("aaSendOtpBtn");
+    btn.disabled = true;
+    btn.innerText = "Requesting Bank OTP...";
+
+    try {
+        const res = await fetch("/api/account-aggregator/request-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone: phone, fip_handle: bank })
+        });
+        const data = await res.json();
+        btn.disabled = false;
+        btn.innerText = "Request OTP from Bank →";
+
+        if (data.success) {
+            document.getElementById("aaPhoneMasked").innerText = data.phone_masked;
+            document.getElementById("aaStep1").style.display = "none";
+            document.getElementById("aaStep2").style.display = "block";
+        } else {
+            alert(data.message || "Failed to initiate OTP.");
+        }
+    } catch (err) {
+        btn.disabled = false;
+        btn.innerText = "Request OTP from Bank →";
+        alert("Failed to communicate with Account Aggregator server.");
+    }
+}
+
+async function verifyAndFetchAA() {
+    const otp = document.getElementById("aaOtpInput").value.trim();
+    const btn = document.getElementById("aaVerifyBtn");
+    const statusMsg = document.getElementById("aaStatusMsg");
+
+    btn.disabled = true;
+    btn.innerText = "Ingesting & Verifying Bank Statement...";
+    statusMsg.style.display = "block";
+    statusMsg.style.color = "#38bdf8";
+    statusMsg.innerText = "🔐 Establishing encrypted session with FIP gateway...";
+
+    try {
+        const res = await fetch("/api/account-aggregator/verify-and-fetch", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ otp: otp })
+        });
+        const data = await res.json();
+        btn.disabled = false;
+        btn.innerText = "✓ Authorize Consent & Ingest Financials";
+
+        if (data.success && data.financials) {
+            const f = data.financials;
+            statusMsg.style.color = "#10b981";
+            statusMsg.innerText = "✓ Verified by " + f.fip_provider + "! Populating form...";
+
+            if (document.getElementById("fullName")) document.getElementById("fullName").value = f.full_name || "Smita Dwivedi";
+            if (document.getElementById("age")) document.getElementById("age").value = 28;
+            if (document.getElementById("employmentType")) document.getElementById("employmentType").value = "salaried";
+            if (document.getElementById("monthlyIncome")) document.getElementById("monthlyIncome").value = f.monthly_income;
+            if (document.getElementById("employmentYears")) document.getElementById("employmentYears").value = 4;
+            if (document.getElementById("householdExpenses")) document.getElementById("householdExpenses").value = f.household_expenses;
+            if (document.getElementById("existingEmi")) document.getElementById("existingEmi").value = f.existing_emi;
+            if (document.getElementById("monthlySavings")) document.getElementById("monthlySavings").value = f.monthly_savings;
+            if (document.getElementById("monthlyInvestment")) document.getElementById("monthlyInvestment").value = f.monthly_investment;
+            if (document.getElementById("creditScore")) document.getElementById("creditScore").value = f.credit_score;
+            if (document.getElementById("creditLimit")) document.getElementById("creditLimit").value = f.credit_limit;
+            if (document.getElementById("creditOutstanding")) document.getElementById("creditOutstanding").value = f.credit_outstanding;
+            if (document.getElementById("currentSavings")) document.getElementById("currentSavings").value = f.current_savings;
+            if (document.getElementById("essentialExpenses")) document.getElementById("essentialExpenses").value = f.essential_expenses;
+            if (document.getElementById("activeLoans")) document.getElementById("activeLoans").value = f.active_loans;
+            if (document.getElementById("missedPayments")) document.getElementById("missedPayments").value = f.missed_payments;
+
+            calculateEmergencyMonths();
+
+            setTimeout(() => {
+                closeAAModal();
+                showStep(4);
+                alert("✓ Success! Your bank statement was authenticated via RBI Account Aggregator. Data populated across all steps.");
+            }, 800);
+        } else {
+            statusMsg.style.color = "#ef4444";
+            statusMsg.innerText = data.message || "Invalid OTP. Use 123456.";
+        }
+    } catch (err) {
+        btn.disabled = false;
+        btn.innerText = "✓ Authorize Consent & Ingest Financials";
+        statusMsg.style.color = "#ef4444";
+        statusMsg.innerText = "Communication failure with Account Aggregator endpoint.";
+    }
+}
 
 
 /* ========================================================= */

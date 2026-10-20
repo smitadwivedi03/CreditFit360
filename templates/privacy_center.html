@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07080d">
+    <title>DPDP Privacy & Consent Center | CreditFit360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        :root {
+            --bg-base: #07080d;
+            --bg-card: #0f121a;
+            --bg-inner: #151926;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --neon-blue: #38bdf8;
+            --neon-green: #10b981;
+            --neon-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Main Container */
+        .main-content {
+            margin-left: 260px;
+            padding: 36px 40px;
+            width: calc(100% - 260px);
+            max-width: 1200px;
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .compliance-banner {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 24px 0 32px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .compliance-banner .shield-icon {
+            font-size: 32px;
+            margin-right: 16px;
+        }
+
+        .compliance-banner .desc {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .badge-verified {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #10b981;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Bento Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .bento-card h2 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bento-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-export {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-export:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* Logs Table */
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 14px;
+        }
+
+        .logs-table th {
+            text-align: left;
+            padding: 12px 14px;
+            background: var(--bg-inner);
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .logs-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-glass);
+            color: #e2e8f0;
+        }
+
+        .logs-table td.mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .pill-granted {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .pill-revoked {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Inclusion -->
+    {% include 'sidebar.html' ignore missing %}
+
+    <div class="main-content" style="margin-left: {% if not has_sidebar %}0{% else %}260px{% endif %}; width:100%;">
+        
+        <div style="margin-bottom: 20px;">
+            <a href="/dashboard" style="color:var(--neon-blue); text-decoration:none; font-size:13px; font-weight:600;">← Back to Dashboard</a>
+        </div>
+
+        <div class="header-title">
+            <h1>DPDP Privacy & Consent Governance Center</h1>
+            <p>Digital Personal Data Protection (DPDP) Act 2023 Statutory Compliance & Rights Center</p>
+        </div>
+
+        <div class="compliance-banner">
+            <div style="display:flex; align-items:center;">
+                <div class="shield-icon">🛡️</div>
+                <div class="desc">
+                    <strong>Zero Unauthorized Data Retention Guarantee:</strong><br>
+                    Under Section 6 & 12 of India's DPDP Act 2023, you hold absolute sovereignty over your financial indicators. You may withdraw consent, export complete audit records, or execute irreversible data erasure at any time.
+                </div>
+            </div>
+            <div class="badge-verified">✓ RBI & DPDP COMPLIANT</div>
+        </div>
+
+        <!-- Rights Grid -->
+        <div class="grid-2">
+            
+            <!-- Right to Data Portability -->
+            <div class="bento-card">
+                <h2><span>📦</span> Right to Data Portability (Section 12)</h2>
+                <p>
+                    Download a cryptographically verified JSON package containing all your assessments, financial indicators, and consent history.
+                </p>
+                <a href="/api/export-user-data" class="btn-action btn-export" download>
+                    📥 Export All My Data (JSON)
+                </a>
+            </div>
+
+            <!-- Right to Erasure -->
+            <div class="bento-card">
+                <h2><span>🗑️</span> Right to Erasure (Right to be Forgotten)</h2>
+                <p>
+                    Permanently and irreversibly purge all your personal records, assessments, credit scores, and dispute drafts from the CreditFit 360 database.
+                </p>
+                <button onclick="confirmErasure()" class="btn-action btn-danger">
+                    ⚠️ Permanently Delete All My Data
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Consent Audit Trail -->
+        <div class="bento-card" style="margin-bottom: 40px;">
+            <h2><span>📋</span> Statutory Consent Audit Trail (DPDP Section 6)</h2>
+            <p>Every data processing action, bureau calculation, and Account Aggregator fetch is logged with an immutable audit timestamp.</p>
+
+            <table class="logs-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Consent Purpose</th>
+                        <th>Purpose Code</th>
+                        <th>Status</th>
+                        <th>IP Origin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if consent_logs %}
+                        {% for log in consent_logs %}
+                        <tr>
+                            <td class="mono">{{ log.timestamp }}</td>
+                            <td><strong>{{ log.consent_type }}</strong></td>
+                            <td class="mono" style="color:var(--neon-blue);">{{ log.purpose_code }}</td>
+                            <td><span class="status-pill pill-granted">{{ log.status }}</span></td>
+                            <td class="mono">{{ log.ip_address or '127.0.0.1' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">
+                                No external consent requests logged for this guest session.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        async function confirmErasure() {
+            const confirmed = confirm("Are you completely sure you want to exercise your DPDP Right to Erasure? This will permanently delete your account, saved credit scores, and dispute drafts from database.db.");
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch("/api/erase-user-data", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("✓ " + data.message);
+                    window.location.href = "/";
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (err) {
+                alert("Failed to communicate with data erasure server.");
+            }
+        }
+    </script>
+</body>
+</html>

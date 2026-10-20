@@ -1330,8 +1330,18 @@
             </li>
         </ul>
 
-        <div class="menu-label">System</div>
+        <div class="menu-label">System & Defense</div>
         <ul class="menu">
+            <li>
+                <a href="/dossier">
+                    <span>📑</span> Loan Dossier (PDF) <span class="nav-tag" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa;">NEW</span>
+                </a>
+            </li>
+            <li>
+                <a href="/privacy-consent-center">
+                    <span>🛡️</span> DPDP Privacy Center
+                </a>
+            </li>
             <li>
                 <a href="/settings">
                     <span>⚙️</span> Settings
@@ -1368,11 +1378,14 @@
         <!-- Top Bar -->
         <header class="topbar">
             <div>
-                <h1 id="welcomeTitle">Financial Overview 👋</h1>
+                <h1 id="welcomeTitle">Financial Overview, {{ user.full_name.split(' ')[0] if user else 'Explorer' }} 👋</h1>
                 <p class="subtitle">Real-time credit health, active cash runway, and predictive wealth trajectories.</p>
             </div>
 
             <div class="topbar-actions">
+                <a href="/dossier" class="btn-calc" style="background: rgba(37, 99, 235, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8;">
+                    <span>📑</span> Export Dossier (PDF)
+                </a>
                 <span class="date-pill" id="currentDate">Live System</span>
                 <a href="/personal-credit" class="btn-calc">
                     <span>+</span> Calculate Score

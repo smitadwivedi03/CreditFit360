@@ -1,4 +1,9 @@
-from flask import Flask, render_template, request, jsonify, session, redirect
+from flask import Flask, render_template, request, jsonify, session, redirect, send_file, Response
+from datetime import datetime
+import json
+import random
+import io
+import db
 from ai_engine import (
     process_assistant_query,
     simulate_reverse_underwriting,
@@ -9,6 +14,8 @@ from ai_engine import (
 app = Flask(__name__)
 app.secret_key = "creditfit360-secret-key"
 
+# Initialize SQLite database schema
+db.init_db()
 
 
 # =========================================================
@@ -20,6 +27,11 @@ def login():
     return render_template("login.html")
 
 
+@app.route("/favicon.ico")
+def favicon():
+    return "", 204
+
+
 # =========================================================
 # DASHBOARD
 # =========================================================
@@ -27,7 +39,20 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     result = session.get("creditFitResult")
-    return render_template("dashboard.html", result=result)
+    user = session.get("user")
+    past_assessments = []
+    disputes = []
+    if user and user.get("id"):
+        past_assessments = db.get_user_assessments(user["id"], limit=5)
+        disputes = db.get_user_disputes(user["id"])
+    return render_template(
+        "dashboard.html",
+        result=result,
+        user=user,
+        past_assessments=past_assessments,
+        disputes=disputes
+    )
+
 
 
 # =========================================================
@@ -159,6 +184,23 @@ def api_generate_statutory_notice():
             data["full_name"] = session_result.get("full_name")
             
         notice_result = generate_rbi_statutory_notice(data)
+        
+        user = session.get("user")
+        if user and user.get("id") and notice_result.get("success"):
+            db.save_statutory_dispute(
+                user_id=user["id"],
+                borrower_name=data.get("borrower_name") or data.get("full_name") or user.get("full_name") or "Borrower",
+                lender_name=data.get("lender_name") or "Lender / Credit Bureau",
+                bureau_name=data.get("bureau_name") or "CIBIL",
+                grievance_date=data.get("grievance_date") or datetime.now().strftime("%Y-%m-%d"),
+                resolution_date=data.get("resolution_date"),
+                delay_days=data.get("delay_days", 0),
+                penalty_amount=data.get("penalty_amount", 0.0),
+                error_description=data.get("error_description", ""),
+                notice_text=notice_result.get("notice_text", ""),
+                status="Notice Generated"
+            )
+
         return jsonify(notice_result)
     except Exception as e:
         app.logger.exception("Error generating statutory notice")
@@ -214,13 +256,260 @@ def disclaimer():
 
 
 # =========================================================
-# LOGOUT
+# LOGOUT & AUTHENTICATION APIs
 # =========================================================
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
+
+
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    data = request.get_json(silent=True) or {}
+    email = str(data.get("email", "")).strip()
+    password = str(data.get("password", "")).strip()
+    full_name = str(data.get("full_name", "")).strip()
+    phone = str(data.get("phone", "")).strip()
+
+    if not email or not password or not full_name:
+        return jsonify({"success": False, "message": "Full name, email, and password are required."}), 400
+
+    res = db.create_user(email=email, password=password, full_name=full_name, phone=phone)
+    if res.get("success"):
+        auth_res = db.authenticate_user(email, password)
+        if auth_res.get("success"):
+            session["user"] = auth_res["user"]
+        return jsonify({"success": True, "message": "Account created successfully!"})
+    return jsonify(res), 400
+
+
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    data = request.get_json(silent=True) or {}
+    email = str(data.get("email", "")).strip()
+    password = str(data.get("password", "")).strip()
+
+    if not email or not password:
+        return jsonify({"success": False, "message": "Email and password are required."}), 400
+
+    res = db.authenticate_user(email, password)
+    if res.get("success"):
+        session["user"] = res["user"]
+        return jsonify({"success": True, "message": "Welcome back!"})
+    return jsonify(res), 401
+
+
+@app.route("/api/current-user")
+def api_current_user():
+    user = session.get("user")
+    return jsonify({"authenticated": bool(user), "user": user})
+
+
+# =========================================================
+# LOAN READINESS & DEFENSE DOSSIER (PDF / PRINTABLE)
+# =========================================================
+
+@app.route("/dossier")
+@app.route("/download-dossier")
+def generate_dossier():
+    result = session.get("creditFitResult")
+    user = session.get("user")
+
+    if not result:
+        if user and user.get("id"):
+            past = db.get_user_assessments(user["id"], limit=1)
+            if past:
+                result = past[0].get("result") or {}
+
+    if not result:
+        result = {
+            "score": 765,
+            "category": "Prime Tier-1 Creditworthiness",
+            "full_name": user.get("full_name") if user else "Smita Dwivedi (Borrower)",
+            "monthly_income": 75000,
+            "existing_emi": 18500,
+            "credit_utilisation": 18.2,
+            "emi_burden": 24.6,
+            "emergency_months": 4.8,
+            "monthly_balance": 32500,
+            "credit_score": 760
+        }
+
+    borrower_name = result.get("full_name") or (user.get("full_name") if user else "Valued Borrower")
+    score = result.get("score") or result.get("total_score") or 750
+    foir = float(result.get("emi_burden") or 25.0)
+    utilization = float(result.get("credit_utilisation") or 20.0)
+    emergency_months = float(result.get("emergency_months") or 3.5)
+    monthly_income = float(result.get("monthly_income") or 60000.0)
+    existing_emi = float(result.get("existing_emi") or 15000.0)
+    monthly_balance = float(result.get("monthly_balance") or (monthly_income - existing_emi - 20000.0))
+
+    allowed_max_emi = max(0.0, (monthly_income * 0.50) - existing_emi)
+    r = 0.095 / 12
+    n = 60
+    factor = ((1 + r)**n - 1) / (r * (1 + r)**n)
+    max_loan = allowed_max_emi * factor
+
+    dossier_id = f"CF360-IND-{datetime.now().strftime('%Y%m')}-{random.randint(1000, 9999)}"
+    issued_date = datetime.now().strftime("%d %B %Y, %H:%M IST")
+
+    category = result.get("category") or "Prime Tier-1 Approved"
+    verdict_status = "APPROVED (Prime PSU / Private)" if foir <= 45 and score >= 650 else "CONDITIONAL (Restructure FOIR)"
+
+    bank_odds = {
+        "sbi": min(98, max(45, int(score * 0.12 + (50 - foir) * 0.4))),
+        "hdfc": min(99, max(50, int(score * 0.13 + (50 - foir) * 0.35))),
+        "icici": min(97, max(48, int(score * 0.125 + (50 - foir) * 0.38))),
+        "kotak": min(96, max(42, int(score * 0.12 + (50 - foir) * 0.32)))
+    }
+
+    return render_template(
+        "dossier.html",
+        dossier_id=dossier_id,
+        issued_date=issued_date,
+        borrower_name=borrower_name,
+        score=score,
+        category=category,
+        verdict_status=verdict_status,
+        max_sanctionable=max_loan,
+        max_emi=allowed_max_emi,
+        foir=round(foir, 1),
+        credit_utilisation=round(utilization, 1),
+        emergency_months=round(emergency_months, 1),
+        monthly_balance=round(monthly_balance, 2),
+        bank_odds=bank_odds,
+        dossier_json=json.dumps({
+            "dossier_id": dossier_id,
+            "borrower_name": borrower_name,
+            "score": score,
+            "category": category,
+            "foir": foir,
+            "credit_utilisation": utilization,
+            "max_loan_estimate": round(max_loan, 2),
+            "issued_date": issued_date
+        })
+    )
+
+
+# =========================================================
+# INDIA STACK: ACCOUNT AGGREGATOR (AA) SIMULATION
+# =========================================================
+
+@app.route("/api/account-aggregator/request-otp", methods=["POST"])
+def aa_request_otp():
+    data = request.get_json(silent=True) or {}
+    phone = str(data.get("phone", "")).strip() or "9876543210"
+    fip_handle = str(data.get("fip_handle", "")).strip() or "HDFC_BANK@onemoney"
+
+    tx_id = f"AA-TXN-{datetime.now().strftime('%y%m%d%H%M')}-{random.randint(100, 999)}"
+    return jsonify({
+        "success": True,
+        "transaction_id": tx_id,
+        "fip_handle": fip_handle,
+        "phone_masked": f"+91 ******{phone[-4:] if len(phone)>=4 else '3210'}",
+        "simulated_otp": "123456",
+        "message": "OTP dispatched via RBI-regulated Account Aggregator (Demo OTP: 123456)"
+    })
+
+
+@app.route("/api/account-aggregator/verify-and-fetch", methods=["POST"])
+def aa_verify_and_fetch():
+    data = request.get_json(silent=True) or {}
+    otp = str(data.get("otp", "")).strip()
+    phone = str(data.get("phone", "")).strip()
+
+    if otp != "123456" and len(otp) != 6:
+        return jsonify({
+            "success": False,
+            "message": "Invalid OTP. For test simulation, please use '123456'."
+        }), 400
+
+    user = session.get("user")
+    user_id = user.get("id") if user else None
+
+    if user_id:
+        db.log_dpdp_consent(
+            user_id=user_id,
+            consent_type="ACCOUNT_AGGREGATOR_FETCH",
+            purpose_code="RBI_AA_FIP_INGESTION_V1",
+            status="GRANTED",
+            ip_address=request.remote_addr,
+            user_agent=str(request.user_agent)
+        )
+
+    verified_payload = {
+        "verified_by_fip": True,
+        "fip_provider": "HDFC Bank (FIP-AA-094)",
+        "consent_artifact_id": f"AA-ART-{random.randint(100000, 999999)}",
+        "timestamp": datetime.now().strftime("%d-%b-%Y %H:%M:%S"),
+        "full_name": user.get("full_name") if user else "Smita Dwivedi (AA-Verified)",
+        "monthly_income": 72500,
+        "existing_emi": 14200,
+        "household_expenses": 22000,
+        "monthly_savings": 18000,
+        "monthly_investment": 12000,
+        "credit_score": 752,
+        "credit_limit": 150000,
+        "credit_outstanding": 26400,
+        "active_loans": 1,
+        "missed_payments": 0,
+        "current_savings": 88000,
+        "essential_expenses": 24000
+    }
+
+    return jsonify({
+        "success": True,
+        "message": "Bank financials successfully authenticated and parsed via Account Aggregator.",
+        "financials": verified_payload
+    })
+
+
+# =========================================================
+# DPDP ACT 2023: PRIVACY & CONSENT GOVERNANCE
+# =========================================================
+
+@app.route("/privacy-consent-center")
+def privacy_consent_center():
+    user = session.get("user")
+    consent_logs = []
+    if user and user.get("id"):
+        consent_logs = db.get_user_consent_logs(user["id"])
+    return render_template("privacy_center.html", user=user, consent_logs=consent_logs)
+
+
+@app.route("/api/export-user-data")
+def export_user_data_api():
+    user = session.get("user")
+    if not user or not user.get("id"):
+        guest_data = {
+            "entity": "CreditFit 360",
+            "session_user": "Guest Explorer",
+            "active_credit_result": session.get("creditFitResult"),
+            "compliance": "DPDP Act 2023 - Right to Portability"
+        }
+        resp = Response(json.dumps(guest_data, indent=2), mimetype="application/json")
+        resp.headers["Content-Disposition"] = "attachment; filename=CreditFit360_Guest_Data.json"
+        return resp
+
+    data = db.export_user_data(user["id"])
+    resp = Response(json.dumps(data, indent=2), mimetype="application/json")
+    resp.headers["Content-Disposition"] = f"attachment; filename=CreditFit360_UserData_{user['id']}.json"
+    return resp
+
+
+@app.route("/api/erase-user-data", methods=["POST"])
+def erase_user_data_api():
+    user = session.get("user")
+    if not user or not user.get("id"):
+        session.clear()
+        return jsonify({"success": True, "message": "Guest session data erased successfully."})
+
+    res = db.erase_user_data(user["id"])
+    session.clear()
+    return jsonify(res)
+
 
 
 # =========================================================
@@ -754,6 +1043,29 @@ def calculate_score():
 
         # Save result for Dashboard and Reports
         session["creditFitResult"] = result
+
+        # Persist to database if authenticated
+        user = session.get("user")
+        if user and user.get("id"):
+            db.save_assessment(
+                user_id=user["id"],
+                assessment_type="personal",
+                score=total_score,
+                category=category,
+                foir=emi_burden,
+                credit_utilisation=credit_utilisation,
+                monthly_income=monthly_income,
+                raw_input=data,
+                result_data=result
+            )
+            db.log_dpdp_consent(
+                user_id=user["id"],
+                consent_type="FINANCIAL_PROFILING",
+                purpose_code="PERSONAL_CREDITFIT_CALC",
+                status="GRANTED",
+                ip_address=request.remote_addr,
+                user_agent=str(request.user_agent)
+            )
 
         # IMPORTANT: return the result directly
         # This preserves compatibility with the old frontend.

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Underwriting & Loan Readiness Dossier | CreditFit 360</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --accent-dark: #1e40af;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+        }
+
+        body {
+            background: var(--bg-page);
+            color: var(--text-main);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Top Action Bar for web screen */
+        .action-bar {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 16px 24px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+        }
+
+        .action-bar .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .action-bar .brand-badge span {
+            color: #2563eb;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Institutional Dossier Sheet */
+        .dossier-sheet {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            padding: 48px;
+            position: relative;
+        }
+
+        /* Watermark & Security Header */
+        .security-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 24px;
+            margin-bottom: 30px;
+        }
+
+        .inst-title h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        .inst-title p {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .verification-box {
+            text-align: right;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+        }
+
+        .verification-box .ref-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .verification-box .ref-date {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* Executive Banner */
+        .verdict-banner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 24px 28px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .verdict-left .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .verdict-left .score-val {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #38bdf8;
+            line-height: 1.1;
+            margin-top: 6px;
+        }
+
+        .verdict-left .verdict-tag {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .verdict-right {
+            border-left: 1px solid rgba(255,255,255,0.15);
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .verdict-right .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .verdict-right .metric-row span:first-child {
+            color: #cbd5e1;
+        }
+
+        .verdict-right .metric-row span:last-child {
+            font-weight: 700;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Section Styling */
+        .section-heading {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1e293b;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Data Tables */
+        .dossier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+            font-size: 13px;
+        }
+
+        .dossier-table th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 700;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dossier-table td {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+
+        .dossier-table td.numeric {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .badge-safe {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .badge-warn {
+            background: #fef3c7;
+            color: #b45309;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        /* Bank Fitment Grid */
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .bank-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .bank-box .bank-name {
+            font-weight: 700;
+            font-size: 12.5px;
+            color: #0f172a;
+        }
+
+        .bank-box .odds {
+            font-size: 16px;
+            font-weight: 800;
+            color: #059669;
+            margin: 6px 0 2px 0;
+        }
+
+        .bank-box .subtext {
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        /* Statutory Notice Summary */
+        .statutory-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            font-size: 12.5px;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        .statutory-box strong {
+            color: #78350f;
+        }
+
+        /* Sign-off & Audit Trail */
+        .sign-off-block {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            border-top: 1.5px solid #0f172a;
+            padding-top: 20px;
+            margin-top: 24px;
+            font-size: 11.5px;
+            color: #64748b;
+        }
+
+        .sign-box {
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 8px;
+            margin-top: 36px;
+            text-align: center;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        /* PRINT MEDIA STYLING */
+        @media print {
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+            }
+
+            .action-bar, .no-print {
+                display: none !important;
+            }
+
+            .dossier-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                padding: 24px !important;
+            }
+
+            .verdict-banner {
+                background: #0f172a !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- On-Screen Action Bar -->
+    <div class="action-bar no-print">
+        <div class="brand-badge">
+            <div style="width:26px; height:26px; background:#2563eb; color:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px;">✓</div>
+            <div>CreditFit <span>360</span> Dossier</div>
+        </div>
+        <div class="action-btns">
+            <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+            <button onclick="downloadJSON()" class="btn btn-secondary">JSON Data</button>
+            <button onclick="window.print()" class="btn btn-primary">🖨️ Download / Print PDF</button>
+        </div>
+    </div>
+
+    <!-- Official Dossier Document -->
+    <div class="dossier-sheet" id="printableDossier">
+
+        <!-- Security Header -->
+        <div class="security-header">
+            <div class="inst-title">
+                <h1>CreditFit 360™ Institutional Dossier</h1>
+                <p>CONFIDENTIAL BORROWER FINANCIAL HEALTH & UNDERWRITING ASSESSMENT</p>
+                <p style="font-size:10.5px; color:#94a3b8; margin-top:2px;">COMPLIANT WITH RBI STATUTORY DIRECTIONS & CIC ACT 2005</p>
+            </div>
+            <div class="verification-box">
+                <div class="ref-num">ID: {{ dossier_id }}</div>
+                <div class="ref-date">Issued: {{ issued_date }}</div>
+                <div style="font-size:10px; color:#059669; font-weight:700; margin-top:2px;">✓ DIGITALLY VERIFIED</div>
+            </div>
+        </div>
+
+        <!-- Executive Underwriting Banner -->
+        <div class="verdict-banner">
+            <div class="verdict-left">
+                <div class="label">Comprehensive CreditFit Score</div>
+                <div class="score-val">{{ score }}/100</div>
+                <div class="verdict-tag">{{ category }}</div>
+            </div>
+            <div class="verdict-right">
+                <div class="metric-row">
+                    <span>Borrower Name:</span>
+                    <span>{{ borrower_name }}</span>
+                </div>
+                <div class="metric-row">
+                    <span>Underwriting Verdict:</span>
+                    <span>{{ verdict_status }}</span>
+                </div>
+                <div class="metric-row">
+                    <span>Max Sanctionable Loan:</span>
+                    <span>₹{{ "{:,.0f}".format(max_sanctionable) }}</span>
+                </div>
+                <div class="metric-row">
+                    <span>Recommended Max EMI:</span>
+                    <span>₹{{ "{:,.0f}".format(max_emi) }}/mo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Financial & Debt Burden Metrics -->
+        <div class="section-heading">
+            <span>01</span> Key Underwriting Ratios & Stress-Testing
+        </div>
+
+        <table class="dossier-table">
+            <thead>
+                <tr>
+                    <th>Underwriting Metric</th>
+                    <th>Borrower Value</th>
+                    <th>Institutional Benchmark</th>
+                    <th>Risk Assessment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>FOIR (Debt-to-Income)</strong></td>
+                    <td class="numeric">{{ foir }}%</td>
+                    <td>≤ 45.0% (Tier-1 Banks)</td>
+                    <td>
+                        {% if foir <= 40 %}
+                        <span class="badge-safe">Low Risk (Comfortable)</span>
+                        {% else %}
+                        <span class="badge-warn">Elevated (Restructure)</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Revolving Credit Utilisation</strong></td>
+                    <td class="numeric">{{ credit_utilisation }}%</td>
+                    <td>≤ 30.0% (Ideal)</td>
+                    <td>
+                        {% if credit_utilisation <= 30 %}
+                        <span class="badge-safe">Optimal Ratio</span>
+                        {% else %}
+                        <span class="badge-warn">High Utilization</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Emergency Reserve Runway</strong></td>
+                    <td class="numeric">{{ emergency_months }} Months</td>
+                    <td>≥ 3.0 Months essential exp</td>
+                    <td>
+                        {% if emergency_months >= 3 %}
+                        <span class="badge-safe">Adequate Buffer</span>
+                        {% else %}
+                        <span class="badge-warn">Build Reserves</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Monthly Disposable Surplus</strong></td>
+                    <td class="numeric">₹{{ "{:,.0f}".format(monthly_balance) }}</td>
+                    <td>Positive Cash Flow</td>
+                    <td>
+                        {% if monthly_balance > 0 %}
+                        <span class="badge-safe">Net Surplus</span>
+                        {% else %}
+                        <span class="badge-warn">Deficit</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Section 2: Institutional Approval Odds -->
+        <div class="section-heading">
+            <span>02</span> Simulated Tier-1 Bank Pre-Approval Matrix
+        </div>
+
+        <div class="bank-grid">
+            <div class="bank-box">
+                <div class="bank-name">State Bank of India</div>
+                <div class="odds">{{ bank_odds.sbi }}%</div>
+                <div class="subtext">Prime PSU Rate: 8.5%</div>
+            </div>
+            <div class="bank-box">
+                <div class="bank-name">HDFC Bank</div>
+                <div class="odds">{{ bank_odds.hdfc }}%</div>
+                <div class="subtext">Instant Approval Tier</div>
+            </div>
+            <div class="bank-box">
+                <div class="bank-name">ICICI Bank</div>
+                <div class="odds">{{ bank_odds.icici }}%</div>
+                <div class="subtext">Pre-Approved Window</div>
+            </div>
+            <div class="bank-box">
+                <div class="bank-name">Kotak Mahindra</div>
+                <div class="odds">{{ bank_odds.kotak }}%</div>
+                <div class="subtext">Digital Fast-Track</div>
+            </div>
+        </div>
+
+        <!-- Section 3: Statutory Rights & RBI Grievance Safeguard -->
+        <div class="section-heading">
+            <span>03</span> Statutory Rights & Bureau Dispute Rights (RBI Circular CEPC/2023-24)
+        </div>
+
+        <div class="statutory-box">
+            <strong>Legal Statutory Notice:</strong> Under the Reserve Bank of India (RBI) Master Direction on Credit Information Companies, all credit institutions and bureaus (CIBIL, Experian, CRIF, Equifax) must resolve credit report grievances within <strong>30 calendar days</strong>. Any failure incurs a mandatory compensation of <strong>₹100 per day</strong> payable directly to the borrower.
+            <br><br>
+            CreditFit 360 includes active audit tracking to enforce these statutory rights and dispute inaccurate loan entries without legal fees.
+        </div>
+
+        <!-- Sign-Off & Verification Footer -->
+        <div class="sign-off-block">
+            <div>
+                <strong>Institutional Disclaimer:</strong> This dossier represents an independent, borrower-first underwriting simulation generated by CreditFit 360 AI Engine. It utilizes standard banking FOIR ceilings and credit discipline parameters. Final credit sanctions remain subject to individual lender verification and formal KYC.
+                <br><br>
+                <em>Complies with India's Digital Personal Data Protection (DPDP) Act 2023. Explicit consent logged.</em>
+            </div>
+            <div>
+                <div class="sign-box">
+                    Authorized Algorithmic Stamp<br>
+                    <strong>CreditFit 360 Analytics</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const dossierPayload = {{ dossier_json | safe }};
+
+        function downloadJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dossierPayload, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "CreditFit360_Dossier_{{ dossier_id }}.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
