@@ -578,14 +578,21 @@
 
     </div>
 
+    <script id="dossier-data" type="application/json">{{ dossier_json | safe }}</script>
     <script>
-        const dossierPayload = {{ dossier_json | safe }};
+        let dossierPayload = {};
+        try {
+            const raw = document.getElementById('dossier-data')?.textContent?.trim();
+            if (raw) dossierPayload = JSON.parse(raw);
+        } catch (e) {
+            console.error('Error parsing dossier data:', e);
+        }
 
         function downloadJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dossierPayload, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "CreditFit360_Dossier_{{ dossier_id }}.json");
+            downloadAnchor.setAttribute("download", "CreditFit360_Dossier_" + (dossierPayload.dossier_id || 'export') + ".json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();

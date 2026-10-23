@@ -33,9 +33,9 @@
 
         /* Main Container */
         .main-content {
-            margin-left: 260px;
+            margin: 0 auto;
             padding: 36px 40px;
-            width: calc(100% - 260px);
+            width: 100%;
             max-width: 1200px;
         }
 
@@ -204,7 +204,7 @@
     <!-- Sidebar Inclusion -->
     {% include 'sidebar.html' ignore missing %}
 
-    <div class="main-content" style="margin-left: {% if not has_sidebar %}0{% else %}260px{% endif %}; width:100%;">
+    <div class="main-content">
         
         <div style="margin-bottom: 20px;">
             <a href="/dashboard" style="color:var(--neon-blue); text-decoration:none; font-size:13px; font-weight:600;">← Back to Dashboard</a>
