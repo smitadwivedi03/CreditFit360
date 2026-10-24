@@ -47,6 +47,7 @@
             color: white;
             padding: 28px 18px;
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -429,9 +430,7 @@
 
         @media (max-width: 900px) {
 
-            .sidebar {
-                width: 210px;
-            }
+            
 
             .main {
                 margin-left: 210px;
@@ -480,6 +479,7 @@
 
     </style>
 
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 
 
@@ -700,9 +700,49 @@
                     </button>
                 </div>
 
+                <!-- AA Step 3: Success Confirmation -->
+                <div id="aaStep3" style="display:none; text-align:center;">
+                    <div style="width:50px; height:50px; border-radius:50%; background:rgba(16, 185, 129, 0.15); border:2px solid #10b981; color:#10b981; font-size:24px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px auto;">✓</div>
+                    <h3 style="font-size:18px; color:#fff; font-weight:800; margin-bottom:6px;">Bank Statement Authenticated!</h3>
+                    <p style="font-size:12px; color:#94a3b8; margin-bottom:18px;">
+                        Connected to <span id="aaBankConfirmed" style="color:#38bdf8; font-weight:700;">HDFC Bank</span>. All 4 assessment stages populated with verified numbers.
+                    </p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; text-align:left;">
+                        <div style="background:#151926; border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
+                            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Verified Salary</div>
+                            <div id="aaSalaryConfirmed" style="font-size:14px; color:#fff; font-weight:700; margin-top:2px;">₹75,000 / mo</div>
+                        </div>
+                        <div style="background:#151926; border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
+                            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Bureau Score</div>
+                            <div id="aaScoreConfirmed" style="font-size:14px; color:#34d399; font-weight:700; margin-top:2px;">752 (Prime)</div>
+                        </div>
+                        <div style="background:#151926; border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
+                            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Active EMIs</div>
+                            <div id="aaEmiConfirmed" style="font-size:14px; color:#fff; font-weight:700; margin-top:2px;">₹14,000 / mo</div>
+                        </div>
+                        <div style="background:#151926; border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
+                            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Liquid Reserves</div>
+                            <div id="aaSavingsConfirmed" style="font-size:14px; color:#fff; font-weight:700; margin-top:2px;">₹88,000</div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px;">
+                        <button type="button" onclick="closeAAModal(); showStep(1);" style="flex:1; padding:11px; border-radius:8px; background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.12); font-size:12.5px; font-weight:600; cursor:pointer;">
+                            Review Step 1 Details
+                        </button>
+                        <button type="button" onclick="closeAAModal(); showStep(4);" style="flex:1.2; padding:11px; border-radius:8px; background:linear-gradient(135deg, #2563eb, #06b6d4); color:#fff; border:none; font-size:12.5px; font-weight:700; cursor:pointer;">
+                            Calculate Score (Step 4) →
+                        </button>
+                    </div>
+                </div>
+
                 <div id="aaStatusMsg" style="margin-top:14px; font-size:12px; text-align:center; display:none;"></div>
             </div>
         </div>
+
+        <!-- Dynamic Success Banner after bank connection -->
+        <div id="aaSuccessBanner" style="display:none; margin-bottom:24px;"></div>
 
         <div class="steps">
 
@@ -861,14 +901,9 @@
                                 Business
                             </option>
 
-                            <option value="Student">
-                                Student
-                            </option>
-
                             <option value="Other">
                                 Other
                             </option>
-
                         </select>
 
                     </div>
@@ -2365,7 +2400,9 @@ function openAAModal() {
     document.getElementById("aaModal").style.display = "flex";
     document.getElementById("aaStep1").style.display = "block";
     document.getElementById("aaStep2").style.display = "none";
+    if (document.getElementById("aaStep3")) document.getElementById("aaStep3").style.display = "none";
     document.getElementById("aaStatusMsg").style.display = "none";
+    document.getElementById("aaOtpInput").value = "123456";
 }
 
 function closeAAModal() {
@@ -2404,7 +2441,10 @@ async function requestAAOtp() {
 }
 
 async function verifyAndFetchAA() {
-    const otp = document.getElementById("aaOtpInput").value.trim();
+    const otp = document.getElementById("aaOtpInput").value.trim() || "123456";
+    const bankSelect = document.getElementById("aaBankSelect");
+    const bank = bankSelect ? bankSelect.value : "HDFC Bank";
+    const phone = document.getElementById("aaPhoneInput") ? document.getElementById("aaPhoneInput").value.trim() : "9876543210";
     const btn = document.getElementById("aaVerifyBtn");
     const statusMsg = document.getElementById("aaStatusMsg");
 
@@ -2412,13 +2452,13 @@ async function verifyAndFetchAA() {
     btn.innerText = "Ingesting & Verifying Bank Statement...";
     statusMsg.style.display = "block";
     statusMsg.style.color = "#38bdf8";
-    statusMsg.innerText = "🔐 Establishing encrypted session with FIP gateway...";
+    statusMsg.innerText = "🔐 Establishing encrypted session with " + bank + " FIP gateway...";
 
     try {
         const res = await fetch("/api/account-aggregator/verify-and-fetch", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ otp: otp })
+            body: JSON.stringify({ otp: otp, bank: bank, phone: phone })
         });
         const data = await res.json();
         btn.disabled = false;
@@ -2426,33 +2466,88 @@ async function verifyAndFetchAA() {
 
         if (data.success && data.financials) {
             const f = data.financials;
-            statusMsg.style.color = "#10b981";
-            statusMsg.innerText = "✓ Verified by " + f.fip_provider + "! Populating form...";
 
+            // 1. STEP 1: Basic Information
             if (document.getElementById("fullName")) document.getElementById("fullName").value = f.full_name || "Smita Dwivedi";
-            if (document.getElementById("age")) document.getElementById("age").value = 28;
-            if (document.getElementById("employmentType")) document.getElementById("employmentType").value = "salaried";
-            if (document.getElementById("monthlyIncome")) document.getElementById("monthlyIncome").value = f.monthly_income;
-            if (document.getElementById("employmentYears")) document.getElementById("employmentYears").value = 4;
-            if (document.getElementById("householdExpenses")) document.getElementById("householdExpenses").value = f.household_expenses;
-            if (document.getElementById("existingEmi")) document.getElementById("existingEmi").value = f.existing_emi;
-            if (document.getElementById("monthlySavings")) document.getElementById("monthlySavings").value = f.monthly_savings;
-            if (document.getElementById("monthlyInvestment")) document.getElementById("monthlyInvestment").value = f.monthly_investment;
-            if (document.getElementById("creditScore")) document.getElementById("creditScore").value = f.credit_score;
-            if (document.getElementById("creditLimit")) document.getElementById("creditLimit").value = f.credit_limit;
-            if (document.getElementById("creditOutstanding")) document.getElementById("creditOutstanding").value = f.credit_outstanding;
-            if (document.getElementById("currentSavings")) document.getElementById("currentSavings").value = f.current_savings;
-            if (document.getElementById("essentialExpenses")) document.getElementById("essentialExpenses").value = f.essential_expenses;
-            if (document.getElementById("activeLoans")) document.getElementById("activeLoans").value = f.active_loans;
-            if (document.getElementById("missedPayments")) document.getElementById("missedPayments").value = f.missed_payments;
+            if (document.getElementById("age")) document.getElementById("age").value = f.age || 28;
+            if (document.getElementById("employmentType")) document.getElementById("employmentType").value = "Salaried";
+            if (document.getElementById("monthlyIncome")) document.getElementById("monthlyIncome").value = f.monthly_income || 75000;
+            if (document.getElementById("employmentYears")) document.getElementById("employmentYears").value = f.employment_years || 4.0;
+
+            // 2. STEP 2: Financial Position
+            if (document.getElementById("monthlyIncome2")) document.getElementById("monthlyIncome2").value = f.monthly_income || 75000;
+            if (document.getElementById("householdExpenses")) document.getElementById("householdExpenses").value = f.household_expenses || 22000;
+            if (document.getElementById("existingEmi")) document.getElementById("existingEmi").value = f.existing_emi || 14000;
+            if (document.getElementById("monthlySavings")) document.getElementById("monthlySavings").value = f.monthly_savings || 18000;
+            if (document.getElementById("monthlyInvestment")) document.getElementById("monthlyInvestment").value = f.monthly_investment || 12000;
+
+            // 3. STEP 3: Credit Information
+            if (document.getElementById("creditScore")) document.getElementById("creditScore").value = f.credit_score || 752;
+            if (document.getElementById("creditLimit")) document.getElementById("creditLimit").value = f.credit_limit || 150000;
+            if (document.getElementById("creditOutstanding")) document.getElementById("creditOutstanding").value = f.credit_outstanding || 26400;
+            if (document.getElementById("activeLoans")) document.getElementById("activeLoans").value = f.active_loans !== undefined ? f.active_loans : 1;
+            if (document.getElementById("missedPayments")) document.getElementById("missedPayments").value = f.missed_payments !== undefined ? f.missed_payments : 0;
+            if (document.getElementById("creditApplications")) document.getElementById("creditApplications").value = f.credit_applications !== undefined ? f.credit_applications : 1;
+
+            // 4. STEP 4: Savings & Emergency
+            if (document.getElementById("currentSavings")) document.getElementById("currentSavings").value = f.current_savings || 88000;
+            if (document.getElementById("investments")) document.getElementById("investments").value = f.investments || 125000;
+            if (document.getElementById("emergencyFund")) document.getElementById("emergencyFund").value = f.emergency_fund || 72000;
+            if (document.getElementById("essentialExpenses")) document.getElementById("essentialExpenses").value = f.essential_expenses || 24000;
 
             calculateEmergencyMonths();
 
-            setTimeout(() => {
-                closeAAModal();
-                showStep(4);
-                alert("✓ Success! Your bank statement was authenticated via RBI Account Aggregator. Data populated across all steps.");
-            }, 800);
+            // Populate Step 3 Success Card inside Modal
+            if (document.getElementById("aaStep2")) document.getElementById("aaStep2").style.display = "none";
+            if (document.getElementById("aaStep3")) {
+                document.getElementById("aaStep3").style.display = "block";
+                if (document.getElementById("aaBankConfirmed")) document.getElementById("aaBankConfirmed").innerText = f.bank_name || bank;
+                if (document.getElementById("aaSalaryConfirmed")) document.getElementById("aaSalaryConfirmed").innerText = "₹" + Number(f.monthly_income || 75000).toLocaleString("en-IN") + " / mo";
+                if (document.getElementById("aaScoreConfirmed")) document.getElementById("aaScoreConfirmed").innerText = (f.credit_score || 752) + " (Prime)";
+                if (document.getElementById("aaEmiConfirmed")) document.getElementById("aaEmiConfirmed").innerText = "₹" + Number(f.existing_emi || 14000).toLocaleString("en-IN") + " / mo";
+                if (document.getElementById("aaSavingsConfirmed")) document.getElementById("aaSavingsConfirmed").innerText = "₹" + Number(f.current_savings || 88000).toLocaleString("en-IN");
+            }
+            statusMsg.style.display = "none";
+
+            // Populate dynamic on-page success banner
+            const banner = document.getElementById("aaSuccessBanner");
+            if (banner) {
+                banner.style.display = "flex";
+                banner.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.1))";
+                banner.style.border = "1px solid rgba(16, 185, 129, 0.4)";
+                banner.style.borderRadius = "14px";
+                banner.style.padding = "16px 20px";
+                banner.style.color = "#34d399";
+                banner.style.fontSize = "13px";
+                banner.style.fontWeight = "600";
+                banner.style.alignItems = "center";
+                banner.style.justifyContent = "space-between";
+                banner.style.flexWrap = "wrap";
+                banner.style.gap = "10px";
+                banner.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:20px;">✅</span>
+                        <div>
+                            <span style="color:#ffffff; font-weight:700;">${f.bank_name || bank} Verified via RBI Account Aggregator:</span>
+                            <span style="color:#94a3b8; margin-left:6px;">Salary (₹${Number(f.monthly_income || 75000).toLocaleString('en-IN')}) and existing obligations auto-populated across all 4 steps.</span>
+                        </div>
+                    </div>
+                    <span style="font-size:10.5px; padding:4px 10px; border-radius:999px; background:rgba(16, 185, 129, 0.2); color:#6ee7b7; font-weight:800; border:1px solid rgba(16, 185, 129, 0.35);">
+                        FIP CONSENT ID: ${f.consent_artifact_id || 'AA-ART-784102'}
+                    </span>
+                `;
+            }
+
+            // Visual feedback on inputs
+            document.querySelectorAll(".form-step input, .form-step select").forEach(el => {
+                el.style.borderColor = "rgba(16, 185, 129, 0.7)";
+                el.style.backgroundColor = "rgba(16, 185, 129, 0.06)";
+                setTimeout(() => {
+                    el.style.borderColor = "";
+                    el.style.backgroundColor = "";
+                }, 3500);
+            });
+
         } else {
             statusMsg.style.color = "#ef4444";
             statusMsg.innerText = data.message || "Invalid OTP. Use 123456.";
@@ -2487,6 +2582,16 @@ document.addEventListener(
     <link rel="stylesheet" href="/static/assistant_widget.css">
     <script src="/static/assistant_widget.js" defer></script>
 
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
+    </script>
 </body>
 
 </html>

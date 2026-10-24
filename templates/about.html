@@ -37,6 +37,7 @@
             border-right: 1px solid rgba(255, 255, 255, 0.08);
             padding: 28px 18px;
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -281,6 +282,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 
 <body>
@@ -480,5 +482,15 @@
         </footer>
 
     </main>
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
+    </script>
 </body>
 </html>

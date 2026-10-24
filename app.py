@@ -439,6 +439,7 @@ def aa_verify_and_fetch():
     data = request.get_json(silent=True) or {}
     otp = str(data.get("otp", "")).strip()
     phone = str(data.get("phone", "")).strip()
+    bank_name = str(data.get("bank", "")).strip() or "HDFC Bank"
 
     if otp != "123456" and len(otp) != 6:
         return jsonify({
@@ -459,15 +460,21 @@ def aa_verify_and_fetch():
             user_agent=str(request.user_agent)
         )
 
+    user_full_name = user.get("full_name") if user else "Smita Dwivedi"
+    
     verified_payload = {
         "verified_by_fip": True,
-        "fip_provider": "HDFC Bank (FIP-AA-094)",
+        "bank_name": bank_name,
+        "fip_provider": f"{bank_name} (FIP-AA-094)",
         "consent_artifact_id": f"AA-ART-{random.randint(100000, 999999)}",
         "timestamp": datetime.now().strftime("%d-%b-%Y %H:%M:%S"),
-        "full_name": user.get("full_name") if user else "Smita Dwivedi (AA-Verified)",
-        "monthly_income": 72500,
-        "existing_emi": 14200,
+        "full_name": user_full_name,
+        "age": 28,
+        "employment_type": "Salaried",
+        "employment_years": 4.0,
+        "monthly_income": 75000,
         "household_expenses": 22000,
+        "existing_emi": 14000,
         "monthly_savings": 18000,
         "monthly_investment": 12000,
         "credit_score": 752,
@@ -475,15 +482,20 @@ def aa_verify_and_fetch():
         "credit_outstanding": 26400,
         "active_loans": 1,
         "missed_payments": 0,
+        "credit_applications": 1,
         "current_savings": 88000,
+        "investments": 125000,
+        "emergency_fund": 72000,
         "essential_expenses": 24000
     }
 
     return jsonify({
         "success": True,
-        "message": "Bank financials successfully authenticated and parsed via Account Aggregator.",
-        "financials": verified_payload
+        "message": f"Bank statement successfully verified via {bank_name} Account Aggregator.",
+        "financials": verified_payload,
+        "data": verified_payload
     })
+
 
 
 # =========================================================

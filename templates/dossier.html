@@ -396,6 +396,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 <body>
 
@@ -597,6 +598,16 @@
             downloadAnchor.click();
             downloadAnchor.remove();
         }
+    </script>
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
     </script>
 </body>
 </html>

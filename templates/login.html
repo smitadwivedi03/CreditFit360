@@ -4,248 +4,903 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#07080d">
-    <title>CreditFit 360 - Authentication & Portal</title>
+    <title>CreditFit 360 - Authentication & Intelligent Financial Portal</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
+
     <style>
+        :root {
+            --bg-base: #07080d;
+            --bg-card: rgba(15, 18, 26, 0.92);
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --border-glow: rgba(244, 63, 94, 0.45);
+            --neon-magenta: #f43f5e;
+            --neon-cyan: #06b6d4;
+            --neon-blue: #3b82f6;
+            --neon-emerald: #10b981;
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #07080d;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow orbs */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.22;
+        }
+
+        .orb-1 {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, #f43f5e, #8b5cf6);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #06b6d4, #3b82f6);
+            bottom: -100px;
+            right: -100px;
+        }
+
+        /* Main Split Container */
+        .auth-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        /* Left Showcase Column */
+        .showcase-column {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 999px;
+            width: fit-content;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .showcase-title {
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1.18;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+        .showcase-title span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(6, 182, 212, 0.35);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 4px;
+        }
+
+        .feature-text {
+            font-size: 11.5px;
+            color: #94a3b8;
+            line-height: 1.45;
+        }
+
+        /* Right Card Column */
+        .auth-card {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 36px 32px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75), 0 0 40px rgba(244, 63, 94, 0.08);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            position: relative;
+        }
+
+        .auth-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .auth-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f43f5e, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 0 18px rgba(244, 63, 94, 0.45);
+        }
+
+        .auth-card-title h2 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            color: #ffffff;
+        }
+
+        .auth-card-title h2 span {
+            background: linear-gradient(135deg, #f43f5e, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-card-title p {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Tabs Segmented Control */
         .auth-tabs {
             display: flex;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 4px;
             margin-bottom: 22px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
         }
 
         .auth-tab {
             flex: 1;
-            padding: 9px;
+            padding: 10px 14px;
             text-align: center;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 700;
             color: #94a3b8;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
+            border-radius: 9px;
+            transition: all 0.22s ease;
             border: none;
             background: transparent;
         }
 
-        .auth-tab.active {
-            background: #2563eb;
+        .auth-tab:hover {
             color: #ffffff;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
         }
 
-        .demo-login-btn {
+        .auth-tab.active {
+            background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+            color: #ffffff !important;
+            box-shadow: 0 3px 12px rgba(37, 99, 235, 0.45);
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 15px;
+            color: #64748b;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 13.5px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: #38bdf8;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+        }
+
+        .eye-toggle-btn {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .eye-toggle-btn:hover {
+            color: #ffffff;
+        }
+
+        .login-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 12.5px;
+            color: #94a3b8;
+        }
+
+        .remember-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+        }
+
+        .remember-checkbox input {
+            accent-color: #f43f5e;
+            width: 15px;
+            height: 15px;
+        }
+
+        .demo-pass-link {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .demo-pass-link:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        /* Primary Action Buttons */
+        .btn-auth-submit {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
+            color: #ffffff;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(56, 189, 248, 0.12);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            font-weight: 700;
-            font-size: 13px;
+        }
+
+        .btn-auth-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.55);
+        }
+
+        .btn-auth-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Demo Fast-Track Card */
+        .demo-fast-card {
+            margin-top: 18px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.08));
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
             cursor: pointer;
-            margin-top: 14px;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
             text-decoration: none;
         }
 
-        .demo-login-btn:hover {
-            background: rgba(56, 189, 248, 0.2);
+        .demo-fast-card:hover {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.15));
             border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+            transform: translateY(-1px);
         }
 
-        .alert-box {
-            padding: 10px 14px;
+        .demo-fast-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-fast-icon {
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
+            background: rgba(6, 182, 212, 0.25);
+            color: #67e8f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .demo-fast-text h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .demo-fast-text p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .demo-fast-badge {
+            background: #06b6d4;
+            color: #07080d;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Divider */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Guest Explorer Button */
+        .btn-guest-mode {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-guest-mode:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+        }
+
+        /* Alerts */
+        .alert-box {
+            padding: 12px 16px;
+            border-radius: 10px;
             font-size: 12.5px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .alert-error {
             background: rgba(239, 68, 68, 0.15);
-            border: 1px solid #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.45);
             color: #fca5a5;
         }
 
         .alert-success {
             background: rgba(16, 185, 129, 0.15);
-            border: 1px solid #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.45);
             color: #6ee7b7;
+        }
+
+        .compliance-note {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 11.5px;
+            color: #64748b;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Mobile Breakpoints (< 980px & < 500px) */
+        @media (max-width: 980px) {
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                width: 100%;
+                margin: 20px auto;
+                padding: 16px;
+                box-sizing: border-box;
+            }
+
+            .showcase-column {
+                display: none;
+            }
+
+            .auth-card {
+                padding: 28px 20px;
+                border-radius: 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 460px) {
+            body {
+                padding: 10px 0;
+                align-items: flex-start;
+            }
+
+            .auth-wrapper {
+                padding: 10px;
+                margin: 10px auto;
+                max-width: 100%;
+            }
+
+            .auth-card {
+                padding: 22px 14px;
+                border-radius: 16px;
+            }
+
+            .login-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .demo-fast-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .demo-fast-badge {
+                align-self: flex-start;
+            }
+
+            .auth-tab {
+                font-size: 12.5px;
+                padding: 8px 8px;
+            }
+
+            .form-input {
+                font-size: 13px;
+                padding: 11px 12px 11px 38px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="login-container">
+    <!-- Ambient background light -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
 
-    <div class="login-card">
+    <!-- Main Authentication Layout -->
+    <div class="auth-wrapper">
 
-        <div class="logo">
-            <div class="logo-icon">✓</div>
-            <h1>CreditFit <span>360</span></h1>
-        </div>
-
-        <p class="subtitle">
-            Understand. Improve. Empower.
-        </p>
-
-        <!-- Toggle Tabs -->
-        <div class="auth-tabs">
-            <button type="button" class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
-            <button type="button" class="auth-tab" id="tabRegister" onclick="switchTab('register')">Create Account</button>
-        </div>
-
-        <div id="alertBox" class="alert-box"></div>
-
-        <!-- LOGIN FORM -->
-        <form id="loginForm" onsubmit="handleAuth(event, 'login')">
-            <label>Email Address</label>
-            <input type="email" id="loginEmail" placeholder="Enter your email" required value="demo@creditfit360.com">
-
-            <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter your password" required value="Demo@123">
-
-            <div class="login-options">
-                <label class="remember">
-                    <input type="checkbox" checked>
-                    Remember me
-                </label>
-                <a href="javascript:void(0)" onclick="quickDemo()">Use Demo Password</a>
+        <!-- Left Column: Intelligent Platform Highlights -->
+        <div class="showcase-column">
+            
+            <div class="brand-pill">
+                <span>⚡</span> AI Credit Health & Wealth Operating System
             </div>
 
-            <button type="submit" id="loginSubmitBtn">Sign In →</button>
-        </form>
+            <h1 class="showcase-title">
+                Smart Credit &<br>
+                <span>Autonomous Wealth</span>
+            </h1>
 
-        <!-- REGISTRATION FORM (Hidden by default) -->
-        <form id="registerForm" style="display:none;" onsubmit="handleAuth(event, 'register')">
-            <label>Full Legal Name</label>
-            <input type="text" id="regName" placeholder="e.g. Smita Dwivedi" required>
+            <p class="showcase-desc">
+                India's premier reverse-underwriting platform. Assess your true loan eligibility, auto-ingest bank statements via RBI Account Aggregator, and defend bureau scores against errors.
+            </p>
 
-            <label>Email Address</label>
-            <input type="email" id="regEmail" placeholder="Enter your email" required>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏦</div>
+                    <div class="feature-title">Account Aggregator</div>
+                    <div class="feature-text">Zero paperwork. Verified salary, expenses & savings pulled straight from your bank via RBI AA.</div>
+                </div>
 
-            <label>Mobile Number (For AA / OTP)</label>
-            <input type="tel" id="regPhone" placeholder="+91 98765 43210">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-title">Reverse Underwrite</div>
+                    <div class="feature-text">Pre-test your profile against prime PSU & private bank algorithms before applying.</div>
+                </div>
 
-            <label>Create Password</label>
-            <input type="password" id="regPassword" placeholder="At least 6 characters" required>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <div class="feature-title">Statutory Disputes</div>
+                    <div class="feature-text">RBI CEPC complaint generator with automated ₹100/day statutory compensation calculation.</div>
+                </div>
 
-            <button type="submit" id="regSubmitBtn" style="margin-top:14px;">Create Verified Account →</button>
-        </form>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">FitAI Co-Pilot</div>
+                    <div class="feature-text">Autonomous chat copilot delivering tailored debt snowballs and runway projections.</div>
+                </div>
+            </div>
 
-        <a href="javascript:void(0)" onclick="quickDemo()" class="demo-login-btn">
-            <span>⚡</span> 1-Click Demo Login (Preloaded Data)
-        </a>
-
-        <div class="divider">
-            <span>OR</span>
         </div>
 
-        <a href="/dashboard" class="google-btn">
-            <span>🚀 Continue as Guest Explorer →</span>
-        </a>
+        <!-- Right Column: Glassmorphic Auth Card -->
+        <div class="auth-card">
 
-        <p class="signup" style="font-size:11.5px; color:#64748b; margin-top:20px;">
-            🔒 Protected under India's Digital Personal Data Protection Act 2023.
-        </p>
+            <div class="auth-card-header">
+                <div class="auth-card-icon">✓</div>
+                <div class="auth-card-title">
+                    <h2>CreditFit <span>360</span></h2>
+                    <p>Verified Member Access Portal</p>
+                </div>
+            </div>
+
+            <!-- Segmented Control Tabs -->
+            <div class="auth-tabs" role="tablist">
+                <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+                <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Create Account</button>
+            </div>
+
+            <div id="alertBox" class="alert-box"></div>
+
+            <!-- SIGN IN FORM -->
+            <form id="loginForm" onsubmit="handleAuthSubmit(event, 'login')">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="e.g. demo@creditfit360.com" required value="demo@creditfit360.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required value="Demo@123">
+                        <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Toggle password view">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-row">
+                    <label class="remember-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Remember me</span>
+                    </label>
+                    <a href="javascript:void(0)" onclick="quickDemoFill()" class="demo-pass-link">Reset to Demo Credentials</a>
+                </div>
+
+                <button type="submit" id="loginSubmitBtn" class="btn-auth-submit">
+                    <span>Sign In to Portal</span>
+                    <span>→</span>
+                </button>
+            </form>
+
+            <!-- REGISTRATION FORM (Hidden by default) -->
+            <form id="registerForm" style="display:none;" onsubmit="handleAuthSubmit(event, 'register')">
+                <div class="form-group">
+                    <label class="form-label">Full Legal Name</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="regName" class="form-input" placeholder="e.g. Smita Dwivedi" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="regEmail" class="form-input" placeholder="e.g. user@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Number (For Bank AA Link)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📱</span>
+                        <input type="tel" id="regPhone" class="form-input" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Create Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="regPassword" class="form-input" placeholder="At least 6 characters" required>
+                        <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)" aria-label="Toggle password view">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="regSubmitBtn" class="btn-auth-submit" style="margin-top: 10px;">
+                    <span>Create Verified Account</span>
+                    <span>→</span>
+                </button>
+            </form>
+
+            <!-- 1-Click Fast-Track Demo Card -->
+            <div class="demo-fast-card" onclick="triggerFastDemoLogin()">
+                <div class="demo-fast-info">
+                    <div class="demo-fast-icon">⚡</div>
+                    <div class="demo-fast-text">
+                        <h4>1-Click Instant Demo Login</h4>
+                        <p>Preloaded with 785 Credit Score & Bank Data</p>
+                    </div>
+                </div>
+                <span class="demo-fast-badge">Auto Sign-In</span>
+            </div>
+
+            <div class="auth-divider">
+                <span>OR EXPLORE DIRECTLY</span>
+            </div>
+
+            <a href="/dashboard" class="btn-guest-mode">
+                <span>🚀</span>
+                <span>Continue as Guest Explorer →</span>
+            </a>
+
+            <div class="compliance-note">
+                <span>🔒</span>
+                <span>Protected under India's DPDP Act 2023 & RBI CEPC Standards</span>
+            </div>
+
+        </div>
 
     </div>
 
-</div>
+    <!-- Script Logic -->
+    <script>
+        function switchAuthTab(mode) {
+            const tabLogin = document.getElementById("tabLogin");
+            const tabRegister = document.getElementById("tabRegister");
+            const loginForm = document.getElementById("loginForm");
+            const registerForm = document.getElementById("registerForm");
+            const alertBox = document.getElementById("alertBox");
+            alertBox.style.display = "none";
 
-<script>
-    function switchTab(mode) {
-        const tabLogin = document.getElementById("tabLogin");
-        const tabRegister = document.getElementById("tabRegister");
-        const loginForm = document.getElementById("loginForm");
-        const registerForm = document.getElementById("registerForm");
-        const alertBox = document.getElementById("alertBox");
-        alertBox.style.display = "none";
-
-        if (mode === 'login') {
-            tabLogin.classList.add("active");
-            tabRegister.classList.remove("active");
-            loginForm.style.display = "block";
-            registerForm.style.display = "none";
-        } else {
-            tabRegister.classList.add("active");
-            tabLogin.classList.remove("active");
-            loginForm.style.display = "none";
-            registerForm.style.display = "block";
-        }
-    }
-
-    async function quickDemo() {
-        document.getElementById("loginEmail").value = "demo@creditfit360.com";
-        document.getElementById("loginPassword").value = "Demo@123";
-        switchTab('login');
-        
-        // Auto submit
-        const fakeEvent = { preventDefault: () => {} };
-        await handleAuth(fakeEvent, 'login');
-    }
-
-    async function handleAuth(e, mode) {
-        e.preventDefault();
-        const alertBox = document.getElementById("alertBox");
-        alertBox.style.display = "none";
-
-        let endpoint = mode === 'login' ? "/api/login" : "/api/register";
-        let payload = {};
-
-        if (mode === 'login') {
-            payload = {
-                email: document.getElementById("loginEmail").value,
-                password: document.getElementById("loginPassword").value
-            };
-        } else {
-            payload = {
-                full_name: document.getElementById("regName").value,
-                email: document.getElementById("regEmail").value,
-                phone: document.getElementById("regPhone").value,
-                password: document.getElementById("regPassword").value
-            };
-        }
-
-        try {
-            const res = await fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await res.json();
-
-            if (data.success) {
-                alertBox.className = "alert-box alert-success";
-                alertBox.innerText = "✓ " + (data.message || "Authentication successful! Redirecting...");
-                alertBox.style.display = "block";
-                setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 600);
+            if (mode === 'login') {
+                tabLogin.classList.add("active");
+                tabRegister.classList.remove("active");
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
             } else {
+                tabRegister.classList.add("active");
+                tabLogin.classList.remove("active");
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+
+        function togglePasswordVisibility(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            if (!input) return;
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerText = "🔒";
+            } else {
+                input.type = "password";
+                btn.innerText = "👁️";
+            }
+        }
+
+        function quickDemoFill() {
+            document.getElementById("loginEmail").value = "demo@creditfit360.com";
+            document.getElementById("loginPassword").value = "Demo@123";
+            switchAuthTab('login');
+        }
+
+        async function triggerFastDemoLogin() {
+            quickDemoFill();
+            const fakeEvent = { preventDefault: () => {} };
+            await handleAuthSubmit(fakeEvent, 'login');
+        }
+
+        async function handleAuthSubmit(e, mode) {
+            e.preventDefault();
+            const alertBox = document.getElementById("alertBox");
+            alertBox.style.display = "none";
+
+            const submitBtn = mode === 'login' ? document.getElementById("loginSubmitBtn") : document.getElementById("regSubmitBtn");
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>⏳ Verifying Credentials...</span>`;
+
+            let endpoint = mode === 'login' ? "/api/login" : "/api/register";
+            let payload = {};
+
+            if (mode === 'login') {
+                payload = {
+                    email: document.getElementById("loginEmail").value.trim(),
+                    password: document.getElementById("loginPassword").value
+                };
+            } else {
+                payload = {
+                    full_name: document.getElementById("regName").value.trim(),
+                    email: document.getElementById("regEmail").value.trim(),
+                    phone: document.getElementById("regPhone").value.trim(),
+                    password: document.getElementById("regPassword").value
+                };
+            }
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+
+                if (data.success) {
+                    alertBox.className = "alert-box alert-success";
+                    alertBox.innerHTML = "<strong>✓ " + (data.message || "Authentication successful!") + "</strong> Redirecting to dashboard...";
+                    alertBox.style.display = "block";
+                    setTimeout(() => {
+                        window.location.href = "/dashboard";
+                    }, 500);
+                } else {
+                    alertBox.className = "alert-box alert-error";
+                    alertBox.innerHTML = "<strong>⚠️ " + (data.message || "Authentication failed. Please verify credentials.") + "</strong>";
+                    alertBox.style.display = "block";
+                }
+            } catch (err) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
                 alertBox.className = "alert-box alert-error";
-                alertBox.innerText = "⚠️ " + (data.message || "Failed to authenticate.");
+                alertBox.innerHTML = "<strong>⚠️ Server Connection Error:</strong> Unable to connect to CreditFit360 server.";
                 alertBox.style.display = "block";
             }
-        } catch (err) {
-            alertBox.className = "alert-box alert-error";
-            alertBox.innerText = "⚠️ Network error connecting to authentication service.";
-            alertBox.style.display = "block";
         }
-    }
-</script>
+    </script>
 
+    <script src="/static/mobile.js?v=2.5" defer></script>
 </body>
 </html>

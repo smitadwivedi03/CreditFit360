@@ -79,6 +79,7 @@
             color: white;
             padding: 28px 18px;
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -1252,6 +1253,7 @@
             color: var(--text-primary);
         }
     </style>
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 
 <body>
@@ -2247,5 +2249,15 @@
     <link rel="stylesheet" href="/static/assistant_widget.css">
     <script src="/static/assistant_widget.js" defer></script>
 
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
+    </script>
 </body>
 </html>

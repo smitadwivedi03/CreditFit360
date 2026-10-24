@@ -58,6 +58,7 @@
             border-right: 1px solid var(--border-subtle);
             padding: 28px 18px;
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -499,6 +500,7 @@
             box-shadow: 0 8px 25px rgba(132, 204, 22, 0.55);
         }
     </style>
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 
 <body>
@@ -882,6 +884,16 @@
             });
             recompute();
         });
+    </script>
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
     </script>
 </body>
 </html>

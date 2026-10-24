@@ -37,6 +37,7 @@
             color: white;
             padding: 28px 18px;
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -473,9 +474,7 @@
         /* RESPONSIVE */
 
         @media (max-width: 1050px) {
-            .sidebar {
-                width: 215px;
-            }
+            
 
             .main {
                 margin-left: 215px;
@@ -518,6 +517,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/static/mobile.css?v=2.5">
 </head>
 
 <body>
@@ -640,6 +640,24 @@
             <strong>Educational assessment:</strong>
             This tool estimates affordability using the figures you enter.
             It does not determine actual lender eligibility or guarantee loan approval.
+        </div>
+
+        <!-- AA FAST-TRACK AUTO-FILL BANNER -->
+        <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(6, 182, 212, 0.08)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #38bdf8; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+                    <span>⚡</span> Instant Bank Auto-Fill (RBI AA)
+                </div>
+                <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-top: 3px;">
+                    Auto-Populate Verified Bank Financials
+                </div>
+                <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
+                    Pulls verified salary credits (₹75k), existing debt EMIs, and bureau score via Account Aggregator.
+                </div>
+            </div>
+            <button type="button" id="aaQuickFillBtn" onclick="autoFillFromBank()" style="background: linear-gradient(135deg, #2563eb, #06b6d4); color: white; border: none; padding: 11px 20px; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);">
+                <span>🏦</span> Connect Bank via AA
+            </button>
         </div>
 
         <!-- INPUT FORM -->
@@ -885,6 +903,63 @@
             errorMessage.textContent = "";
             errorMessage.style.display = "none";
         }
+
+        async function autoFillFromBank() {
+            const btn = document.getElementById("aaQuickFillBtn");
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "Connecting FIP Bank...";
+            }
+
+            try {
+                const res = await fetch("/api/account-aggregator/verify-and-fetch", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ otp: "123456", bank: "HDFC Bank" })
+                });
+                const data = await res.json();
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = "<span>✓</span> Bank Connected";
+                    btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                }
+
+                if (data.success && data.financials) {
+                    const f = data.financials;
+                    document.getElementById("monthlyIncome").value = f.monthly_income || 75000;
+                    document.getElementById("monthlyExpenses").value = f.household_expenses || 22000;
+                    document.getElementById("existingEMI").value = f.existing_emi || 14000;
+                    document.getElementById("currentSavings").value = f.current_savings || 88000;
+                    document.getElementById("creditScore").value = f.credit_score || 752;
+                    document.getElementById("essentialExpenses").value = f.essential_expenses || 24000;
+                    document.getElementById("loanAmount").value = 500000;
+                    document.getElementById("proposedEMI").value = 10747;
+
+                    // Highlight inputs
+                    ["monthlyIncome", "monthlyExpenses", "existingEMI", "currentSavings", "creditScore", "essentialExpenses", "loanAmount", "proposedEMI"].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.style.borderColor = "rgba(16, 185, 129, 0.7)";
+                            el.style.backgroundColor = "rgba(16, 185, 129, 0.08)";
+                            setTimeout(() => {
+                                el.style.borderColor = "";
+                                el.style.backgroundColor = "";
+                            }, 3500);
+                        }
+                    });
+
+                    // Trigger assessment calculation
+                    loanForm.dispatchEvent(new Event("submit", { cancelable: true }));
+                }
+            } catch (e) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = "Connect Bank via AA";
+                }
+                console.error("AA Fast-fill error:", e);
+            }
+        }
+
 
         function getCategory(score) {
             if (score >= 80) return "Relatively Strong";
@@ -1194,5 +1269,15 @@
     <link rel="stylesheet" href="/static/assistant_widget.css">
     <script src="/static/assistant_widget.js" defer></script>
 
+    <script src="/static/mobile.js?v=2.5" defer></script>
+    <script>
+    (function() {
+        var sb = document.querySelector('.sidebar');
+        if (sb) {
+            sb.scrollLeft = 0;
+            sb.addEventListener('scroll', function() { if (sb.scrollLeft !== 0) sb.scrollLeft = 0; }, { passive: true });
+        }
+    })();
+    </script>
 </body>
 </html>
