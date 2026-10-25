@@ -22,6 +22,13 @@ class VercelPathMiddleware:
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
+        if "debug-env" in environ.get("PATH_INFO", "") or "debug-env" in environ.get("QUERY_STRING", ""):
+            import json
+            data = {k: str(v) for k, v in environ.items() if isinstance(v, (str, int, bool))}
+            body = json.dumps(data, indent=2).encode("utf-8")
+            start_response("200 OK", [("Content-Type", "application/json")])
+            return [body]
+
         path_override = None
         query_string = environ.get("QUERY_STRING", "")
 
