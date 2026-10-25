@@ -23,14 +23,6 @@ class VercelPathMiddleware:
     def __call__(self, environ, start_response):
         query_string = environ.get("QUERY_STRING", "")
 
-        # Diagnostic dump endpoint
-        if "dump_env=1" in query_string:
-            import json
-            data = {k: str(v) for k, v in environ.items() if isinstance(v, (str, int, bool))}
-            body = json.dumps(data, indent=2).encode("utf-8")
-            start_response("200 OK", [("Content-Type", "application/json")])
-            return [body]
-
         if "__path__=" in query_string:
             parsed = urllib.parse.parse_qs(query_string, keep_blank_values=True)
             if "__path__" in parsed:
