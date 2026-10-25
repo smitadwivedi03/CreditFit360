@@ -39,26 +39,34 @@ db.init_db()
 class VercelPathMiddleware:
     """
     WSGI middleware for Vercel Serverless deployments.
-    Restores the original requested path from HTTP_X_MATCHED_PATH so Flask
-    routes match properly when Vercel rewrites to /api/index.
+    Extracts the original requested route from the `__path__` parameter
+    passed by vercel.json rewrite: /api/index?__path__=$1
+    Restores PATH_INFO and cleans QUERY_STRING so all Flask routes match properly.
     """
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
-        if "dump_env=1" in environ.get("QUERY_STRING", ""):
+        query_string = environ.get("QUERY_STRING", "")
+
+        # Diagnostic dump endpoint
+        if "dump_env=1" in query_string:
             import json
             data = {k: str(v) for k, v in environ.items() if isinstance(v, (str, int, bool))}
             body = json.dumps(data, indent=2).encode("utf-8")
             start_response("200 OK", [("Content-Type", "application/json")])
             return [body]
 
-        matched = environ.get("HTTP_X_MATCHED_PATH") or environ.get("x-matched-path")
-        if matched:
-            if "?" in matched:
-                matched = matched.split("?")[0]
-            if matched not in ("/api/index", "/api/index.py", "/api"):
-                environ["PATH_INFO"] = matched
+        if "__path__=" in query_string:
+            import urllib.parse
+            parsed = urllib.parse.parse_qs(query_string, keep_blank_values=True)
+            if "__path__" in parsed:
+                raw_path = parsed.pop("__path__")[0]
+                if raw_path:
+                    environ["PATH_INFO"] = "/" + raw_path.lstrip("/")
+                else:
+                    environ["PATH_INFO"] = "/"
+                environ["QUERY_STRING"] = urllib.parse.urlencode(parsed, doseq=True)
         elif environ.get("PATH_INFO") in ("/api/index", "/api/index.py", "/api"):
             environ["PATH_INFO"] = "/"
         return self.wsgi_app(environ, start_response)
