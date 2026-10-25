@@ -36,13 +36,35 @@ def serve_static(filename):
 db.init_db()
 
 
+class VercelPathMiddleware:
+    """
+    WSGI middleware for Vercel Serverless deployments.
+    Restores the original requested path from HTTP_X_MATCHED_PATH so Flask
+    routes match properly when Vercel rewrites to /api/index.
+    """
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        matched = environ.get("HTTP_X_MATCHED_PATH") or environ.get("x-matched-path")
+        if matched:
+            if "?" in matched:
+                matched = matched.split("?")[0]
+            if matched not in ("/api/index", "/api/index.py", "/api"):
+                environ["PATH_INFO"] = matched
+        elif environ.get("PATH_INFO") in ("/api/index", "/api/index.py", "/api"):
+            environ["PATH_INFO"] = "/"
+        return self.wsgi_app(environ, start_response)
+
+
+app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
+
+
 # =========================================================
 # HOME / LOGIN
 # =========================================================
 
 @app.route("/")
-@app.route("/api/index")
-@app.route("/api/index.py")
 def login():
     return render_template("login.html")
 
