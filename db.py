@@ -189,6 +189,60 @@ def init_db():
 
         conn.commit()
 
+    # Pre-seed verified account for founder Smita Dwivedi
+    cursor.execute("SELECT id FROM users WHERE email = 'smitadwivedi03@gmail.com'")
+    if not cursor.fetchone():
+        hashed_smita = generate_password_hash("Demo@123")
+        cursor.execute("""
+            INSERT INTO users (email, password_hash, full_name, phone, occupation, role)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            "smitadwivedi03@gmail.com",
+            hashed_smita,
+            "Smita Dwivedi",
+            "+91 99198 09421",
+            "Fintech Founder & Senior Analyst",
+            "verified_member"
+        ))
+        smita_user_id = cursor.lastrowid
+        cursor.execute("""
+            INSERT INTO credit_assessments (user_id, assessment_type, score, category, foir, credit_utilisation, monthly_income, result_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            smita_user_id,
+            "personal",
+            785,
+            "Prime Tier-1 Creditworthiness",
+            18.67,
+            17.6,
+            75000.0,
+            json.dumps({
+                "score": 785,
+                "category": "Prime Tier-1 Creditworthiness",
+                "full_name": "Smita Dwivedi",
+                "monthly_income": 75000,
+                "household_expenses": 22000,
+                "existing_emi": 14000,
+                "monthly_savings": 18000,
+                "monthly_investment": 12000,
+                "credit_score": 752,
+                "credit_limit": 150000,
+                "credit_outstanding": 26400,
+                "credit_utilisation": 17.6,
+                "active_loans": 1,
+                "missed_payments": 0,
+                "credit_applications": 1,
+                "current_savings": 88000,
+                "investments": 125000,
+                "emergency_fund": 72000,
+                "essential_expenses": 24000,
+                "emi_burden": 18.67,
+                "emergency_months": 3.0,
+                "monthly_balance": 21000
+            })
+        ))
+        conn.commit()
+
     conn.close()
 
 
