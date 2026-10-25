@@ -1684,7 +1684,7 @@ Click "Generate Statutory Demand Notice" to produce your formal, legally structu
                 const data = await res.json();
 
                 if (data.success) {
-                    currentOmbudsmanDraft = data.ombudsman_petition;
+                    currentOmbudsmanDraft = data.ombudsman_draft || data.ombudsman_petition || "";
 
                     document.getElementById("pDaysDisplay").textContent = data.days_elapsed;
                     document.getElementById("pCompDisplay").textContent = "₹ " + Number(data.accrued_compensation_inr).toLocaleString('en-IN');

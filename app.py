@@ -263,8 +263,16 @@ def api_generate_statutory_notice():
 def api_calculate_rbi_penalty():
     try:
         data = request.get_json(silent=True) or request.form.to_dict() or {}
-        sub_date = data.get("submission_date") or ""
+        sub_date = data.get("submission_date") or data.get("dispute_date") or ""
         resolved_date = data.get("resolved_date") or None
+
+        if not sub_date and data.get("days_delayed"):
+            try:
+                from datetime import date, timedelta
+                days = int(data.get("days_delayed"))
+                sub_date = (date.today() - timedelta(days=days + 30)).strftime("%Y-%m-%d")
+            except Exception:
+                pass
         
         penalty_result = calculate_rbi_statutory_penalty(sub_date, resolved_date)
         return jsonify(penalty_result)
@@ -319,7 +327,7 @@ def api_register():
     data = request.get_json(silent=True) or {}
     email = str(data.get("email", "")).strip()
     password = str(data.get("password", "")).strip()
-    full_name = str(data.get("full_name", "")).strip()
+    full_name = str(data.get("full_name") or data.get("name") or "").strip()
     phone = str(data.get("phone", "")).strip()
 
     if not email or not password or not full_name:

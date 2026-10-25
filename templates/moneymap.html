@@ -966,7 +966,8 @@
         function init() {
             try {
                 const s = $("session-data");
-                let data = (s && s.textContent.trim() !== "null") ? JSON.parse(s.textContent) : null;
+                const raw = s ? s.textContent.trim() : null;
+                let data = (raw && raw !== "null" && raw !== "None") ? JSON.parse(raw) : null;
                 if (!data) {
                     const local = sessionStorage.getItem("creditFitResult");
                     if (local) data = JSON.parse(local);

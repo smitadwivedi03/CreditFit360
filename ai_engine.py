@@ -858,6 +858,7 @@ Relief Sought: Immediate correction of credit records and direct crediting of â‚
         "accrued_compensation_inr": accrued_compensation,
         "action_required": action_required,
         "escalation_ready": escalation_ready,
+        "ombudsman_draft": ombudsman_draft,
         "ombudsman_petition": ombudsman_draft,
         "rbi_cms_url": "https://cms.rbi.org.in"
     }

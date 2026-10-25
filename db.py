@@ -16,11 +16,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import shutil
 
+import tempfile
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Vercel Serverless compatibility: Root directory on Vercel is read-only
 if os.environ.get("VERCEL") or not os.access(BASE_DIR, os.W_OK):
-    DB_PATH = os.path.join("/tmp", "database.db")
+    tmp_dir = "/tmp" if os.path.exists("/tmp") else tempfile.gettempdir()
+    DB_PATH = os.path.join(tmp_dir, "database.db")
     orig_db = os.path.join(BASE_DIR, "database.db")
     if os.path.exists(orig_db) and not os.path.exists(DB_PATH):
         try:

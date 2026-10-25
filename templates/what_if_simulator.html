@@ -1080,18 +1080,21 @@
 
             // Hydrate from session
             try {
-                const raw = $("session-data").textContent.trim();
-                let data = (raw && raw !== "null") ? JSON.parse(raw) : null;
+                const sEl = $("session-data");
+                const raw = sEl ? sEl.textContent.trim() : null;
+                let data = (raw && raw !== "null" && raw !== "None") ? JSON.parse(raw) : null;
                 if (!data) {
                     const local = sessionStorage.getItem("creditFitResult");
                     if (local) data = JSON.parse(local);
                 }
                 if (data) {
-                    if (data.monthly_income) $("currentIncome").value = data.monthly_income;
-                    if (data.existing_emi) $("currentEMI").value = data.existing_emi;
-                    if (data.total_savings) $("currentSavings").value = data.total_savings;
-                    if (data.cibil_score) $("currentCredit").value = data.cibil_score;
-                    if (data.essential_expenses) $("essentialExpenses").value = data.essential_expenses;
+                    if (data.monthly_income && $("currentIncome")) $("currentIncome").value = data.monthly_income;
+                    if (data.existing_emi && $("currentEMI")) $("currentEMI").value = data.existing_emi;
+                    const sav = data.current_savings || data.total_savings || data.monthly_savings;
+                    if (sav && $("currentSavings")) $("currentSavings").value = sav;
+                    const scr = data.credit_score || data.score || data.cibil_score || data.total_score;
+                    if (scr && $("currentCredit")) $("currentCredit").value = scr;
+                    if (data.essential_expenses && $("essentialExpenses")) $("essentialExpenses").value = data.essential_expenses;
                 }
             } catch(e) {
                 console.error("Hydration error:", e);

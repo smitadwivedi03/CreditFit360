@@ -96,6 +96,7 @@ a {
 .logo h1 span {
     background: linear-gradient(135deg, #f43f5e, #38bdf8);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -188,7 +189,8 @@ form input::placeholder {
     color: #7dd3fc;
 }
 
-.login-card button {
+.login-card button.btn-auth-submit,
+.login-card button[type="submit"] {
     width: 100%;
     padding: 14px;
     border: none;
@@ -1172,28 +1174,13 @@ form input::placeholder {
 @media (max-width: 750px) {
 
     .sidebar {
-        width: 70px;
-        padding: 15px 8px;
-    }
-
-    .brand div:not(.brand-icon) {
-        display: none;
-    }
-
-    .menu-item {
-        font-size: 0;
-        justify-content: center;
-    }
-
-    .menu-item span {
-        font-size: 17px;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
     }
 
     .main-content {
-        margin-left: 70px;
-
-        width: calc(100% - 70px);
-
+        margin-left: 0;
+        width: 100%;
         padding: 15px;
     }
 
