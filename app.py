@@ -1149,11 +1149,83 @@ def test():
 # =========================================================
 
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
+    import socket
+    import threading
+    import time
+    import webbrowser
+
+    def is_port_in_use(p):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.5)
+            return s.connect_ex(('127.0.0.1', p)) == 0
+
+    def find_available_port(start_port=5000, max_attempts=20):
+        p = start_port
+        while p < start_port + max_attempts:
+            if not is_port_in_use(p):
+                return p
+            p += 1
+        return start_port
+
+    def get_local_ip():
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect(('8.8.8.8', 80))
+            ip = s.getsockname()[0]
+        except Exception:
+            ip = '127.0.0.1'
+        finally:
+            s.close()
+        return ip
+
+    def open_browser_delayed(url, delay=1.0):
+        def _open():
+            time.sleep(delay)
+            try:
+                print(f"[*] Opening default web browser at {url} ...")
+                webbrowser.open(url)
+            except Exception as e:
+                print(f"[!] Could not launch browser automatically: {e}")
+        t = threading.Thread(target=_open, daemon=True)
+        t.start()
+
+    raw_port = int(os.environ.get("PORT", 5000))
+    port = raw_port
+    if is_port_in_use(port):
+        print(f"[!] Port {port} is currently in use.")
+        free_port = find_available_port(start_port=port + 1)
+        print(f"[+] Automatically switching to available port: {free_port}")
+        port = free_port
+
+    local_ip = get_local_ip()
+    target_url = f"http://localhost:{port}"
+
+    print("=" * 64)
+    print("           CREDITFIT 360 - LOCAL SERVER RUNNER           ")
+    print("     Smart Credit Health, Reverse Underwriting & FinAI   ")
+    print("=" * 64)
+    print(f"  • Local Web URL:     {target_url}")
+    print(f"  • Localhost IP:      http://127.0.0.1:{port}")
+    print(f"  • Network / Mobile:  http://{local_ip}:{port}")
+    print(f"  • Database:          {os.path.join(BASE_DIR, 'database.db')} (SQLite Active)")
+    print(f"  • Privacy Standard:  RBI CEPC 2023-24 & DPDP Act 2023 Shield")
+    print("-" * 64)
+    print(f"  [i] Quick Demo Login: demo@creditfit360.com / Demo@123")
+    print(f"  [i] Press CTRL + C anytime in this terminal to stop.")
+    print("=" * 64)
+    print()
+
+    no_browser = os.environ.get("NO_BROWSER", "0").lower() in ("true", "1")
+    if not no_browser:
+        open_browser_delayed(target_url, delay=1.0)
+
     debug = os.environ.get("FLASK_DEBUG", "True").lower() in ("true", "1")
-    app.run(
-        host="0.0.0.0",
-        port=port,
-        debug=debug
-    )
+    try:
+        app.run(
+            host="0.0.0.0",
+            port=port,
+            debug=debug,
+            use_reloader=False
+        )
+    except (KeyboardInterrupt, SystemExit):
+        print("\n[+] CreditFit360 server stopped gracefully. Goodbye!")
