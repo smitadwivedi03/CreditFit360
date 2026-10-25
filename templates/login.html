@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="/static/mobile.css?v=2.6">
+    <link rel="stylesheet" href="/static/mobile.css?v=2.7">
 
     <style>
         :root {
@@ -121,35 +121,13 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: clamp(10px, 1.6vh, 18px);
-        }
-
-        .brand-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 4px 12px;
-            border-radius: 999px;
-            width: fit-content;
-            font-size: 11px;
-            font-weight: 700;
-            color: #38bdf8;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.12);
-        }
-
-        .brand-pill span {
-            color: #f43f5e;
-            font-size: 11px;
+            gap: clamp(12px, 2vh, 22px);
         }
 
         .showcase-title {
-            font-size: clamp(28px, 3.2vw, 39px);
+            font-size: clamp(30px, 3.5vw, 42px);
             font-weight: 800;
-            line-height: 1.14;
+            line-height: 1.15;
             letter-spacing: -0.8px;
             color: #ffffff;
         }
@@ -162,9 +140,9 @@
         }
 
         .showcase-desc {
-            font-size: clamp(12.5px, 1.1vw, 13.5px);
+            font-size: clamp(13px, 1.15vw, 14.5px);
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.55;
             max-width: 530px;
         }
 
@@ -221,7 +199,7 @@
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 22px;
-            padding: clamp(18px, 2.4vh, 26px) clamp(20px, 2.2vw, 28px);
+            padding: clamp(20px, 2.7vh, 30px) clamp(20px, 2.4vw, 30px);
             box-shadow:
                 0 25px 60px -10px rgba(0, 0, 0, 0.85),
                 0 0 35px rgba(244, 63, 94, 0.1),
@@ -236,7 +214,7 @@
             display: flex;
             align-items: center;
             gap: 11px;
-            margin-bottom: clamp(10px, 1.6vh, 16px);
+            margin-bottom: clamp(12px, 1.8vh, 18px);
         }
 
         .auth-card-icon {
@@ -283,13 +261,13 @@
             background: rgba(255, 255, 255, 0.04);
             border-radius: 10px;
             padding: 3px;
-            margin-bottom: clamp(10px, 1.5vh, 15px);
+            margin-bottom: clamp(12px, 1.8vh, 18px);
             border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .auth-tab {
             flex: 1;
-            padding: 7px 12px;
+            padding: 8px 12px;
             text-align: center;
             font-size: 12.5px;
             font-weight: 700;
@@ -311,49 +289,44 @@
             box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
         }
 
-        /* Compact Form Inputs */
+        /* Clean Modern Form Inputs (No Overlapping Emojis) */
         .form-group {
-            margin-bottom: clamp(8px, 1.2vh, 11px);
+            margin-bottom: clamp(10px, 1.4vh, 13px);
         }
 
         .form-grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             font-size: 11.5px;
             font-weight: 600;
             color: #cbd5e1;
+            letter-spacing: 0.2px;
         }
 
         .input-wrapper {
             position: relative;
             display: flex;
             align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            font-size: 13px;
-            color: #64748b;
-            pointer-events: none;
+            width: 100%;
         }
 
         .form-input {
             width: 100%;
-            padding: 8px 12px 8px 36px;
+            padding: 10px 14px;
             background: rgba(255, 255, 255, 0.035);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             color: #ffffff;
-            font-size: 12.5px;
+            font-size: 13px;
             transition: all 0.2s ease;
             outline: none;
+            box-sizing: border-box;
         }
 
         .form-input:focus {
@@ -362,30 +335,44 @@
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
         }
 
+        .form-input.has-eye {
+            padding-right: 42px;
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+            font-size: 12.5px;
+        }
+
         .eye-toggle-btn {
             position: absolute;
-            right: 10px;
+            right: 11px;
             background: transparent;
             border: none;
             color: #94a3b8;
             cursor: pointer;
-            font-size: 14px;
-            padding: 3px;
+            padding: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s;
+            transition: color 0.2s, transform 0.2s;
+            border-radius: 6px;
         }
 
         .eye-toggle-btn:hover {
-            color: #ffffff;
+            color: #38bdf8;
+            transform: scale(1.08);
+        }
+
+        .eye-toggle-btn svg {
+            display: block;
         }
 
         .login-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: clamp(10px, 1.4vh, 14px);
+            margin-bottom: clamp(12px, 1.6vh, 16px);
             font-size: 11.5px;
             color: #94a3b8;
         }
@@ -418,7 +405,7 @@
         /* Primary Glowing Submit Button */
         .btn-auth-submit {
             width: 100%;
-            padding: clamp(9px, 1.3vh, 11px);
+            padding: clamp(10px, 1.4vh, 12px);
             border: none;
             border-radius: 11px;
             background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
@@ -445,11 +432,11 @@
 
         /* 1-Click Fast-Track Demo Card */
         .demo-fast-card {
-            margin-top: clamp(10px, 1.4vh, 13px);
+            margin-top: clamp(12px, 1.6vh, 16px);
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.08));
             border: 1px solid rgba(6, 182, 212, 0.35);
             border-radius: 12px;
-            padding: clamp(8px, 1.1vh, 11px) 12px;
+            padding: clamp(9px, 1.2vh, 12px) 13px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -514,7 +501,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: clamp(7px, 1.1vh, 12px) 0;
+            margin: clamp(9px, 1.3vh, 14px) 0;
             color: #64748b;
             font-size: 9.5px;
             font-weight: 700;
@@ -536,7 +523,7 @@
             justify-content: center;
             gap: 7px;
             width: 100%;
-            padding: clamp(7px, 1.1vh, 10px);
+            padding: clamp(9px, 1.3vh, 11px);
             background: rgba(255, 255, 255, 0.035);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
@@ -555,10 +542,10 @@
 
         /* Alert Notifications */
         .alert-box {
-            padding: 8px 12px;
+            padding: 9px 13px;
             border-radius: 8px;
             font-size: 11.5px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: none;
             animation: fadeIn 0.25s ease;
         }
@@ -578,19 +565,6 @@
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.45);
             color: #6ee7b7;
-        }
-
-        /* DPDP Compliance Tag */
-        .compliance-note {
-            margin-top: clamp(7px, 1.1vh, 11px);
-            text-align: center;
-            font-size: 10.5px;
-            color: #64748b;
-            line-height: 1.4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
         }
 
         /* Responsive Breakpoint for Mobile (< 900px or small mobile screens) */
@@ -640,10 +614,6 @@
             <!-- Left Column: Intelligent Platform Highlights -->
             <div class="showcase-column">
                 
-                <div class="brand-pill">
-                    <span>⚡</span> AI CREDIT HEALTH & WEALTH OPERATING SYSTEM
-                </div>
-
                 <h1 class="showcase-title">
                     Smart Credit &<br>
                     <span>Autonomous Wealth</span>
@@ -700,23 +670,24 @@
 
                 <div id="alertBox" class="alert-box"></div>
 
-                <!-- SIGN IN FORM -->
+                <!-- SIGN IN FORM (Clean Inputs with No Overlapping Emojis) -->
                 <form id="loginForm" onsubmit="handleAuthSubmit(event, 'login')">
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
+                        <label class="form-label" for="loginEmail">Email Address</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">✉️</span>
-                            <input type="email" id="loginEmail" class="form-input" placeholder="e.g. demo@creditfit360.com" required value="demo@creditfit360.com">
+                            <input type="email" id="loginEmail" class="form-input" placeholder="e.g. demo@creditfit360.com" required value="demo@creditfit360.com" autocomplete="email">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Password</label>
+                        <label class="form-label" for="loginPassword">Password</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">🔒</span>
-                            <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required value="Demo@123">
+                            <input type="password" id="loginPassword" class="form-input has-eye" placeholder="Enter your password" required value="Demo@123" autocomplete="current-password">
                             <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Toggle password view">
-                                👁️
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -735,41 +706,40 @@
                     </button>
                 </form>
 
-                <!-- REGISTRATION FORM (Hidden by default, space-optimized) -->
+                <!-- REGISTRATION FORM (Clean Inputs, No Overlapping Emojis) -->
                 <form id="registerForm" style="display:none;" onsubmit="handleAuthSubmit(event, 'register')">
                     <div class="form-grid-2">
                         <div class="form-group">
-                            <label class="form-label">Full Name</label>
+                            <label class="form-label" for="regName">Full Name</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
-                                <input type="text" id="regName" class="form-input" placeholder="e.g. Smita Dwivedi" required>
+                                <input type="text" id="regName" class="form-input" placeholder="e.g. Smita Dwivedi" required autocomplete="name">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Mobile (Bank AA)</label>
+                            <label class="form-label" for="regPhone">Mobile Number</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">📱</span>
-                                <input type="tel" id="regPhone" class="form-input" placeholder="+91 9876543210">
+                                <input type="tel" id="regPhone" class="form-input" placeholder="+91 9876543210" autocomplete="tel">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
+                        <label class="form-label" for="regEmail">Email Address</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">✉️</span>
-                            <input type="email" id="regEmail" class="form-input" placeholder="e.g. user@example.com" required>
+                            <input type="email" id="regEmail" class="form-input" placeholder="e.g. user@example.com" required autocomplete="email">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Create Password</label>
+                        <label class="form-label" for="regPassword">Create Password</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">🔒</span>
-                            <input type="password" id="regPassword" class="form-input" placeholder="At least 6 characters" required>
+                            <input type="password" id="regPassword" class="form-input has-eye" placeholder="At least 6 characters" required autocomplete="new-password">
                             <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)" aria-label="Toggle password view">
-                                👁️
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -801,11 +771,6 @@
                     <span>Continue as Guest Explorer →</span>
                 </a>
 
-                <div class="compliance-note">
-                    <span>🔒</span>
-                    <span>Protected under India's DPDP Act 2023 & RBI CEPC Standards</span>
-                </div>
-
             </div>
 
         </div>
@@ -834,16 +799,15 @@
             }
         }
 
+        // Clean Modern SVG Toggle: No Emoji Lock or Clumsy Symbols
         function togglePasswordVisibility(fieldId, btn) {
             const input = document.getElementById(fieldId);
             if (!input) return;
-            if (input.type === "password") {
-                input.type = "text";
-                btn.innerText = "🔒";
-            } else {
-                input.type = "password";
-                btn.innerText = "👁️";
-            }
+            const isPass = input.type === "password";
+            input.type = isPass ? "text" : "password";
+            btn.innerHTML = isPass 
+                ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+                : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
         }
 
         function quickDemoFill() {
@@ -854,6 +818,32 @@
 
         async function triggerFastDemoLogin() {
             quickDemoFill();
+            const fallbackResult = {
+                "score": 785,
+                "category": "Prime Tier-1 Creditworthiness",
+                "full_name": "Smita Dwivedi (Verified Member)",
+                "monthly_income": 75000,
+                "household_expenses": 22000,
+                "existing_emi": 14000,
+                "monthly_savings": 18000,
+                "monthly_investment": 12000,
+                "credit_score": 752,
+                "credit_limit": 150000,
+                "credit_outstanding": 26400,
+                "credit_utilisation": 17.6,
+                "active_loans": 1,
+                "missed_payments": 0,
+                "credit_applications": 1,
+                "current_savings": 88000,
+                "investments": 125000,
+                "emergency_fund": 72000,
+                "essential_expenses": 24000,
+                "emi_burden": 18.67,
+                "emergency_months": 3.0,
+                "monthly_balance": 21000
+            };
+            sessionStorage.setItem("creditFitResult", JSON.stringify(fallbackResult));
+
             const fakeEvent = { preventDefault: () => {} };
             await handleAuthSubmit(fakeEvent, 'login');
         }
@@ -871,6 +861,8 @@
             let endpoint = mode === 'login' ? "/api/login" : "/api/register";
             let payload = {};
 
+            const isDemoUser = (mode === 'login' && document.getElementById("loginEmail").value.trim().toLowerCase() === "demo@creditfit360.com");
+
             if (mode === 'login') {
                 payload = {
                     email: document.getElementById("loginEmail").value.trim(),
@@ -884,8 +876,6 @@
                     password: document.getElementById("regPassword").value
                 };
             }
-
-            const isDemoUser = (mode === 'login' && document.getElementById("loginEmail").value.trim().toLowerCase() === "demo@creditfit360.com");
 
             try {
                 const res = await fetch(endpoint, {
@@ -911,7 +901,6 @@
                     alertBox.style.display = "block";
                 }
             } catch (err) {
-                // If demo credentials are used, seamlessly enter dashboard with preloaded verified profile
                 if (isDemoUser) {
                     const fallbackResult = {
                         "score": 785,
@@ -956,6 +945,6 @@
         }
     </script>
 
-    <script src="/static/mobile.js?v=2.6" defer></script>
+    <script src="/static/mobile.js?v=2.7" defer></script>
 </body>
 </html>
