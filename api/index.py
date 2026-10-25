@@ -21,8 +21,8 @@ class VercelPathMiddleware:
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
-        # Diagnostic test endpoint
-        if environ.get("HTTP_X_MATCHED_PATH") == "/api/debug-env" or environ.get("PATH_INFO") == "/api/debug-env":
+        # Diagnostic dump endpoint
+        if "dump_env=1" in environ.get("QUERY_STRING", ""):
             import json
             data = {k: str(v) for k, v in environ.items() if isinstance(v, (str, int, bool))}
             body = json.dumps(data, indent=2).encode("utf-8")
